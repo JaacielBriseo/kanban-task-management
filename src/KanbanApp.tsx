@@ -1,3 +1,2 @@
-export const KanbanApp = () => {
-	return <div>KanbanApp</div>;
-};
+import { AppRoutes } from './router/AppRoutes';
+export const KanbanApp = () => <AppRoutes />;
