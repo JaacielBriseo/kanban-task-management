@@ -1,6 +1,9 @@
+import { Header } from '../components';
 
 export const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+	return (
+		<main className='font-Jakarta bg-LightGrey'>
+			<Header />
+		</main>
+	);
+};
