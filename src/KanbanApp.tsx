@@ -1,6 +1,3 @@
-
 export const KanbanApp = () => {
-  return (
-    <div>KanbanApp</div>
-  )
-}
+	return <div>KanbanApp</div>;
+};

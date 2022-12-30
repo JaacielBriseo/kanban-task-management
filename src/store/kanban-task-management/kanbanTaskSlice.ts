@@ -1,16 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import data from '../../data/data.json';
+import { InitialValuesSlice } from '../../interfaces';
+
+const initialValues: InitialValuesSlice = { ...data };
 export const kanbanTaskSlice = createSlice({
-    name: 'kanbanTask',
-    initialState: {
-        counter: 10
-    },
-    reducers: {
-        increment: (state, /* action */ ) => {
-            state.counter += 1;
-        },
-    }
+	name: 'kanbanTask',
+	initialState: initialValues,
+	reducers: {},
 });
 
-
 // Action creators are generated for each case reducer function
-export const { increment } = kanbanTaskSlice.actions;
+export const {} = kanbanTaskSlice.actions;
