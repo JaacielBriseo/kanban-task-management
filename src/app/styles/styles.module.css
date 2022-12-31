@@ -1,21 +1,21 @@
-.header{
-    @apply w-full p-5 flex justify-between bg-White
+.header {
+	@apply w-full p-5 flex justify-between bg-White;
 }
-.firstContainer{
-     @apply flex items-center space-x-3
+.firstContainer {
+	@apply flex items-center space-x-3;
 }
-.title{
-    @apply font-bold text-lg text-Dark
+.title {
+	@apply font-bold text-lg text-Dark;
 }
-.chevron{
-    @apply w-2 h-2
+.chevron {
+	@apply w-2 h-2;
 }
-.secondContainer{
-    @apply flex justify-between items-center space-x-6
+.secondContainer {
+	@apply flex justify-between items-center space-x-6;
 }
-.headerButton{
-    @apply bg-MainPurple w-12 h-8 rounded-full flex items-center justify-center
+.headerButton {
+	@apply bg-MainPurple w-12 h-8 rounded-full flex items-center justify-center;
 }
-.ellipsisLogo{
-    @apply w-1 h-4
+.ellipsisLogo {
+	@apply w-1 h-4;
 }

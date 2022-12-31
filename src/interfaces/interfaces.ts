@@ -3,6 +3,7 @@ export interface InitialValuesSlice {
 		name: string;
 		columns: Column[];
 	}[];
+	isSelectModalOpen:boolean
 }
 
 export interface Board {
