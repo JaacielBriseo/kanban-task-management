@@ -8,6 +8,7 @@ export const Home = () => {
 		<main className='font-Jakarta bg-LightGrey'>
 			<Header />
 			<SelectBoardModal boardNames={boardNames} />
+			<Board />
 		</main>
 	);
 };
