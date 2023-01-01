@@ -11,7 +11,7 @@ export const ThemeToggler = () => {
 	};
 	return (
 		<div className='flex justify-center items-center mt-5 space-x-2 bg-LightGrey dark:bg-VeryDarkGrey rounded-lg w-[235px] h-12 mx-auto'>
-			<img src='./assets/icon-light-theme.svg' alt='light' />
+			<img src='./assets/icon-dark-theme.svg' alt='dark' />
 			<div
 				className='md:w-14 md:h-7 w-12 h-6 flex items-center bg-MainPurple rounded-full p-1 cursor-pointer'
 				onClick={() => {
@@ -26,7 +26,7 @@ export const ThemeToggler = () => {
 					}
 				></div>
 			</div>
-			<img src='./assets/icon-dark-theme.svg' alt='dark' />
+			<img src='./assets/icon-light-theme.svg' alt='light' />
 		</div>
 	);
 };

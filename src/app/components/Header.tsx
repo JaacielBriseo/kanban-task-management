@@ -3,12 +3,12 @@ import { toggleBoardModal, useAppSelector, useAppDispatch } from '../../store';
 
 export const Header = () => {
 	const dispatch = useAppDispatch();
-	const { isSelectModalOpen } = useAppSelector((state) => state.kanbanTask);
+	const { isSelectModalOpen, activeBoard } = useAppSelector((state) => state.ui);
 	return (
 		<header className={`${styles.header} dark:bg-DarkGrey`}>
 			<div className={styles.firstContainer}>
 				<img src='./assets/logo-mobile.svg' alt='board' />
-				<h1 className={`${styles.title} dark:text-White`}>Platform Launch</h1>
+				<h1 className={`${styles.title} dark:text-White`}>{activeBoard}</h1>
 				<button type='button' onClick={() => dispatch(toggleBoardModal())}>
 					<img
 						src={`./assets/icon-chevron-${isSelectModalOpen ? 'up' : 'down'}.svg`}
