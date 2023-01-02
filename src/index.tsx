@@ -11,11 +11,11 @@ const root = createRoot(container);
 
 root.render(
 	//TODO: REMOVE STRICT MODE WHEN USING DND
-	<React.StrictMode>
+	// <React.StrictMode>
 		<Provider store={store}>
 			<BrowserRouter>
 				<KanbanApp />
 			</BrowserRouter>
 		</Provider>
-	</React.StrictMode>
+	/* </React.StrictMode> */
 );

@@ -1,1 +1,2 @@
-export * from './useDarkSide'
+export * from './useDarkSide';
+export * from './useBoardColumns';

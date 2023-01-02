@@ -5,7 +5,7 @@ export const Home = () => {
 	const { boards } = useAppSelector((state) => state.kanbanTask);
 	const boardNames = boards.map((board) => board.name);
 	return (
-		<main className='font-Jakarta bg-LightGrey'>
+		<main className='font-Jakarta min-h-screen bg-LightGrey dark:bg-VeryDarkGrey'>
 			<Header />
 			<SelectBoardModal boardNames={boardNames} />
 			<Board />
