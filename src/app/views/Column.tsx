@@ -14,15 +14,13 @@ export const Column = ({ columnTasks, title }: ColumnProps) => {
 				</p>
 			</h1>
 			{columnTasks?.flatMap((task) => {
-				const completedSubtasks = task?.subtasks.filter((subtask) => subtask.isCompleted);
-				const completedSubtaskCount = completedSubtasks?.length;
-				const subtaskCount = task?.subtasks.length;
 				return (
 					<Task
 						key={task?.title}
-						title={task?.title}
-						completedSubtaskCount={completedSubtaskCount}
-						subtaskCount={subtaskCount}
+						description={task.description}
+						status={task.status}
+						subtasks={task.subtasks}
+						title={task.title}
 					/>
 				);
 			})}

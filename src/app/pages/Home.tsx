@@ -1,6 +1,6 @@
 import { Header, SelectBoardModal } from '../components';
 import { useAppSelector } from '../../store';
-import { Board } from '../views';
+import { Board, ViewTaskModal } from '../views';
 export const Home = () => {
 	const { boards } = useAppSelector((state) => state.kanbanTask);
 	const boardNames = boards.map((board) => board.name);
@@ -9,6 +9,7 @@ export const Home = () => {
 			<Header />
 			<SelectBoardModal boardNames={boardNames} />
 			<Board />
+			<ViewTaskModal />
 		</main>
 	);
 };

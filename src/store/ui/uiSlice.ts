@@ -4,6 +4,13 @@ export const uiSlice = createSlice({
 	initialState: {
 		isSelectModalOpen: false,
 		activeBoard: 'Platform Launch',
+		isViewTaskModalOpen: false,
+		viewTaskData: {
+			description: '',
+			status: '',
+			subtasks: [{ title: '' }],
+			title: '',
+		},
 	},
 	reducers: {
 		toggleBoardModal: (state) => {
@@ -12,8 +19,15 @@ export const uiSlice = createSlice({
 		setActiveBoard: (state, { payload }) => {
 			state.activeBoard = payload;
 		},
+		setActiveViewTask: (state, { payload }) => {
+			state.isViewTaskModalOpen = true;
+			state.viewTaskData = payload;
+		},
+		closeViewTaskModal: (state) => {
+			state.isViewTaskModalOpen = false;
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleBoardModal, setActiveBoard } = uiSlice.actions;
+export const { toggleBoardModal, setActiveBoard, setActiveViewTask, closeViewTaskModal } = uiSlice.actions;

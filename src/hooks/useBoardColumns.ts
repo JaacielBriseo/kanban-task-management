@@ -7,7 +7,7 @@ export const useBoardColumns = () => {
 
 	const board = useMemo(() => {
 		return boards.find((board) => board.name === activeBoard);
-	}, [activeBoard]);
+	}, [activeBoard, boards]);
 
 	const todoColumn = board?.columns.find((column) => column.name === 'Todo');
 	const todoTasks = todoColumn?.tasks;
