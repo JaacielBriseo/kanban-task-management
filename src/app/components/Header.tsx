@@ -3,7 +3,7 @@ import { toggleBoardModal, useAppSelector, useAppDispatch } from '../../store';
 
 export const Header = () => {
 	const dispatch = useAppDispatch();
-	const { isSelectModalOpen, activeBoard } = useAppSelector((state) => state.ui);
+	const { isSelectModalOpen, activeBoard } = useAppSelector(state => state.ui);
 	return (
 		<header className={`${styles.header} dark:bg-DarkGrey`}>
 			<div className={styles.firstContainer}>

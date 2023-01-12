@@ -7,8 +7,8 @@ export const SelectBoardModal = () => {
 	const { isSelectModalOpen } = useAppSelector((state) => state.ui);
 	const dispatch = useAppDispatch();
 	return (
-		<section className={`${isSelectModalOpen ? 'fixed' : 'hidden'} w-full h-screen bg-black bg-opacity-75 z-10`}>
-			<div className={`w-[264px] h-[322px] mt-6 mx-auto p-3 rounded-lg shadow-lg bg-White dark:bg-DarkGrey`}>
+		<div className={`${isSelectModalOpen ? 'fixed' : 'hidden'} w-full h-screen bg-black bg-opacity-75 z-10`}>
+			<div className={`w-[264px] h-[322px] mt-20 mx-auto p-3 rounded-lg shadow-lg bg-White dark:bg-DarkGrey`}>
 				<ul>
 					<h2 className='font-bold text-sm text-DarkGrey dark:text-LightGrey'>All boards ({boardNames.length})</h2>
 					{boardNames.map((boardName) => (
@@ -29,6 +29,6 @@ export const SelectBoardModal = () => {
 				</ul>
 				<ThemeToggler />
 			</div>
-		</section>
+		</div>
 	);
 };

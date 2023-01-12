@@ -7,6 +7,7 @@ export const uiSlice = createSlice({
 		activeBoard: 'Platform Launch',
 		isViewTaskModalOpen: false,
 		viewTaskModalInfo: {} as Task,
+		isNewTaskModalOpen: false,
 	},
 	reducers: {
 		toggleBoardModal: state => {
@@ -30,6 +31,9 @@ export const uiSlice = createSlice({
 		setCurrentStatus: (state, { payload }) => {
 			state.viewTaskModalInfo.status = payload;
 		},
+		toggleNewTaskModal: state => {
+			state.isNewTaskModalOpen = !state.isNewTaskModalOpen;
+		},
 	},
 });
 
@@ -41,4 +45,5 @@ export const {
 	setCurrentStatus,
 	toggleBoardModal,
 	toggleCheckedSubtask,
+	toggleNewTaskModal,
 } = uiSlice.actions;
