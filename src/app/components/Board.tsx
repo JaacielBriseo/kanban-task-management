@@ -5,7 +5,6 @@ export const Board = () => {
 	const dispatch = useAppDispatch();
 	const { boards } = useAppSelector(state => state.kanbanTask);
 	const { activeBoard } = useAppSelector(state => state.ui);
-
 	const boardToDisplay = boards.find(board => board.name === activeBoard);
 
 	return (

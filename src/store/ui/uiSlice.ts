@@ -27,9 +27,18 @@ export const uiSlice = createSlice({
 			state.viewTaskModalInfo.subtasks[subtaskIndex].isCompleted =
 				!state.viewTaskModalInfo.subtasks[subtaskIndex].isCompleted;
 		},
+		setCurrentStatus: (state, { payload }) => {
+			state.viewTaskModalInfo.status = payload;
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleBoardModal, setActiveBoard, openViewTaskModal, closeViewTaskModal, toggleCheckedSubtask } =
-	uiSlice.actions;
+export const {
+	closeViewTaskModal,
+	openViewTaskModal,
+	setActiveBoard,
+	setCurrentStatus,
+	toggleBoardModal,
+	toggleCheckedSubtask,
+} = uiSlice.actions;
