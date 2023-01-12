@@ -1,5 +1,5 @@
 import styles from '../styles/styles.module.css';
-import { toggleBoardModal, useAppSelector, useAppDispatch } from '../../store';
+import { toggleBoardModal, useAppSelector, useAppDispatch, toggleNewTaskModal } from '../../store';
 
 export const Header = () => {
 	const dispatch = useAppDispatch();
@@ -18,7 +18,7 @@ export const Header = () => {
 				</button>
 			</div>
 			<div className={styles.secondContainer}>
-				<button className={styles.headerButton}>
+				<button className={styles.headerButton} onClick={() => dispatch(toggleNewTaskModal())}>
 					<img src='./assets/icon-add-task-mobile.svg' alt='add task' />
 				</button>
 				<img src='./assets/icon-vertical-ellipsis.svg' alt='ellipsis' className={styles.ellipsisLogo} />

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Task } from '../../interfaces/interfaces';
+import { Task } from '../../interfaces';
 export const uiSlice = createSlice({
 	name: 'ui',
 	initialState: {

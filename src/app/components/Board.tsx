@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch, openViewTaskModal } from '../../store';
-import { ViewTaskModal } from '.';
+import { AddNewTaskModal, ViewTaskModal } from '.';
 
 export const Board = () => {
 	const dispatch = useAppDispatch();
@@ -35,6 +35,7 @@ export const Board = () => {
 				</div>
 			))}
 			<ViewTaskModal />
+			<AddNewTaskModal/>
 		</div>
 	);
 };
