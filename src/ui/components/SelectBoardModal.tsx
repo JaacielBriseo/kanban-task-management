@@ -1,9 +1,9 @@
 import { useAppSelector, useAppDispatch, setActiveBoard } from '../../store';
-import { ThemeToggler } from '../../ui';
-interface SelectBoardModalProps {
-	boardNames: string[];
-}
-export const SelectBoardModal = ({ boardNames }: SelectBoardModalProps) => {
+import { ThemeToggler } from './ThemeToggler';
+
+export const SelectBoardModal = () => {
+	const { boards } = useAppSelector((state) => state.kanbanTask);
+	const boardNames = boards.map((board) => board.name);
 	const { isSelectModalOpen } = useAppSelector((state) => state.ui);
 	const dispatch = useAppDispatch();
 	return (

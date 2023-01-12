@@ -1,4 +1,4 @@
-export interface InitialValuesSlice {
+export interface BoardsData {
 	boards: {
 		name: string;
 		columns: Column[];
