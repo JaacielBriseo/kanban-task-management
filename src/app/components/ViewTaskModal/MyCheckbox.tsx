@@ -5,9 +5,10 @@ export const MyCheckbox = ({ subtask }: { subtask: Subtask }) => {
 	const dispatch = useAppDispatch();
 	const { activeBoard } = useAppSelector(state => state.ui);
 	return (
-		<div className='bg-LightGrey p-3 rounded-md'>
-			<label>
+		<div className='bg-LightGrey p-3 m-2 rounded-md'>
+			<label className='label'>
 				<input
+					className='input'
 					type='checkbox'
 					name={subtask.title}
 					checked={subtask.isCompleted}
@@ -16,7 +17,7 @@ export const MyCheckbox = ({ subtask }: { subtask: Subtask }) => {
 						dispatch(toggleCheckedSubtask(subtask.title));
 					}}
 				/>
-				{subtask.title}
+				<span className='self-end w-4/5'>{subtask.title}</span>
 			</label>
 		</div>
 	);

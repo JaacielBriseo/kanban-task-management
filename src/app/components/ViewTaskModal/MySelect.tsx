@@ -7,6 +7,7 @@ export const MySelect = () => {
 		<div className='space-y-3'>
 			<p className='font-semibold text-sm'>Current status</p>
 			<select
+				className='select'
 				value={viewTaskModalInfo.status}
 				onChange={({ target }) => {
 					dispatch(setCurrentStatus(target.value));

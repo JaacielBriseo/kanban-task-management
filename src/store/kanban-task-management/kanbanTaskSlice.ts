@@ -18,6 +18,7 @@ export const kanbanTaskSlice = createSlice({
 	reducers: {
 		toggleSubtaskCompleted: (state, { payload }) => {
 			const { subtask, activeBoard } = payload;
+			const { title } = subtask;
 			const newSubtask = {
 				...subtask,
 				isCompleted: !subtask.isCompleted,
@@ -27,7 +28,7 @@ export const kanbanTaskSlice = createSlice({
 				.find(board => board.name === activeBoard)!
 				.columns.map(col => col.tasks)
 				.flat()
-				.find(task => task.subtasks.find(subtask => subtask.title === subtask.title));
+				.find(task => task.subtasks.find(subtask => subtask.title === title));
 			if (task) {
 				task.subtasks = [...task.subtasks].map(subtask => {
 					if (subtask.title === newSubtask.title) {
