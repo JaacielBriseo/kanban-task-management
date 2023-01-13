@@ -7,7 +7,7 @@ type Props = {
 export const CloseModalButton = ({ fn }: Props) => {
 	const dispatch = useAppDispatch();
 	return (
-		<button className='buttonModal' onClick={() => dispatch(fn())}>
+		<button type='button' className='buttonModal' onClick={() => dispatch(fn())}>
 			<img src='./assets/icon-cross.svg' alt='cross' />
 		</button>
 	);
