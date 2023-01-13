@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Boards } from '../../interfaces';
-import { findTask, findColumn, findNewColumn } from '../../helpers';
+import { findTask, findColumn, findNewColumn, findColumnByName } from '../../helpers';
 import data from '../../data/data.json';
 
 const initialState = {
@@ -10,6 +10,15 @@ type UpdateTaskStatusPayload = {
 	taskId: number;
 	status: string;
 	activeBoard: string;
+};
+type AddNewTaskPayload = {
+	activeBoard: string;
+	status: string; //? This is going to be used to place the task in the correct column
+	id: number;
+	title: string;
+	description: string;
+	statusId: number;
+	subtasks?: { title: string; isCompleted: boolean };
 };
 
 export const kanbanTaskSlice = createSlice({
@@ -61,15 +70,40 @@ export const kanbanTaskSlice = createSlice({
 			taskColumn.tasks = taskColumn.tasks.filter(t => t.id !== taskId);
 
 			const newColumn = findNewColumn(board, status);
+
 			if (!newColumn) {
-				console.error(`Column not found for status: ${status}`);
+				board.columns.push({
+					id: board.columns.length,
+					name: status,
+					tasks: [{ ...task }],
+				});
+			} else {
+				newColumn.tasks.push(task);
+			}
+		},
+		addNewTask: (state, { payload }: { payload: AddNewTaskPayload }) => {
+			const { activeBoard, description, id, status, statusId, title, subtasks } = payload;
+			const board = state.boards.find(board => board.name === activeBoard);
+			if (!board) {
+				console.error(`Board: ${board} not found`);
 				return;
 			}
-
-			newColumn.tasks.push(task);
+			const column = findColumnByName(board, status);
+			if (!column) {
+				console.error(`Column: ${column} not found`);
+				return;
+			}
+			column.tasks.push({
+				id,
+				description,
+				status,
+				statusId,
+				subtasks: subtasks ? [subtasks] : [],
+				title,
+			});
 		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleSubtaskCompleted, updateTaskStatus } = kanbanTaskSlice.actions;
+export const { toggleSubtaskCompleted, updateTaskStatus, addNewTask } = kanbanTaskSlice.actions;
