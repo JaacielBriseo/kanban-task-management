@@ -1,11 +1,11 @@
 export interface KanbanSliceInitialValues {
 	boards: Board[];
-	selectedBoardId: number;
-	selectedColumnId: number;
-	selectedTaskId: number;
-	selectedSubtaskId: number;
-	activeBoard: Board;
-	activeTask: Task;
+	selectedBoardId: number | null;
+	selectedColumnId: number | null;
+	selectedTaskId: number | null;
+	selectedSubtaskId: number | null;
+	activeBoard: Board | null;
+	activeTask: Task | null;
 }
 
 export interface Board {
