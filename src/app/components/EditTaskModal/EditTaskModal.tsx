@@ -5,8 +5,8 @@ import { CloseModalButton } from '../../../ui';
 import { ModalLayout } from '../../layout';
 import { MyFormInput, MyFormSelect, MyFormSubmitButton, MyFormTextArea, MyFormTitle } from '../';
 
-export const AddNewTaskModal = () => {
-	const { formData, validations, handleSubmit, isNewTaskModalOpen } = useAddNewTaskForm();
+export const EditTaskModal = () => {
+	const { formData, validations, handleSubmit, isEditTaskModalOpen } = useAddNewTaskForm();
 	return (
 		<Formik
 			initialValues={formData}
@@ -14,11 +14,11 @@ export const AddNewTaskModal = () => {
 			onSubmit={({ description, status, subtasks, title }) => {
 				handleSubmit({ description, status, subtasks, title });
 			}}>
-			{({ values, errors }) => (
+			{({ errors }) => (
 				<Form>
-					<ModalLayout isShowing={isNewTaskModalOpen}>
+					<ModalLayout isShowing={isEditTaskModalOpen}>
 						<CloseModalButton fn={toggleNewTaskModal} />
-						<MyFormTitle title='add new task' />
+						<MyFormTitle title='edit task' />
 						<MyFormInput label='Title' name='title' placeholder='e.g. Take coffe break' errors={errors.title} />
 						<MyFormTextArea
 							label='Description'
@@ -41,7 +41,7 @@ export const AddNewTaskModal = () => {
 							<option value='Done'>Done</option>
 							<option value='Doing'>Doing</option>
 						</MyFormSelect>
-						<MyFormSubmitButton text='Create Task' />
+						<MyFormSubmitButton text='Edit Task' />
 					</ModalLayout>
 				</Form>
 			)}

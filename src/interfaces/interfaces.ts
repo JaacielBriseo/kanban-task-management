@@ -3,19 +3,19 @@ export interface Boards {
 }
 
 export interface Board {
-	id: number;
+	boardId: number;
 	name: string;
 	columns: Column[];
 }
 
 export interface Column {
-	id: number;
+	columnId: number;
 	name: string;
 	tasks: Task[];
 }
 
 export interface Task {
-	id: number;
+	taskId: number;
 	title: string;
 	description: string;
 	status: string;

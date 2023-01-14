@@ -11,7 +11,7 @@ export const MySelect = () => {
 				value={viewTaskModalInfo.status}
 				onChange={({ target }) => {
 					dispatch(setCurrentStatus(target.value));
-					dispatch(updateTaskStatus({ taskId: viewTaskModalInfo.id, status: target.value, activeBoard: activeBoard }));
+					dispatch(updateTaskStatus({ taskId: viewTaskModalInfo.taskId, status: target.value, activeBoard: activeBoard }));
 				}}>
 				<option value='Doing'>Doing</option>
 				<option value='Todo'>Todo</option>

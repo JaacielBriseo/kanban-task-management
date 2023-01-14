@@ -14,7 +14,16 @@ type UpdateTaskStatusPayload = {
 type AddNewTaskPayload = {
 	activeBoard: string;
 	status: string; //? This is going to be used to place the task in the correct column
-	id: number;
+	taskId: number;
+	title: string;
+	description: string;
+	statusId: number;
+	subtasks?: { title: string; isCompleted: boolean };
+};
+type EditTaskPayload = {
+	activeBoard: string;
+	status: string; //? This is going to be used to place the task in the correct column
+	taskId: number;
 	title: string;
 	description: string;
 	statusId: number;
@@ -67,13 +76,13 @@ export const kanbanTaskSlice = createSlice({
 				console.error('Task not found');
 				return;
 			}
-			taskColumn.tasks = taskColumn.tasks.filter(t => t.id !== taskId);
+			taskColumn.tasks = taskColumn.tasks.filter(t => t.taskId !== taskId);
 
 			const newColumn = findNewColumn(board, status);
 
 			if (!newColumn) {
 				board.columns.push({
-					id: board.columns.length,
+					columnId: board.columns.length,
 					name: status,
 					tasks: [{ ...task }],
 				});
@@ -82,7 +91,7 @@ export const kanbanTaskSlice = createSlice({
 			}
 		},
 		addNewTask: (state, { payload }: { payload: AddNewTaskPayload }) => {
-			const { activeBoard, description, id, status, statusId, title, subtasks } = payload;
+			const { activeBoard, description, taskId, status, statusId, title, subtasks } = payload;
 			const board = state.boards.find(board => board.name === activeBoard);
 			if (!board) {
 				console.error(`Board: ${board} not found`);
@@ -93,17 +102,26 @@ export const kanbanTaskSlice = createSlice({
 				console.error(`Column: ${column} not found`);
 				return;
 			}
-			column.tasks.push({
-				id,
+			const newTask = {
+				taskId,
 				description,
 				status,
 				statusId,
 				subtasks: subtasks ? [subtasks] : [],
 				title,
-			});
+			};
+			column.tasks.push(newTask);
+		},
+		editTask: (state, { payload }: { payload: EditTaskPayload }) => {
+			const { activeBoard, description, taskId, status, statusId, title, subtasks } = payload;
+			const board = state.boards.find(board => board.name === activeBoard);
+			if (!board) {
+				console.error(`Board: ${board} not found`);
+				return;
+			}
 		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleSubtaskCompleted, updateTaskStatus, addNewTask } = kanbanTaskSlice.actions;
+export const { toggleSubtaskCompleted, updateTaskStatus, addNewTask, editTask } = kanbanTaskSlice.actions;

@@ -1,15 +1,22 @@
 import { findBoard, getTaskId } from '../../helpers';
-import { addNewTask, toggleNewTaskModal, useAppDispatch, useAppSelector } from '../../store';
+import {
+	addNewTask,
+	editTask,
+	toggleEditTaskModal,
+	toggleNewTaskModal,
+	useAppDispatch,
+	useAppSelector,
+} from '../../store';
 import * as Yup from 'yup';
 interface Args {
-    description:string;
-    status:string;
-    title:string;
-    subtasks:string
+	description: string;
+	status: string;
+	title: string;
+	subtasks: string;
 }
 export const useAddNewTaskForm = () => {
 	const dispatch = useAppDispatch();
-	const { isNewTaskModalOpen, activeBoard } = useAppSelector(state => state.ui);
+	const { isNewTaskModalOpen, activeBoard, isEditTaskModalOpen } = useAppSelector(state => state.ui);
 	const { boards } = useAppSelector(state => state.kanbanTask);
 	const board = findBoard(boards, activeBoard);
 	const formData = {
@@ -26,12 +33,12 @@ export const useAddNewTaskForm = () => {
 		description: Yup.string().min(10, 'You must have at least 10 characters in description').required('Field required'),
 		status: Yup.string().required('Field required').notOneOf([''], 'You have to choose an status'),
 	});
-	const handleSubmit = ({ description, status, title, subtasks }:Args) => {
+	const handleSubmit = ({ description, status, title, subtasks }: Args) => {
 		dispatch(
 			addNewTask({
 				activeBoard,
 				description,
-				id: getTaskId(board!).length,
+				taskId: getTaskId(board!).length,
 				status,
 				statusId: status === 'Todo' ? 0 : status === 'Doing' ? 1 : 2,
 				title,
@@ -43,5 +50,22 @@ export const useAddNewTaskForm = () => {
 		);
 		dispatch(toggleNewTaskModal());
 	};
-	return {validations, handleSubmit,formData,isNewTaskModalOpen};
+	const handleEditTask = ({ description, status, title, subtasks }: Args) => {
+		dispatch(
+			editTask({
+				activeBoard,
+				description,
+				taskId: getTaskId(board!).length,
+				status,
+				statusId: status === 'Todo' ? 0 : status === 'Doing' ? 1 : 2,
+				title,
+				subtasks: {
+					title: subtasks,
+					isCompleted: status !== 'Done' ? false : true,
+				},
+			})
+		);
+		dispatch(toggleEditTaskModal());
+	};
+	return { validations, handleSubmit, formData, isNewTaskModalOpen, isEditTaskModalOpen, handleEditTask };
 };

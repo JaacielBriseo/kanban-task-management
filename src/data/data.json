@@ -1,15 +1,15 @@
 {
 	"boards": [
 		{
-			"id": 0,
+			"boardId": 0,
 			"name": "Platform Launch",
 			"columns": [
 				{
-					"id": 0,
+					"columnId": 0,
 					"name": "Todo",
 					"tasks": [
 						{
-							"id": 0,
+							"taskId": 0,
 							"title": "Build UI for onboarding flow",
 							"description": "",
 							"status": "Todo",
@@ -30,7 +30,7 @@
 							]
 						},
 						{
-							"id": 1,
+							"taskId": 1,
 							"title": "Build UI for search",
 							"description": "",
 							"status": "Todo",
@@ -43,7 +43,7 @@
 							]
 						},
 						{
-							"id": 2,
+							"taskId": 2,
 							"title": "Build settings UI",
 							"description": "",
 							"status": "Todo",
@@ -60,7 +60,7 @@
 							]
 						},
 						{
-							"id": 3,
+							"taskId": 3,
 							"title": "QA and test all major user journeys",
 							"description": "Once we feel version one is ready, we need to rigorously test it both internally and externally to identify any major gaps.",
 							"status": "Todo",
@@ -79,11 +79,11 @@
 					]
 				},
 				{
-					"id": 1,
+					"columnId": 1,
 					"name": "Doing",
 					"tasks": [
 						{
-							"id": 4,
+							"taskId": 4,
 							"title": "Design settings and search pages",
 							"description": "",
 							"status": "Doing",
@@ -104,7 +104,7 @@
 							]
 						},
 						{
-							"id": 5,
+							"taskId": 5,
 							"title": "Add account management endpoints",
 							"description": "",
 							"status": "Doing",
@@ -125,7 +125,7 @@
 							]
 						},
 						{
-							"id": 6,
+							"taskId": 6,
 							"title": "Design onboarding flow",
 							"description": "",
 							"status": "Doing",
@@ -146,7 +146,7 @@
 							]
 						},
 						{
-							"id": 7,
+							"taskId": 7,
 							"title": "Add search enpoints",
 							"description": "",
 							"status": "Doing",
@@ -163,7 +163,7 @@
 							]
 						},
 						{
-							"id": 8,
+							"taskId": 8,
 							"title": "Add authentication endpoints",
 							"description": "",
 							"status": "Doing",
@@ -180,7 +180,7 @@
 							]
 						},
 						{
-							"id": 9,
+							"taskId": 9,
 							"title": "Research pricing points of various competitors and trial different business models",
 							"description": "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
 							"status": "Doing",
@@ -203,11 +203,11 @@
 					]
 				},
 				{
-					"id": 2,
+					"columnId": 2,
 					"name": "Done",
 					"tasks": [
 						{
-							"id": 10,
+							"taskId": 10,
 							"title": "Conduct 5 wireframe tests",
 							"description": "Ensure the layout continues to make sense and we have strong buy-in from potential users.",
 							"status": "Done",
@@ -220,7 +220,7 @@
 							]
 						},
 						{
-							"id": 11,
+							"taskId": 11,
 							"title": "Create wireframe prototype",
 							"description": "Create a greyscale clickable wireframe prototype to test our asssumptions so far.",
 							"status": "Done",
@@ -233,7 +233,7 @@
 							]
 						},
 						{
-							"id": 12,
+							"taskId": 12,
 							"title": "Review results of usability tests and iterate",
 							"description": "Keep iterating through the subtasks until we're clear on the core concepts for the app.",
 							"status": "Done",
@@ -254,7 +254,7 @@
 							]
 						},
 						{
-							"id": 13,
+							"taskId": 13,
 							"title": "Create paper prototypes and conduct 10 usability tests with potential customers",
 							"description": "",
 							"status": "Done",
@@ -271,7 +271,7 @@
 							]
 						},
 						{
-							"id": 14,
+							"taskId": 14,
 							"title": "Market discovery",
 							"description": "We need to define and refine our core product. Interviews will help us learn common pain points and help us define the strongest MVP.",
 							"status": "Done",
@@ -284,7 +284,7 @@
 							]
 						},
 						{
-							"id": 15,
+							"taskId": 15,
 							"title": "Competitor analysis",
 							"description": "",
 							"status": "Done",
@@ -301,7 +301,7 @@
 							]
 						},
 						{
-							"id": 16,
+							"taskId": 16,
 							"title": "Research the market",
 							"description": "We need to get a solid overview of the market to ensure we have up-to-date estimates of market size and demand.",
 							"status": "Done",
@@ -326,11 +326,11 @@
 			"name": "Marketing Plan",
 			"columns": [
 				{
-					"id": 0,
+					"columnId": 0,
 					"name": "Todo",
 					"tasks": [
 						{
-							"id": 17,
+							"taskId": 17,
 							"title": "Plan Product Hunt launch",
 							"description": "11",
 							"status": "Todo",
@@ -363,7 +363,7 @@
 							]
 						},
 						{
-							"id": 18,
+							"taskId": 18,
 							"title": "Share on Show HN",
 							"description": "",
 							"status": "Todo",
@@ -384,7 +384,7 @@
 							]
 						},
 						{
-							"id": 19,
+							"taskId": 19,
 							"title": "Write launch article to publish on multiple channels",
 							"description": "",
 							"status": "Todo",
@@ -411,7 +411,7 @@
 					]
 				},
 				{
-					"id": 1,
+					"columnId": 1,
 					"name": "Doing",
 					"tasks": []
 				}
@@ -423,10 +423,10 @@
 			"columns": [
 				{
 					"name": "Now",
-					"id": 0,
+					"columnId": 0,
 					"tasks": [
 						{
-							"id": 20,
+							"taskId": 20,
 							"title": "Launch version one",
 							"description": "",
 							"status": "Now",
@@ -443,7 +443,7 @@
 							]
 						},
 						{
-							"id": 21,
+							"taskId": 21,
 							"title": "Review early feedback and plan next steps for roadmap",
 							"description": "Beyond the initial launch, we're keeping the initial roadmap completely empty. This meeting will help us plan out our next steps based on actual customer feedback.",
 							"status": "Now",
@@ -466,12 +466,12 @@
 					]
 				},
 				{
-					"id": 1,
+					"columnId": 1,
 					"name": "Next",
 					"tasks": []
 				},
 				{
-					"id": 2,
+					"columnId": 2,
 					"name": "Later",
 					"tasks": []
 				}

@@ -3,7 +3,7 @@ interface Props {
 	label: string;
 	name: string;
 	placeholder: string;
-	errors: string | undefined;
+	errors?: string | undefined;
 	[x: string]: any;
 }
 
@@ -17,8 +17,7 @@ export const MyFormInput = ({ errors, label, ...props }: Props) => {
 			<Field
 				{...field}
 				{...props}
-				className={`border-2 p-2 h-10 rounded-md placeholder:text-sm ${errors && 'border-2 border-SoftRed'} ${
-					props.customclass && props.customclass
+				className={`border-2 p-2 h-10 rounded-md placeholder:text-sm ${errors && 'border-2 border-SoftRed'}
 				}`}
 			/>
 			<ErrorMessage name={props.name} component='span' className='text-SoftRed' />
