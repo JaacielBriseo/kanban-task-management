@@ -1,127 +1,84 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Boards } from '../../interfaces';
-import { findTask, findColumn, findNewColumn, findColumnByName } from '../../helpers';
 import data from '../../data/data.json';
+import { KanbanSliceInitialValues, Task, Board } from '../../interfaces';
 
-const initialState = {
-	...(data as Boards),
+const initialState: KanbanSliceInitialValues = {
+	...data,
+	selectedBoardId: 0,
+	selectedColumnId: 0,
+	selectedSubtaskId: 0,
+	selectedTaskId: 0,
+	activeBoard: {} as Board,
+	activeTask: {} as Task,
 };
-type UpdateTaskStatusPayload = {
-	taskId: number;
-	status: string;
-	activeBoard: string;
-};
-type AddNewTaskPayload = {
-	activeBoard: string;
-	status: string; //? This is going to be used to place the task in the correct column
-	taskId: number;
-	title: string;
-	description: string;
-	statusId: number;
-	subtasks?: { title: string; isCompleted: boolean };
-};
-type EditTaskPayload = {
-	activeBoard: string;
-	status: string; //? This is going to be used to place the task in the correct column
-	taskId: number;
-	title: string;
-	description: string;
-	statusId: number;
-	subtasks?: { title: string; isCompleted: boolean };
-};
-
+if (initialState.selectedBoardId !== null) {
+	initialState.activeBoard = initialState.boards[initialState.selectedBoardId];
+}
+if (initialState.selectedTaskId !== null) {
+	initialState.activeTask =
+		initialState.boards[initialState.selectedBoardId].columns[initialState.selectedColumnId].tasks[
+			initialState.selectedTaskId
+		];
+}
 export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
+
 	reducers: {
-		toggleSubtaskCompleted: (state, { payload }) => {
-			const { subtask, activeBoard } = payload;
-			const { title } = subtask;
-			const newSubtask = {
-				...subtask,
-				isCompleted: !subtask.isCompleted,
-			};
-
-			const task = state.boards
-				.find(board => board.name === activeBoard)!
-				.columns.map(col => col.tasks)
-				.flat()
-				.find(task => task.subtasks.find(subtask => subtask.title === title));
-			if (task) {
-				task.subtasks = [...task.subtasks].map(subtask => {
-					if (subtask.title === newSubtask.title) {
-						return newSubtask;
-					}
-					return subtask;
-				});
-			}
+		setSelectedBoardId: (state, { payload }: { payload: number }) => {
+			state.selectedBoardId = payload;
+			state.activeBoard = state.boards.find(board => board.boardId === state.selectedBoardId)!;
 		},
-		updateTaskStatus: (state, { payload }: { payload: UpdateTaskStatusPayload }) => {
-			const { taskId, status, activeBoard } = payload;
-			const board = state.boards.find(board => board.name === activeBoard);
-			if (!board) {
-				console.error('Board not found');
-				return;
+		setSelectedTask: (state, { payload }: { payload: { columnId: number; taskId: number; task: Task } }) => {
+			state.selectedTaskId = payload.taskId;
+			state.activeTask = payload.task;
+			state.selectedColumnId = payload.columnId;
+		},
+		toggleIsSubtaskCompleted: (
+			state,
+			{ payload }: { payload: { subtaskIndex: number; columnId: number; boardId: number; taskId: number } }
+		) => {
+			const { columnId, subtaskIndex, boardId, taskId } = payload;
+			if (!state.activeTask) {
+				throw new Error(`No Active Task ON [kanbanslice]`);
 			}
-			const task = findTask(board, taskId);
-
+			state.activeTask.subtasks[subtaskIndex].isCompleted = !state.activeTask.subtasks[subtaskIndex].isCompleted;
+			state.boards[boardId].columns[columnId].tasks[taskId].subtasks[subtaskIndex].isCompleted =
+				!state.boards[boardId].columns[columnId].tasks[taskId].subtasks[subtaskIndex].isCompleted;
+		},
+		changeTaskColumnAndStatus: (
+			state,
+			{ payload }: { payload: { newStatus: string; taskId: number; columnId: number; boardId: number } }
+		) => {
+			const { boardId, columnId, newStatus, taskId } = payload;
+			const newColId = newStatus === 'Todo' ? 0 : newStatus === 'Doing' ? 1 : 2;
+			const board = state.boards[boardId];
+			const task = board.columns
+				.map(col => col.tasks)
+				.flat()
+				.find(task => task.taskId === taskId);
 			if (!task) {
 				console.error('Task not found');
 				return;
 			}
-			task.status = status;
-
-			const taskColumn = findColumn(board, taskId);
-			if (!taskColumn) {
-				console.error('Task not found');
-				return;
-			}
+			task.status = newStatus;
+			const taskColumn = board.columns[columnId];
 			taskColumn.tasks = taskColumn.tasks.filter(t => t.taskId !== taskId);
-
-			const newColumn = findNewColumn(board, status);
-
+			const newColumn = board.columns[newColId];
 			if (!newColumn) {
 				board.columns.push({
 					columnId: board.columns.length,
-					name: status,
+					name: newStatus,
 					tasks: [{ ...task }],
 				});
 			} else {
 				newColumn.tasks.push(task);
 			}
-		},
-		addNewTask: (state, { payload }: { payload: AddNewTaskPayload }) => {
-			const { activeBoard, description, taskId, status, statusId, title, subtasks } = payload;
-			const board = state.boards.find(board => board.name === activeBoard);
-			if (!board) {
-				console.error(`Board: ${board} not found`);
-				return;
-			}
-			const column = findColumnByName(board, status);
-			if (!column) {
-				console.error(`Column: ${column} not found`);
-				return;
-			}
-			const newTask = {
-				taskId,
-				description,
-				status,
-				statusId,
-				subtasks: subtasks ? [subtasks] : [],
-				title,
-			};
-			column.tasks.push(newTask);
-		},
-		editTask: (state, { payload }: { payload: EditTaskPayload }) => {
-			const { activeBoard, description, taskId, status, statusId, title, subtasks } = payload;
-			const board = state.boards.find(board => board.name === activeBoard);
-			if (!board) {
-				console.error(`Board: ${board} not found`);
-				return;
-			}
+			state.activeTask = task;
 		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleSubtaskCompleted, updateTaskStatus, addNewTask, editTask } = kanbanTaskSlice.actions;
+export const { setSelectedBoardId, setSelectedTask, toggleIsSubtaskCompleted, changeTaskColumnAndStatus } =
+	kanbanTaskSlice.actions;
