@@ -34,19 +34,39 @@ export const kanbanTaskSlice = createSlice({
 			{ payload }: { payload: { newStatus: string; taskId: number; columnId: number; boardId: number } }
 		) => {
 			const { boardId, columnId, newStatus, taskId } = payload;
-			const newStatusId = newStatus === 'Todo' ? 0 : newStatus === 'Doing' ? 1 : 2;
-			const newColumn = newStatus === 'Todo' ? 0 : newStatus === 'Doing' ? 1 : 2;
 
-			const task = state.boards[boardId].columns[columnId].tasks[taskId];
-			task.statusId = newStatusId;
+			// Find the task based on the taskId
+			const task = state.boards[boardId].columns[columnId].tasks.find(task => task.taskId === taskId);
+
+			// If the task is not found, return early
+			if (!task) {
+				return;
+			}
+
+			// Update the status of the task
 			task.status = newStatus;
-			const updatedTasks = state.boards[boardId].columns[columnId].tasks.filter((task, index) => index !== taskId);
-			state.boards[boardId].columns[columnId].tasks = [...updatedTasks];
-			state.boards[boardId].columns[newColumn].tasks.push(task);
-			state.selectedColumnId = newColumn;
-			state.selectedTaskId = taskId;
-			state.selectedBoardId = boardId;
+
+			// Remove the task from the current column
+			const currentColumn = state.boards[boardId].columns[columnId];
+			currentColumn.tasks = currentColumn.tasks.filter(t => t.taskId !== taskId);
+
+			// Find the new column based on the new status
+			const newColumn = state.boards[boardId].columns.find(col => col.name === newStatus);
+
+			// If the new column is not found, return early
+			if (!newColumn) {
+				return;
+			}
+
+			// Add the task to the new column
+			newColumn.tasks.push(task);
+
+			// Update the selected column id if it's the same as the current column
+			if (state.selectedColumnId === columnId) {
+				state.selectedColumnId = newColumn.columnId;
+			}
 		},
+
 		addNewTask: (state, { payload }: { payload: { newTask: Task; boardId: number; columnId: number } }) => {
 			const { boardId, columnId, newTask } = payload;
 			state.boards[boardId].columns[columnId].tasks.push(newTask);

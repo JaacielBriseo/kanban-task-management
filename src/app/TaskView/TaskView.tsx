@@ -19,8 +19,11 @@ export const TaskView = () => {
 	if (selectedTaskId === null) {
 		return <Loading />;
 	}
-	const { description, status, subtasks, taskId, title } =
-		boards[selectedBoardId].columns[selectedColumnId].tasks[selectedTaskId];
+	const task = boards[selectedBoardId].columns[selectedColumnId].tasks.find(task => task.taskId === selectedTaskId);
+	if (!task) {
+		return <Loading />;
+	}
+	const { description, status, subtasks, taskId, title } = task;
 	return (
 		<ModalLayout isShowing={isTaskViewModalOpen}>
 			<CloseModalButton fn={toggleTaskViewModal} />
@@ -41,7 +44,7 @@ export const TaskView = () => {
 									subtaskIndex: index,
 									boardId: selectedBoardId,
 									columnId: selectedColumnId,
-									taskId: taskId,
+									taskId,
 								})
 							);
 						}}
@@ -50,8 +53,7 @@ export const TaskView = () => {
 				</label>
 			))}
 			<div className='space-y-3'>
-				//! TODO: Handle move between columns and persist task view data
-				{/* <p className='font-semibold text-sm'>Current status</p>
+				<p className='font-semibold text-sm'>Current status</p>
 				<select
 					value={status}
 					onChange={({ target }) => {
@@ -64,14 +66,14 @@ export const TaskView = () => {
 								boardId: selectedBoardId,
 								columnId: selectedColumnId,
 								newStatus: target.value,
-								taskId: taskId,
+								taskId,
 							})
 						);
 					}}>
 					<option value='Doing'>Doing</option>
 					<option value='Todo'>Todo</option>
 					<option value='Done'>Done</option>
-				</select> */}
+				</select>
 			</div>
 		</ModalLayout>
 	);
