@@ -322,7 +322,7 @@
 			]
 		},
 		{
-			"id": 1,
+			"boardId": 1,
 			"name": "Marketing Plan",
 			"columns": [
 				{
@@ -418,7 +418,7 @@
 			]
 		},
 		{
-			"id": 2,
+			"boardId": 2,
 			"name": "Roadmap",
 			"columns": [
 				{
