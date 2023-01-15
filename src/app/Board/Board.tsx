@@ -1,17 +1,17 @@
 import { setSelectedTask, toggleTaskViewModal, useAppDispatch, useAppSelector } from '../../store';
 import { Loading } from '../../ui';
-import { TaskView } from '../TaskView';
 
 export const Board = () => {
-	const { activeBoard } = useAppSelector(state => state.kanbanTask);
+	const { boards,selectedBoardId } = useAppSelector(state => state.kanbanTask);
 	const dispatch = useAppDispatch();
-	if (!activeBoard) {
+	if (selectedBoardId === null) {
 		return <Loading />;
 	}
+	const {columns} =  boards[selectedBoardId]
 	return (
 		<div className='grid grid-cols-1 p-5'>
-			{activeBoard.columns.map(column => (
-				<div key={column.name} className=''>
+			{columns.map(column => (
+				<div key={column.columnId} className=''>
 					<div className='flex items-center m-3'>
 						<span className='w-4 h-4 bg-[#49C4E5] block rounded-full'></span>
 						<h1 className='text-MediumGrey font-medium'>&nbsp;{column.name}</h1>
@@ -21,7 +21,7 @@ export const Board = () => {
 							const completedTasks = task.subtasks?.filter(subtask => subtask.isCompleted).length;
 							return (
 								<div
-									key={task.title}
+									key={task.taskId}
 									onClick={() => {
 										dispatch(setSelectedTask({ task, taskId: task.taskId, columnId: column.columnId }));
 										dispatch(toggleTaskViewModal());
@@ -38,7 +38,6 @@ export const Board = () => {
 					</div>
 				</div>
 			))}
-			<TaskView />
 		</div>
 	);
 };

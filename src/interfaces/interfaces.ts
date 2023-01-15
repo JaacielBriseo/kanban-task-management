@@ -4,8 +4,6 @@ export interface KanbanSliceInitialValues {
 	selectedColumnId: number | null;
 	selectedTaskId: number | null;
 	selectedSubtaskId: number | null;
-	activeBoard: Board | null;
-	activeTask: Task | null;
 }
 
 export interface Board {

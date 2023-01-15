@@ -13,7 +13,9 @@ export const uiSlice = createSlice({
 		toggleTaskViewModal: state => {
 			state.isTaskViewModalOpen = !state.isTaskViewModalOpen;
 		},
-		toggleAddNewTaskModal: state => void !state.isAddNewTaskModalOpen,
+		toggleAddNewTaskModal: state => {
+			state.isAddNewTaskModalOpen = !state.isAddNewTaskModalOpen;
+		},
 	},
 });
 

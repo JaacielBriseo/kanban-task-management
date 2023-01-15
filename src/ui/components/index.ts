@@ -1,6 +1,6 @@
-export * from './CloseModalButton';
-export * from './Header';
-export * from './Loading';
-export * from './ModalTitle';
-export * from './SelectBoardModal';
-export * from './ThemeToggler';
+export { CloseModalButton } from './CloseModalButton';
+export { Header } from './Header';
+export { Loading } from './Loading';
+export { ModalTitle } from './ModalTitle';
+export { SelectBoardModal } from './SelectBoardModal';
+export { ThemeToggler } from './ThemeToggler';
