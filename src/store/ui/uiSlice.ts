@@ -4,6 +4,7 @@ export const uiSlice = createSlice({
 	initialState: {
 		isSelectModalOpen: false,
 		isTaskViewModalOpen: false,
+		isAddNewTaskModalOpen: false,
 	},
 	reducers: {
 		toggleSelectModal: state => {
@@ -12,8 +13,9 @@ export const uiSlice = createSlice({
 		toggleTaskViewModal: state => {
 			state.isTaskViewModalOpen = !state.isTaskViewModalOpen;
 		},
+		toggleAddNewTaskModal: state => void !state.isAddNewTaskModalOpen,
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleSelectModal, toggleTaskViewModal } = uiSlice.actions;
+export const { toggleSelectModal, toggleTaskViewModal, toggleAddNewTaskModal } = uiSlice.actions;

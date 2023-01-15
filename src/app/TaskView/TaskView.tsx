@@ -24,8 +24,8 @@ export const TaskView = () => {
 								type='checkbox'
 								checked={subtask.isCompleted}
 								onChange={() => {
-									if (selectedBoardId === null || selectedColumnId === null) {
-										console.error(`There is no selected column or board id`);
+									if (!selectedBoardId || !selectedColumnId) {
+										console.error('No selected board or column id');
 										return;
 									}
 									dispatch(
@@ -46,8 +46,8 @@ export const TaskView = () => {
 						<select
 							value={activeTask.status}
 							onChange={({ target }) => {
-								if (selectedBoardId === null || selectedColumnId === null) {
-									console.error(`There is no selected column or board id`);
+								if (!selectedBoardId || !selectedColumnId) {
+									console.error('No selected board or column id');
 									return;
 								}
 								dispatch(
