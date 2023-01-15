@@ -11,6 +11,9 @@
 .modal {
 	@apply relative bg-White w-10/12 mx-auto min-h-[480px] rounded-lg p-7 flex flex-col justify-between;
 }
-.buttonModal {
+.closeButtonModal {
 	@apply absolute right-4 top-3;
+}
+.taskActionsButtons{
+	@apply absolute left-4 top-2
 }

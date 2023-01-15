@@ -71,9 +71,25 @@ export const kanbanTaskSlice = createSlice({
 			const { boardId, columnId, newTask } = payload;
 			state.boards[boardId].columns[columnId].tasks.push(newTask);
 		},
+		deleteTask: (state, { payload }: { payload: { taskId: number; boardId: number } }) => {
+			const { taskId, boardId } = payload;
+			state.boards[boardId].columns = state.boards[boardId].columns.map(column => {
+				column.tasks = column.tasks.filter(task => task.taskId !== taskId);
+				return column;
+			});
+			state.selectedTaskId = null;
+			state.selectedColumnId = null;
+		}
+		
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { addNewTask, setSelectedBoardId, setSelectedTask, toggleIsSubtaskCompleted, changeTaskColumnAndStatus } =
-	kanbanTaskSlice.actions;
+export const {
+	addNewTask,
+	setSelectedBoardId,
+	setSelectedTask,
+	toggleIsSubtaskCompleted,
+	changeTaskColumnAndStatus,
+	deleteTask,
+} = kanbanTaskSlice.actions;

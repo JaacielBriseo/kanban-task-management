@@ -1,5 +1,5 @@
+export { TaskActionsButtons } from './components/TaskActionsButtons';
 export { ModalLayout } from './layout';
-
 export { CloseModalButton } from './components/CloseModalButton';
 export { Header } from './components/Header';
 export { Loading } from './components/Loading';

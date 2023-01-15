@@ -5,7 +5,7 @@ import {
 	useAppDispatch,
 	useAppSelector,
 } from '../../store';
-import { CloseModalButton, Loading, ModalLayout, ModalTitle } from '../../ui';
+import { CloseModalButton, Loading, ModalLayout, ModalTitle, TaskActionsButtons } from '../../ui';
 export const TaskView = () => {
 	const dispatch = useAppDispatch();
 	const { selectedBoardId, selectedColumnId, selectedTaskId, boards } = useAppSelector(state => state.kanbanTask);
@@ -27,6 +27,7 @@ export const TaskView = () => {
 	return (
 		<ModalLayout isShowing={isTaskViewModalOpen}>
 			<CloseModalButton fn={toggleTaskViewModal} />
+			<TaskActionsButtons boardId={selectedBoardId} taskId={taskId} />
 			<ModalTitle title={title} />
 			<p>{description}</p>
 			{subtasks.map((subtask, index) => (
