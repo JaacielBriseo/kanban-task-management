@@ -1,7 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import data from '../../data/data.json';
-import { toggleCompleted } from '../../helpers';
-import { KanbanSliceInitialValues, Task } from '../../interfaces';
+import { findBoardIndex, findColumnIndex, findTaskIndex, toggleCompleted } from '../../helpers';
+import {
+	AddNewTaskPayload,
+	ChangeTaskColumnAndStatusPayload,
+	DeleteTaskPayload,
+	KanbanSliceInitialValues,
+	SetSelectedColumnAndTaskIdPayload,
+	ToggleIsSubtaskCompletedPayLoad,
+} from '../../interfaces';
 //* use current from @reduxjs/toolkit if need to use console.log
 const initialState: KanbanSliceInitialValues = {
 	...data,
@@ -10,77 +17,57 @@ const initialState: KanbanSliceInitialValues = {
 	selectedSubtaskId: null,
 	selectedTaskId: null,
 };
+
 export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
 	reducers: {
-		setSelectedBoardId: (state, { payload }: { payload: number }) => {
+		setSelectedBoardId: (state, { payload }: { payload: string }) => {
 			state.selectedBoardId = payload;
 		},
-		setSelectedTask: (state, { payload }: { payload: { columnId: number; taskId: number; task: Task } }) => {
-			state.selectedTaskId = payload.taskId;
-			state.selectedColumnId = payload.columnId;
+		setSelectedColumnAndTaskId: (state, { payload }: SetSelectedColumnAndTaskIdPayload) => {
+			const { columnId, taskId } = payload;
+			state.selectedColumnId = columnId;
+			state.selectedTaskId = taskId;
 		},
-		toggleIsSubtaskCompleted: (
-			state,
-			{ payload }: { payload: { subtaskIndex: number; boardId: number; columnId: number; taskId: number } }
-		) => {
+		toggleIsSubtaskCompleted: (state, { payload }: ToggleIsSubtaskCompletedPayLoad) => {
 			const { subtaskIndex, boardId, columnId, taskId } = payload;
-			const subtask = state.boards[boardId].columns[columnId].tasks[taskId].subtasks[subtaskIndex];
+			const boardIdx = findBoardIndex(state.boards, boardId);
+			const columnIdx = findColumnIndex(state.boards[boardIdx].columns, columnId);
+			const taskIdx = findTaskIndex(state.boards[boardIdx].columns[columnIdx].tasks, taskId);
+			const subtask = state.boards[boardIdx].columns[columnIdx].tasks[taskIdx].subtasks[subtaskIndex];
 			toggleCompleted(subtask);
 		},
-		changeTaskColumnAndStatus: (
-			state,
-			{ payload }: { payload: { newStatus: string; taskId: number; columnId: number; boardId: number } }
-		) => {
+		changeTaskColumnAndStatus: (state, { payload }: ChangeTaskColumnAndStatusPayload) => {
 			const { boardId, columnId, newStatus, taskId } = payload;
-
-			// Find the task based on the taskId
-			const task = state.boards[boardId].columns[columnId].tasks.find(task => task.taskId === taskId);
-
-			// If the task is not found, return early
-			if (!task) {
-				return;
-			}
-
-			// Update the status of the task
+			const boardIdx = findBoardIndex(state.boards, boardId);
+			const columnIdx = findColumnIndex(state.boards[boardIdx].columns, columnId);
+			const task = state.boards[boardIdx].columns[columnIdx].tasks.find(task => task.taskId === taskId);
+			if (!task) return;
 			task.status = newStatus;
-
-			// Remove the task from the current column
-			const currentColumn = state.boards[boardId].columns[columnId];
+			const currentColumn = state.boards[boardIdx].columns[columnIdx];
 			currentColumn.tasks = currentColumn.tasks.filter(t => t.taskId !== taskId);
-
-			// Find the new column based on the new status
-			const newColumn = state.boards[boardId].columns.find(col => col.name === newStatus);
-
-			// If the new column is not found, return early
-			if (!newColumn) {
-				return;
-			}
-
-			// Add the task to the new column
+			const newColumn = state.boards[boardIdx].columns.find(col => col.name === newStatus);
+			if (!newColumn) return;
 			newColumn.tasks.push(task);
-
-			// Update the selected column id if it's the same as the current column
 			if (state.selectedColumnId === columnId) {
 				state.selectedColumnId = newColumn.columnId;
 			}
 		},
-
-		addNewTask: (state, { payload }: { payload: { newTask: Task; boardId: number; columnId: number } }) => {
+		addNewTask: (state, { payload }: AddNewTaskPayload) => {
 			const { boardId, columnId, newTask } = payload;
-			state.boards[boardId].columns[columnId].tasks.push(newTask);
+			const boardIdx = findBoardIndex(state.boards, boardId);
+			const columnIdx = findColumnIndex(state.boards[boardIdx].columns, columnId);
+			state.boards[boardIdx].columns[columnIdx].tasks.push(newTask);
 		},
-		deleteTask: (state, { payload }: { payload: { taskId: number; boardId: number } }) => {
-			const { taskId, boardId } = payload;
-			state.boards[boardId].columns = state.boards[boardId].columns.map(column => {
-				column.tasks = column.tasks.filter(task => task.taskId !== taskId);
-				return column;
-			});
-			state.selectedTaskId = null;
-			state.selectedColumnId = null;
-		}
-		
+		deleteTask: (state, { payload }: DeleteTaskPayload) => {
+			const { boardId, taskId, columnId } = payload;
+			const boardIdx = findBoardIndex(state.boards, boardId);
+			const columnIdx = findColumnIndex(state.boards[boardIdx].columns, columnId);
+			state.boards[boardIdx].columns[columnIdx].tasks = state.boards[boardIdx].columns[columnIdx].tasks.filter(
+				task => task.taskId !== taskId
+			);
+		},
 	},
 });
 
@@ -88,7 +75,7 @@ export const kanbanTaskSlice = createSlice({
 export const {
 	addNewTask,
 	setSelectedBoardId,
-	setSelectedTask,
+	setSelectedColumnAndTaskId,
 	toggleIsSubtaskCompleted,
 	changeTaskColumnAndStatus,
 	deleteTask,

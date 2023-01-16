@@ -19,7 +19,10 @@ export const TaskView = () => {
 	if (selectedTaskId === null) {
 		return <Loading />;
 	}
-	const task = boards[selectedBoardId].columns[selectedColumnId].tasks.find(task => task.taskId === selectedTaskId);
+	const findBoardIndex = boards.findIndex(board => board.boardId === selectedBoardId);
+	const findColumnIndex = boards[findBoardIndex].columns.findIndex(col => col.columnId === selectedColumnId);
+
+	const task = boards[findBoardIndex].columns[findColumnIndex].tasks.find(task => task.taskId === selectedTaskId);
 	if (!task) {
 		return <Loading />;
 	}
@@ -27,7 +30,7 @@ export const TaskView = () => {
 	return (
 		<ModalLayout isShowing={isTaskViewModalOpen}>
 			<CloseModalButton fn={toggleTaskViewModal} />
-			<TaskActionsButtons boardId={selectedBoardId} taskId={taskId} />
+			<TaskActionsButtons boardId={selectedBoardId} taskId={taskId} columnId={selectedColumnId}/>
 			<ModalTitle title={title} />
 			<p>{description}</p>
 			{subtasks.map((subtask, index) => (

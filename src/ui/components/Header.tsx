@@ -1,3 +1,4 @@
+import { findBoardIndex } from '../../helpers';
 import { toggleAddNewTaskModal, toggleSelectModal, useAppDispatch, useAppSelector } from '../../store';
 import styles from '../styles/styles.module.css';
 
@@ -5,13 +6,14 @@ export const Header = () => {
 	const dispatch = useAppDispatch();
 	const { isSelectModalOpen } = useAppSelector(state => state.ui);
 	const { boards, selectedBoardId } = useAppSelector(state => state.kanbanTask);
+	const boardIdx = findBoardIndex(boards, selectedBoardId!);
 
 	return (
 		<header className={`${styles.header} dark:bg-DarkGrey`}>
 			<div className={styles.firstContainer}>
 				<img src='./assets/logo-mobile.svg' alt='board' />
 				<h1 className={`${styles.title} dark:text-White`}>
-					{selectedBoardId !== null ? boards[selectedBoardId].name : 'Choose a board'}
+					{boardIdx !== -1 ? boards[boardIdx].name : 'Choose a board'}
 				</h1>
 				<button type='button' onClick={() => dispatch(toggleSelectModal())}>
 					<img

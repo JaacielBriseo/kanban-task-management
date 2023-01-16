@@ -2,7 +2,15 @@ import Swal from 'sweetalert2';
 import { deleteTask, toggleTaskViewModal } from '../../store';
 import { useAppDispatch } from '../../store/rtk-hooks';
 
-export const TaskActionsButtons = ({ boardId, taskId }:{ boardId:number, taskId:number }) => {
+export const TaskActionsButtons = ({
+	boardId,
+	taskId,
+	columnId,
+}: {
+	boardId: string;
+	taskId: string;
+	columnId: string;
+}) => {
 	const dispatch = useAppDispatch();
 	const onDeleteClick = () => {
 		Swal.fire({
@@ -16,8 +24,8 @@ export const TaskActionsButtons = ({ boardId, taskId }:{ boardId:number, taskId:
 		}).then(result => {
 			if (result.isConfirmed) {
 				Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-				dispatch(deleteTask({ boardId, taskId }));
-                dispatch(toggleTaskViewModal())
+				dispatch(deleteTask({ boardId, taskId, columnId }));
+				dispatch(toggleTaskViewModal());
 			}
 		});
 	};

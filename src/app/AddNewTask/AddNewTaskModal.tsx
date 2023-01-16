@@ -1,11 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { addNewTask, toggleAddNewTaskModal, useAppDispatch, useAppSelector } from '../../store';
 import { CloseModalButton, ModalLayout, ModalTitle } from '../../ui';
-import { getTaskId } from '../../helpers';
+import { v4 as uuidv4 } from 'uuid';
 
 export const AddNewTaskModal = () => {
 	const { isAddNewTaskModalOpen } = useAppSelector(state => state.ui);
-	const { selectedBoardId, boards } = useAppSelector(state => state.kanbanTask);
+	const { selectedBoardId } = useAppSelector(state => state.kanbanTask);
 	const dispatch = useAppDispatch();
 	return (
 		<Formik
@@ -18,13 +18,13 @@ export const AddNewTaskModal = () => {
 				dispatch(
 					addNewTask({
 						boardId: selectedBoardId,
-						columnId: status === 'Todo' ? 0 : status === 'Doing' ? 1 : 2,
+						columnId: status === 'Todo' ? '0' : status === 'Doing' ? '1' : '2',
 						newTask: {
 							description,
 							status,
-							statusId: status === 'Todo' ? 0 : status === 'Doing' ? 1 : 2,
+							statusId: status === 'Todo' ? '0' : status === 'Doing' ? '1' : '2',
 							subtasks: [{ title: subtasks, isCompleted: false }],
-							taskId: getTaskId(boards[selectedBoardId]).length,
+							taskId: uuidv4(),
 							title,
 						},
 					})

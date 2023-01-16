@@ -1,13 +1,15 @@
-import { setSelectedTask, toggleTaskViewModal, useAppDispatch, useAppSelector } from '../../store';
+import { setSelectedColumnAndTaskId, toggleTaskViewModal, useAppDispatch, useAppSelector } from '../../store';
 import { Loading } from '../../ui';
+import { findBoardIndex } from '../../helpers';
 
 export const Board = () => {
-	const { boards,selectedBoardId } = useAppSelector(state => state.kanbanTask);
+	const { boards, selectedBoardId } = useAppSelector(state => state.kanbanTask);
 	const dispatch = useAppDispatch();
 	if (selectedBoardId === null) {
 		return <Loading />;
 	}
-	const {columns} =  boards[selectedBoardId]
+	const boardIdx = findBoardIndex(boards,selectedBoardId)
+	const { columns } = boards[boardIdx];
 	return (
 		<div className='grid grid-cols-1 p-5'>
 			{columns.map(column => (
@@ -23,7 +25,7 @@ export const Board = () => {
 								<div
 									key={task.taskId}
 									onClick={() => {
-										dispatch(setSelectedTask({ task, taskId: task.taskId, columnId: column.columnId }));
+										dispatch(setSelectedColumnAndTaskId({ taskId: task.taskId, columnId: column.columnId }));
 										dispatch(toggleTaskViewModal());
 									}}>
 									<div className='flex flex-col justify-center rounded-lg shadow-lg bg-White p-5 h-24'>
