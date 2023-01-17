@@ -7,6 +7,7 @@ import {
 	DeleteTaskPayload,
 	KanbanSliceInitialValues,
 	SetSelectedColumnAndTaskIdPayload,
+	Task,
 	ToggleIsSubtaskCompletedPayLoad,
 } from '../../interfaces';
 //* use current from @reduxjs/toolkit if need to use console.log
@@ -68,15 +69,26 @@ export const kanbanTaskSlice = createSlice({
 				task => task.taskId !== taskId
 			);
 		},
+		editTask: (
+			state,
+			{ payload }: { payload: { boardId: string; columnId: string; taskId: string; taskData: Task } }
+		) => {
+			const { boardId, columnId, taskId, taskData } = payload;
+			const boardIdx = findBoardIndex(state.boards, boardId);
+			const columnIdx = findColumnIndex(state.boards[boardIdx].columns, columnId);
+			const taskIndex = findTaskIndex(state.boards[boardIdx].columns[columnIdx].tasks, taskId);
+			state.boards[boardIdx].columns[columnIdx].tasks[taskIndex] = { ...taskData };
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
 export const {
 	addNewTask,
+	changeTaskColumnAndStatus,
+	deleteTask,
+	editTask,
 	setSelectedBoardId,
 	setSelectedColumnAndTaskId,
 	toggleIsSubtaskCompleted,
-	changeTaskColumnAndStatus,
-	deleteTask,
 } = kanbanTaskSlice.actions;

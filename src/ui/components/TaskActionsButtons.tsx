@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { deleteTask, toggleTaskViewModal } from '../../store';
+import { deleteTask, toggleEditTaskModal, toggleTaskViewModal } from '../../store';
 import { useAppDispatch } from '../../store/rtk-hooks';
 
 export const TaskActionsButtons = ({
@@ -29,12 +29,15 @@ export const TaskActionsButtons = ({
 			}
 		});
 	};
+	const onEditClick = () => {
+		dispatch(toggleEditTaskModal());
+	};
 	return (
 		<div className='taskActionsButtons space-x-4'>
 			<button type='button' onClick={onDeleteClick}>
 				<img src='./assets/icon-delete.svg' alt='cross' />
 			</button>
-			<button type='button'>
+			<button type='button' onClick={onEditClick}>
 				<img src='./assets/icon-edit.svg' alt='cross' />
 			</button>
 		</div>
