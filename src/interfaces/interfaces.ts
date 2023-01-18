@@ -6,6 +6,15 @@ export interface KanbanSliceInitialValues {
 	selectedSubtaskId: string | null;
 }
 
+export interface AuthSliceValues {
+	status: 'checking' | 'authenticated' | 'not-authenticated';
+	uid: null | string;
+	email: null | string;
+	displayName: null | string;
+	photoURL: null | string;
+	errorMessage: string | undefined | null
+}
+
 export interface Board {
 	boardId: string;
 	name: string;
@@ -50,4 +59,11 @@ export interface AddNewTaskPayload {
 }
 export interface DeleteTaskPayload {
 	payload: { taskId: string; boardId: string; columnId: string };
+}
+
+/*
+AuthSlice Payloads
+*/
+export interface LoginPayload {
+	payload: { uid: string; email: string; displayName: string; photoURL: string };
 }
