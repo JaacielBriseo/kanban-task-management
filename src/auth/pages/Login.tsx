@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useFormik } from 'formik';
 import { NavLink } from 'react-router-dom';
+import { useAppDispatch, login } from '../../store';
 
 export const Login = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-	};
+	const dispatch = useAppDispatch();
+	const { handleChange, values, handleSubmit } = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		onSubmit: () => {
+			dispatch(login({ displayName: values.email, email: values.email, photoURL: '', uid: values.password }));
+		},
+	});
 
 	return (
 		<div className='h-screen flex items-center justify-center bg-LightGrey'>
@@ -21,8 +26,8 @@ export const Login = () => {
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='email'
 						name='email'
-						value={email}
-						onChange={e => setEmail(e.target.value)}
+						value={values.email}
+						onChange={handleChange}
 						required
 					/>
 				</div>
@@ -34,15 +39,19 @@ export const Login = () => {
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='password'
 						name='password'
-						value={password}
-						onChange={e => setPassword(e.target.value)}
+						value={values.password}
+						onChange={handleChange}
 						required
 					/>
 				</div>
-				<button className='bg-MainPurple hover:bg-PurpleHover text-white font-medium py-2 px-4 rounded-lg'>
+				<button
+					type='submit'
+					className='bg-MainPurple hover:bg-PurpleHover text-white font-medium py-2 px-4 rounded-lg'>
 					Log in
 				</button>
-				<button className='bg-white hover:bg-LinesLight text-MainPurple font-medium py-2 px-4 rounded-lg mt-4'>
+				<button
+					type='button'
+					className='bg-white hover:bg-LinesLight text-MainPurple font-medium py-2 px-4 rounded-lg mt-4'>
 					Sign in with Google
 				</button>
 				<div className='text-MediumGrey text-center mt-4'>
