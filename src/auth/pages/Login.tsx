@@ -1,6 +1,7 @@
+import axios from 'axios';
 import { useFormik } from 'formik';
 import { NavLink } from 'react-router-dom';
-import { useAppDispatch, login } from '../../store';
+import { useAppDispatch, login, logout } from '../../store';
 
 export const Login = () => {
 	const dispatch = useAppDispatch();
@@ -9,8 +10,17 @@ export const Login = () => {
 			email: '',
 			password: '',
 		},
-		onSubmit: () => {
-			dispatch(login({ displayName: values.email, email: values.email, photoURL: '', uid: values.password }));
+		onSubmit: async () => {
+			try {
+				const { data } = await axios.post('http://localhost:4000/api/auth', {
+					email: values.email,
+					password: values.password,
+				});
+				console.log(data);
+				dispatch(login({ displayName: data.name, email: values.email, photoURL: '', uid: values.password }));
+			} catch (error) {
+				dispatch(logout({ errorMessage: error as string }));
+			}
 		},
 	});
 
