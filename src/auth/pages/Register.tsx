@@ -1,16 +1,29 @@
-import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useFormik } from 'formik';
+import axios from 'axios';
 
 export const Register = () => {
-	const [fullName, setFullName] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
-	const [isReady, setIsReady] = useState(false);
-
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-	};
+	const { handleSubmit, values, handleChange } = useFormik({
+		initialValues: {
+			fullName: '',
+			email: '',
+			password: '',
+			confirmPassword: '',
+			isReady: false,
+		},
+		onSubmit: async values => {
+			try {
+				const response = await axios.post('http://localhost:4000/api/auth/register', {
+					name: values.fullName,
+					email: values.email,
+					password: values.password,
+				});
+				console.log(response);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+	});
 
 	return (
 		<div className='h-screen flex items-center justify-center bg-LightGrey p-5'>
@@ -23,9 +36,9 @@ export const Register = () => {
 					<input
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='text'
-						name='full-name'
-						value={fullName}
-						onChange={e => setFullName(e.target.value)}
+						name='fullName'
+						value={values.fullName}
+						onChange={handleChange}
 						required
 					/>
 				</div>
@@ -37,8 +50,8 @@ export const Register = () => {
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='email'
 						name='email'
-						value={email}
-						onChange={e => setEmail(e.target.value)}
+						value={values.email}
+						onChange={handleChange}
 						required
 					/>
 				</div>
@@ -50,8 +63,8 @@ export const Register = () => {
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='password'
 						name='password'
-						value={password}
-						onChange={e => setPassword(e.target.value)}
+						value={values.password}
+						onChange={handleChange}
 						required
 					/>
 				</div>
@@ -62,21 +75,15 @@ export const Register = () => {
 					<input
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='password'
-						name='confirm-password'
-						value={confirmPassword}
-						onChange={e => setConfirmPassword(e.target.value)}
+						name='confirmPassword'
+						value={values.confirmPassword}
+						onChange={handleChange}
 						required
 					/>
 				</div>
 				<div className='mb-4'>
-					<input
-						className='mr-2'
-						type='checkbox'
-						name='is-ready'
-						checked={isReady}
-						onChange={e => setIsReady(e.target.checked)}
-					/>
-					<label className='text-MediumGrey' htmlFor='is-ready'>
+					<input className='mr-2' type='checkbox' name='isReady' checked={values.isReady} onChange={handleChange} />
+					<label className='text-MediumGrey' htmlFor='isReady'>
 						Are you ready to get into the best app in the world?
 					</label>
 				</div>

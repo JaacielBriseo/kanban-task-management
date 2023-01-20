@@ -3,6 +3,7 @@ import data from '../../data/data.json';
 import { findBoardIndex, findColumnIndex, findTaskIndex, toggleCompleted } from '../../helpers';
 import {
 	AddNewTaskPayload,
+	Board,
 	ChangeTaskColumnAndStatusPayload,
 	DeleteTaskPayload,
 	KanbanSliceInitialValues,
@@ -30,6 +31,10 @@ export const kanbanTaskSlice = createSlice({
 			const { columnId, taskId } = payload;
 			state.selectedColumnId = columnId;
 			state.selectedTaskId = taskId;
+		},
+		addNewBoard: (state, { payload }: { payload: Board }) => {
+			const { boardId, columns, name } = payload;
+			state.boards.push({ boardId, columns, name });
 		},
 		toggleIsSubtaskCompleted: (state, { payload }: ToggleIsSubtaskCompletedPayLoad) => {
 			const { subtaskIndex, boardId, columnId, taskId } = payload;
@@ -84,6 +89,7 @@ export const kanbanTaskSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+	addNewBoard,
 	addNewTask,
 	changeTaskColumnAndStatus,
 	deleteTask,

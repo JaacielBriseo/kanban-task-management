@@ -1,10 +1,16 @@
-import axios from 'axios';
-import { useFormik } from 'formik';
+import { useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useFormik } from 'formik';
 import { useAppDispatch, login, logout } from '../../store';
+import axios from 'axios';
 
 export const Login = () => {
 	const dispatch = useAppDispatch();
+	const inputRef = useRef<HTMLInputElement | null>(null);
+	useEffect(() => {
+		if (!inputRef) return;
+		inputRef.current?.focus();
+	}, []);
 	const { handleChange, values, handleSubmit } = useFormik({
 		initialValues: {
 			email: '',
@@ -17,9 +23,9 @@ export const Login = () => {
 					password: values.password,
 				});
 				console.log(data);
-				dispatch(login({ displayName: data.name, email: values.email, photoURL: '', uid: values.password }));
+				dispatch(login({ displayName: data.name, email: values.email, photoURL: '', uid: data.uid }));
 			} catch (error) {
-				dispatch(logout({ errorMessage: error as string }));
+				dispatch(logout({ errorMessage: `Ocurrio algun error : ${error}}` }));
 			}
 		},
 	});
@@ -33,6 +39,7 @@ export const Login = () => {
 						Email
 					</label>
 					<input
+						ref={inputRef}
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='email'
 						name='email'

@@ -1,4 +1,4 @@
-import { useAppSelector, useAppDispatch, setSelectedBoardId } from '../../store';
+import { useAppSelector, useAppDispatch, setSelectedBoardId, toggleAddNewBoardModal } from '../../store';
 import { ThemeToggler } from './ThemeToggler';
 
 export const SelectBoardModal = () => {
@@ -25,7 +25,10 @@ export const SelectBoardModal = () => {
 							</li>
 						</div>
 					))}
-					<button type='button' className='text-MainPurple font-bold'>
+					<button
+						type='button'
+						className='text-MainPurple font-bold'
+						onClick={() => dispatch(toggleAddNewBoardModal())}>
 						+ Create New Board
 					</button>
 				</ul>
