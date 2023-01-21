@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import data from '../../data/data.json';
-import { findBoardIndex, findColumnIndex, findTaskIndex, toggleCompleted } from '../../helpers';
+import { findBoardIndex, findColumnByName, findColumnIndex, findTaskIndex, toggleCompleted } from '../../helpers';
 import {
 	AddNewTaskPayload,
 	Board,
@@ -36,6 +36,11 @@ export const kanbanTaskSlice = createSlice({
 			const { boardId, columns, name } = payload;
 			state.boards.push({ boardId, columns, name });
 		},
+		editBoard: (state, { payload }: { payload: { boardId: string } }) => {
+			const {boardId} = payload
+			// const boardIdx = findBoardIndex(state.boards,boardId)
+			// const updatedBoard = state.boards[boardIdx]
+		},
 		toggleIsSubtaskCompleted: (state, { payload }: ToggleIsSubtaskCompletedPayLoad) => {
 			const { subtaskIndex, boardId, columnId, taskId } = payload;
 			const boardIdx = findBoardIndex(state.boards, boardId);
@@ -61,9 +66,9 @@ export const kanbanTaskSlice = createSlice({
 			}
 		},
 		addNewTask: (state, { payload }: AddNewTaskPayload) => {
-			const { boardId, columnId, newTask } = payload;
+			const { boardId, columnName, newTask } = payload;
 			const boardIdx = findBoardIndex(state.boards, boardId);
-			const columnIdx = findColumnIndex(state.boards[boardIdx].columns, columnId);
+			const columnIdx = findColumnByName(state.boards[boardIdx], columnName);
 			state.boards[boardIdx].columns[columnIdx].tasks.push(newTask);
 		},
 		deleteTask: (state, { payload }: DeleteTaskPayload) => {

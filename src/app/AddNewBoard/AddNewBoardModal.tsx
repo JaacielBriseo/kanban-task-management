@@ -5,17 +5,18 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const AddNewBoardModal = () => {
 	const { isAddNewBoardModalOpen } = useAppSelector(state => state.ui);
+	
 	const dispatch = useAppDispatch();
 	const { values, handleChange, handleSubmit } = useFormik({
 		initialValues: {
 			boardName: '',
-			boardColumn: '',
+			boardColumnName: '',
 		},
 		onSubmit: values => {
 			dispatch(
 				addNewBoard({
 					boardId: uuidv4(),
-					columns: [],
+					columns: [{ columnId: uuidv4(), name: values.boardColumnName, tasks: [] }],
 					name: values.boardName,
 				})
 			);
@@ -40,9 +41,9 @@ export const AddNewBoardModal = () => {
 					<label>Board columns</label>
 					<input
 						type='text'
-						name='boardColumn'
+						name='boardColumnName'
 						placeholder='e.g. Todo'
-						value={values.boardColumn}
+						value={values.boardColumnName}
 						onChange={handleChange}
 					/>
 				</div>

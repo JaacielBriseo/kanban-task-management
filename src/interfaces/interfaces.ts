@@ -55,7 +55,7 @@ export interface ChangeTaskColumnAndStatusPayload {
 	payload: { newStatus: string; taskId: string; columnId: string; boardId: string };
 }
 export interface AddNewTaskPayload {
-	payload: { newTask: Task; boardId: string; columnId: string };
+	payload: { newTask: Task; boardId: string; columnName: string };
 }
 export interface DeleteTaskPayload {
 	payload: { taskId: string; boardId: string; columnId: string };

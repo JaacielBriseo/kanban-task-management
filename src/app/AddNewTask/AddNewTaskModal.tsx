@@ -2,10 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { addNewTask, toggleAddNewTaskModal, useAppDispatch, useAppSelector } from '../../store';
 import { CloseModalButton, ModalLayout, ModalTitle } from '../../ui';
 import { v4 as uuidv4 } from 'uuid';
+import { findBoardIndex } from '../../helpers';
 
 export const AddNewTaskModal = () => {
 	const { isAddNewTaskModalOpen } = useAppSelector(state => state.ui);
-	const { selectedBoardId } = useAppSelector(state => state.kanbanTask);
+	const { selectedBoardId, boards } = useAppSelector(state => state.kanbanTask);
 	const dispatch = useAppDispatch();
 	return (
 		<Formik
@@ -18,11 +19,11 @@ export const AddNewTaskModal = () => {
 				dispatch(
 					addNewTask({
 						boardId: selectedBoardId,
-						columnId: status === 'Todo' ? '0' : status === 'Doing' ? '1' : '2',
+						columnName: status,
 						newTask: {
 							description,
 							status,
-							statusId: status === 'Todo' ? '0' : status === 'Doing' ? '1' : '2',
+							statusId: uuidv4(),
 							subtasks: [{ title: subtasks, isCompleted: false }],
 							taskId: uuidv4(),
 							title,
@@ -69,9 +70,11 @@ export const AddNewTaskModal = () => {
 							component='select'
 							className='border-2 p-2 rounded-md'>
 							<option value=''>Choose an option</option>
-							<option value='Todo'>Todo</option>
-							<option value='Doing'>Doing</option>
-							<option value='Done'>Done</option>
+							{boards[findBoardIndex(boards, selectedBoardId!)].columns.map(column => (
+								<option key={column.columnId} value={column.name}>
+									{column.name}
+								</option>
+							))}
 						</Field>
 						<ErrorMessage name='status' component='span' />
 					</div>
