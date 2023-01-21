@@ -1,3 +1,4 @@
+import { findBoardIndex } from '../../helpers';
 import {
 	changeTaskColumnAndStatus,
 	toggleIsSubtaskCompleted,
@@ -10,19 +11,15 @@ export const TaskView = () => {
 	const dispatch = useAppDispatch();
 	const { selectedBoardId, selectedColumnId, selectedTaskId, boards } = useAppSelector(state => state.kanbanTask);
 	const { isTaskViewModalOpen } = useAppSelector(state => state.ui);
-	if (selectedBoardId === null) {
+	if (selectedBoardId === null || selectedColumnId === null || selectedTaskId === null) {
 		return <Loading />;
 	}
-	if (selectedColumnId === null) {
-		return <Loading />;
-	}
-	if (selectedTaskId === null) {
-		return <Loading />;
-	}
-	const findBoardIndex = boards.findIndex(board => board.boardId === selectedBoardId);
-	const findColumnIndex = boards[findBoardIndex].columns.findIndex(col => col.columnId === selectedColumnId);
 
-	const task = boards[findBoardIndex].columns[findColumnIndex].tasks.find(task => task.taskId === selectedTaskId);
+	// const findBoardIndex = boards.findIndex(board => board.boardId === selectedBoardId);
+	const boardIdx = findBoardIndex(boards,selectedBoardId)
+	const findColumnIndex = boards[boardIdx].columns.findIndex(col => col.columnId === selectedColumnId);
+
+	const task = boards[boardIdx].columns[findColumnIndex].tasks.find(task => task.taskId === selectedTaskId);
 	if (!task) {
 		return <Loading />;
 	}
@@ -30,7 +27,7 @@ export const TaskView = () => {
 	return (
 		<ModalLayout isShowing={isTaskViewModalOpen}>
 			<CloseModalButton fn={toggleTaskViewModal} />
-			<TaskActionsButtons boardId={selectedBoardId} taskId={taskId} columnId={selectedColumnId}/>
+			<TaskActionsButtons boardId={selectedBoardId} taskId={taskId} columnId={selectedColumnId} />
 			<ModalTitle title={title} />
 			<p>{description}</p>
 			{subtasks.map((subtask, index) => (
@@ -71,12 +68,15 @@ export const TaskView = () => {
 								columnId: selectedColumnId,
 								newStatus: target.value,
 								taskId,
+								columnName: target.value,
 							})
 						);
 					}}>
-					<option value='Doing'>Doing</option>
-					<option value='Todo'>Todo</option>
-					<option value='Done'>Done</option>
+					{boards[findBoardIndex(boards, selectedBoardId!)].columns.map(column => (
+						<option key={column.columnId} value={column.name}>
+							{column.name}
+						</option>
+					))}
 				</select>
 			</div>
 		</ModalLayout>

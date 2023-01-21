@@ -50,7 +50,7 @@ export const kanbanTaskSlice = createSlice({
 			toggleCompleted(subtask);
 		},
 		changeTaskColumnAndStatus: (state, { payload }: ChangeTaskColumnAndStatusPayload) => {
-			const { boardId, columnId, newStatus, taskId } = payload;
+			const { boardId, columnId, newStatus, taskId ,columnName} = payload;
 			const boardIdx = findBoardIndex(state.boards, boardId);
 			const columnIdx = findColumnIndex(state.boards[boardIdx].columns, columnId);
 			const task = state.boards[boardIdx].columns[columnIdx].tasks.find(task => task.taskId === taskId);
@@ -58,7 +58,7 @@ export const kanbanTaskSlice = createSlice({
 			task.status = newStatus;
 			const currentColumn = state.boards[boardIdx].columns[columnIdx];
 			currentColumn.tasks = currentColumn.tasks.filter(t => t.taskId !== taskId);
-			const newColumn = state.boards[boardIdx].columns.find(col => col.name === newStatus);
+			const newColumn = state.boards[boardIdx].columns.find(col => col.name === columnName);
 			if (!newColumn) return;
 			newColumn.tasks.push(task);
 			if (state.selectedColumnId === columnId) {

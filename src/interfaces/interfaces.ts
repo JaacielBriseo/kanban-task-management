@@ -12,7 +12,7 @@ export interface AuthSliceValues {
 	email: null | string;
 	displayName: null | string;
 	photoURL: null | string;
-	errorMessage: string | undefined | null
+	errorMessage: string | undefined | null;
 }
 
 export interface Board {
@@ -52,7 +52,7 @@ export interface ToggleIsSubtaskCompletedPayLoad {
 	payload: { subtaskIndex: number; boardId: string; columnId: string; taskId: string };
 }
 export interface ChangeTaskColumnAndStatusPayload {
-	payload: { newStatus: string; taskId: string; columnId: string; boardId: string };
+	payload: { newStatus: string; taskId: string; columnName: string; boardId: string; columnId: string };
 }
 export interface AddNewTaskPayload {
 	payload: { newTask: Task; boardId: string; columnName: string };
