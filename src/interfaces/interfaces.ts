@@ -1,5 +1,5 @@
 export interface KanbanSliceInitialValues {
-	boards: Board[];
+	boards: Board[] | null;
 	selectedBoardId: number | null;
 	selectedColumnId: number | null;
 	selectedTaskId: number | null;
