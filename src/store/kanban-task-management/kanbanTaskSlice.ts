@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import data from '../../data/data.json';
+<<<<<<< HEAD
 import { findBoardIndex, findColumnByName, findColumnIndex, findTaskIndex, toggleCompleted } from '../../helpers';
 import {
 	AddNewTaskPayload,
@@ -11,9 +12,12 @@ import {
 	Task,
 	ToggleIsSubtaskCompletedPayLoad,
 } from '../../interfaces';
+=======
+import { KanbanSliceInitialValues } from '../../interfaces';
+>>>>>>> restart
 //* use current from @reduxjs/toolkit if need to use console.log
 const initialState: KanbanSliceInitialValues = {
-	...data,
+	boards: null,
 	selectedBoardId: null,
 	selectedColumnId: null,
 	selectedSubtaskId: null,
@@ -23,6 +27,7 @@ const initialState: KanbanSliceInitialValues = {
 export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
+<<<<<<< HEAD
 	reducers: {
 		setSelectedBoardId: (state, { payload }: { payload: string }) => {
 			state.selectedBoardId = payload;
@@ -103,3 +108,10 @@ export const {
 	setSelectedColumnAndTaskId,
 	toggleIsSubtaskCompleted,
 } = kanbanTaskSlice.actions;
+=======
+	reducers: {},
+});
+
+// Action creators are generated for each case reducer function
+export const {} = kanbanTaskSlice.actions;
+>>>>>>> restart

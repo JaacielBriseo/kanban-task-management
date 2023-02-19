@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { KanbanRoutes } from '../app/routes';
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
 import { useAppSelector } from '../store';
 import { Loading } from '../ui';
+=======
+import { Route, Routes } from 'react-router-dom';
+import { KanbanRoutes } from '../kanban/routes';
+>>>>>>> restart
 
 export const AppRoutes = () => {
 	const { status } = useAppSelector(state => state.auth);
