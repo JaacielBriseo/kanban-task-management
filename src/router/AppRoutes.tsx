@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { KanbanRoutes } from '../app/routes';
+import { KanbanRoutes } from '../kanban/routes';
 
 export const AppRoutes = () => {
 	return (
