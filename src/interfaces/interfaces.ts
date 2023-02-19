@@ -1,6 +1,5 @@
 export interface KanbanSliceInitialValues {
-<<<<<<< HEAD
-	boards: Board[];
+	boards: Board[] | null;
 	selectedBoardId: string | null;
 	selectedColumnId: string | null;
 	selectedTaskId: string | null;
@@ -14,15 +13,6 @@ export interface AuthSliceValues {
 	displayName: null | string;
 	photoURL: null | string;
 	errorMessage: string | undefined | null;
-=======
-	boards: Board[] | null;
-	selectedBoardId: number | null;
-	selectedColumnId: number | null;
-	selectedTaskId: number | null;
-	selectedSubtaskId: number | null;
-	activeBoard: Board | null;
-	activeTask: Task | null;
->>>>>>> restart
 }
 
 export interface Board {

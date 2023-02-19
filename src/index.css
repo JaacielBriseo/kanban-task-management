@@ -3,25 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base{
-	body{
-		@apply bg-LightGrey font-Jakarta
+@layer base {
+	body {
+		@apply bg-LightGrey font-Jakarta;
 	}
 }
-<<<<<<< HEAD
-.modal {
-	@apply relative bg-White w-10/12 mx-auto min-h-[480px] rounded-lg p-7 flex flex-col justify-between;
-}
-.closeButtonModal {
-	@apply absolute right-4 top-3;
-}
-.taskActionsButtons{
-	@apply absolute left-4 top-2
-=======
 .headingL {
-	@apply font-bold text-[18px] leading-[23px]
+	@apply font-bold text-[18px] leading-[23px];
 }
-.headingM{
-	@apply font-bold text-[15px] leading-[19px]
->>>>>>> restart
+.headingM {
+	@apply font-bold text-[15px] leading-[19px];
 }
