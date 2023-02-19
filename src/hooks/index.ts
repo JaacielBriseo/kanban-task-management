@@ -1,1 +1,1 @@
-export * from './useDarkSide';
+export * from './useTheme';
