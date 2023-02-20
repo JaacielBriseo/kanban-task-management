@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { KanbanSliceInitialValues } from '../../interfaces';
-import data from '../../data/data.json'
+import data from '../../data/data.json';
 const initialState: KanbanSliceInitialValues = {
-	boards: null,
+	...data,
 	selectedBoardId: null,
 	selectedColumnId: null,
 	selectedSubtaskId: null,

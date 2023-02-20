@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from './auth';
 import { kanbanTaskSlice } from './kanban-task-management';
+import { uiSlice } from './ui';
 // ...
 
 export const store = configureStore({
 	reducer: {
 		kanbanTask: kanbanTaskSlice.reducer,
 		auth: authSlice.reducer,
+		ui:uiSlice.reducer
 	},
 });
 
