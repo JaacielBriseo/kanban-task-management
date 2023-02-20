@@ -11,8 +11,12 @@ const initialState: KanbanSliceInitialValues = {
 export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
-	reducers: {},
+	reducers: {
+		setSelectedBoardId: (state, { payload }:{payload:string}) => {
+			state.selectedBoardId = payload;
+		},
+	},
 });
 
 // Action creators are generated for each case reducer function
-export const {} = kanbanTaskSlice.actions;
+export const {setSelectedBoardId} = kanbanTaskSlice.actions;

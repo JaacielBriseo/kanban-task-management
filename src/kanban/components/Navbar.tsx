@@ -1,25 +1,26 @@
 import { Modal } from './Modal';
 import { SelectBoard } from './SelectBoard';
 import { useAppDispatch, useAppSelector, toggleBoardModal } from '../../store';
+import { findBoardById } from '../../helpers';
 interface Props {
 	className?: string;
 }
 export const Navbar: React.FC<Props> = ({ className }) => {
-	const { ui } = useAppSelector(state => state);
-	// const{boards}= kanbanTask
+	const { ui, kanbanTask } = useAppSelector(state => state);
+	const { boards, selectedBoardId } = kanbanTask;
 	const { isSelectBoardModalOpen, isSidebarOpen } = ui;
 	const dispatch = useAppDispatch();
 	return (
 		<>
 			<nav className={`bg-white p-5 flex justify-between z-40 ${className}`}>
-				<div className='flex items-center space-x-5 w-3/5'>
+				<div className='flex items-center space-x-5 '>
 					<div className={`flex items-center md:space-x-2 ${isSidebarOpen && 'mr-20'}`}>
 						<img src='/assets/logo-mobile.svg' alt='Mobile' />
 						<h1 className='hidden md:block headingXL'>kanban</h1>
 					</div>
 					<div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' />
 					<div className='flex items-center space-x-2'>
-						<h2 className='headingL'>Platform launch</h2>
+						<h2 className='headingL'>{selectedBoardId ? findBoardById(boards, selectedBoardId) : 'Select a board'}</h2>
 						<button className='md:hidden' onClick={() => dispatch(toggleBoardModal())}>
 							{isSelectBoardModalOpen ? (
 								<img src='/assets/icon-chevron-up.svg' alt='Up' className='scale-110' />
