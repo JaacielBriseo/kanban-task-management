@@ -1,6 +1,4 @@
-import { Modal } from './Modal';
-import { SelectBoard } from './SelectBoard';
-import { useAppDispatch, useAppSelector, toggleBoardModal } from '../../store';
+import { useAppDispatch, useAppSelector, toggleSelectBoardModal } from '../../store';
 import { findBoardById } from '../../helpers';
 interface Props {
 	className?: string;
@@ -20,8 +18,10 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 					</div>
 					<div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' />
 					<div className='flex items-center space-x-2'>
-						<h2 className='headingL'>{selectedBoardId ? findBoardById(boards, selectedBoardId) : 'Select a board'}</h2>
-						<button className='md:hidden' onClick={() => dispatch(toggleBoardModal())}>
+						<h2 className='headingL'>
+							{selectedBoardId ? findBoardById(boards, selectedBoardId)?.name : 'Select a board'}
+						</h2>
+						<button className='md:hidden' onClick={() => dispatch(toggleSelectBoardModal())}>
 							{isSelectBoardModalOpen ? (
 								<img src='/assets/icon-chevron-up.svg' alt='Up' className='scale-110' />
 							) : (
@@ -38,11 +38,6 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 					<img src='/assets/icon-vertical-ellipsis.svg' alt='ellipsis' className='object-contain' />
 				</div>
 			</nav>
-			{isSelectBoardModalOpen && (
-				<Modal onClose={() => dispatch(toggleBoardModal())} customClass='w-[264px] h-[300px]'>
-					<SelectBoard />
-				</Modal>
-			)}
 		</>
 	);
 };
