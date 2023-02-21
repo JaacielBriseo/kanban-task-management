@@ -1,11 +1,3 @@
-export interface KanbanSliceInitialValues {
-	boards: Board[] ;
-	selectedBoardId: string | null;
-	selectedColumnId: string | null;
-	selectedTaskId: string | null;
-	selectedSubtaskId: string | null;
-}
-
 export interface AuthSliceValues {
 	status: 'checking' | 'authenticated' | 'not-authenticated';
 	uid: null | string;
@@ -13,6 +5,13 @@ export interface AuthSliceValues {
 	displayName: null | string;
 	photoURL: null | string;
 	errorMessage: string | undefined | null;
+}
+export interface KanbanSliceInitialValues {
+	boards: Board[];
+	selectedBoardId: string | null;
+	selectedColumnId: string | null;
+	selectedTaskId: string | null;
+	selectedSubtaskId: string | null;
 }
 
 export interface Board {
@@ -39,6 +38,7 @@ export interface Task {
 export interface Subtask {
 	title: string;
 	isCompleted: boolean;
+	subtaskId: string;
 }
 
 /**
@@ -49,7 +49,7 @@ export interface SetSelectedColumnAndTaskIdPayload {
 	payload: { columnId: string; taskId: string };
 }
 export interface ToggleIsSubtaskCompletedPayLoad {
-	payload: { subtaskIndex: number; boardId: string; columnId: string; taskId: string };
+	 subtaskId:string 
 }
 export interface ChangeTaskColumnAndStatusPayload {
 	payload: { newStatus: string; taskId: string; columnName: string; boardId: string; columnId: string };

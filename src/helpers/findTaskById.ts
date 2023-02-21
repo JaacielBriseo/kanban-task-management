@@ -1,5 +1,6 @@
-import { Board } from '../interfaces';
+import { Column } from '../interfaces';
 
-export const findTaskById = (board: Board, columnId: string, taskId: string) => {
-	return board.columns.find(column => column.columnId === columnId)?.tasks.find(task => task.taskId === taskId);
+export const findTaskById = (column: Column | undefined, id: string | null) => {
+	if (!column || !id) return;
+	return column.tasks.find(task => task.taskId === id);
 };

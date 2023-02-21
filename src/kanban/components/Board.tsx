@@ -1,6 +1,5 @@
 import { Board as BoardType } from '../../interfaces';
-import { setSelectedColumnId, setSelectedTaskId, toggleViewTaskModal } from '../../store';
-import { useAppDispatch } from '../../store/rtk-hooks';
+import { setSelectedColumnId, setSelectedTaskId, toggleViewTaskModal, useAppDispatch } from '../../store';
 
 interface Props {
 	board: BoardType;
