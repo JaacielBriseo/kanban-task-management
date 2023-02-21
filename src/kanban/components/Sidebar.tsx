@@ -1,4 +1,4 @@
-import { setSelectedBoardId, toggleSidebar, useAppDispatch, useAppSelector } from '../../store';
+import { setSelectedBoardId, toggleAddNewBoardModal, toggleSidebar, useAppDispatch, useAppSelector } from '../../store';
 import { ThemeToggler } from './ThemeToggler';
 interface Props {
 	className?: string;
@@ -14,7 +14,9 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 					{boards.length
 						? boards.map(board => (
 								<div key={board.boardId}>
-									<div onClick={() => dispatch(setSelectedBoardId(board.boardId))} className='flex space-x-3 cursor-pointer'>
+									<div
+										onClick={() => dispatch(setSelectedBoardId(board.boardId))}
+										className='flex space-x-3 cursor-pointer'>
 										<img src='/assets/icon-board-purple.svg' alt='board' />
 										<p className='text-MediumGrey headingM'>{board.name}</p>
 									</div>
@@ -23,7 +25,9 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 						: null}
 					<div className='flex space-x-2'>
 						<img src='/assets/icon-board-purple.svg' alt='board' />
-						<p className='text-MainPurple'>+Create New Board</p>
+						<button onClick={() => dispatch(toggleAddNewBoardModal())} className='text-MainPurple'>
+							+Create New Board
+						</button>
 					</div>
 				</div>
 				<div className='space-y-5'>
