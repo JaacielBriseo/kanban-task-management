@@ -15,6 +15,12 @@ export const kanbanTaskSlice = createSlice({
 		setSelectedBoardId: (state, { payload }: { payload: string }) => {
 			state.selectedBoardId = payload;
 		},
+		setSelectedTaskId: (state, action: PayloadAction<string>) => {
+			state.selectedTaskId = action.payload;
+		},
+		setSelectedColumnId: (state, action: PayloadAction<string>) => {
+			state.selectedColumnId = action.payload;
+		},
 		createNewBoard: (state, action: PayloadAction<Board>) => {
 			state.boards.push(action.payload);
 		},
@@ -22,4 +28,4 @@ export const kanbanTaskSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { createNewBoard, setSelectedBoardId } = kanbanTaskSlice.actions;
+export const { createNewBoard, setSelectedBoardId, setSelectedTaskId, setSelectedColumnId } = kanbanTaskSlice.actions;

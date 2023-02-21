@@ -8,8 +8,8 @@
 		@apply bg-LightGrey font-Jakarta dark:bg-VeryDarkGrey;
 	}
 }
-.headingS{
-	@apply font-bold text-[12px] leading-[15px] tracking-[2px];
+.headingS {
+	@apply font-bold text-[12px] leading-[15px];
 }
 .headingM {
 	@apply font-bold text-[15px] leading-[19px];
@@ -19,4 +19,11 @@
 }
 .headingXL {
 	@apply font-bold text-[24px] leading-[30px];
+}
+.gradiente {
+	background: linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%);
+	border-radius: 6px;
+}
+.bodyL{
+	@apply font-medium text-[13px] leading-6
 }

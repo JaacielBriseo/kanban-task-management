@@ -28,7 +28,7 @@ export const AddNewBoard = () => {
 				);
 			}}>
 			{({ values }) => (
-				<Form className='p-5 flex flex-col justify-around h-full'>
+				<Form className='p-5 flex flex-col space-y-8 w-[343px] min-h-[380px] md:w-[480px] md:h-[429px] md:p-8'>
 					<h1 className='headingL'>Add New Board</h1>
 					<div className='space-y-1 flex flex-col'>
 						<label htmlFor='boardName' className='headingS text-MediumGrey'>
@@ -37,7 +37,7 @@ export const AddNewBoard = () => {
 						<Field type='text' name='boardName' placeholder='e.g. Web Design' className='border' />
 						<ErrorMessage name='boardName' component={'span'} className='text-red-500' />
 					</div>
-					<div className='space-y-1'>
+					<div className='space-y-2'>
 						<label htmlFor='boardColumns' className='headingS text-MediumGrey'>
 							Board Columns
 						</label>
@@ -47,7 +47,7 @@ export const AddNewBoard = () => {
 									{values.boardColumns.map((boardColumn, index) => {
 										return (
 											<div key={index} className='flex justify-between'>
-												<Field name={`boardColumns.${index}`} className='border' type='text' />
+												<Field name={`boardColumns.${index}`} className='border p-1 w-11/12' type='text' />
 												<button type='button' onClick={() => remove(index)}>
 													<img src='/assets/icon-cross.svg' alt='cross' className='object-contain' />
 												</button>
