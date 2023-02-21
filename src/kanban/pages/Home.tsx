@@ -23,7 +23,10 @@ export const Home = () => {
 			</div>
 			<ToggleSidebarButton />
 			{isSelectBoardModalOpen && (
-				<Modal onClose={() => dispatch(toggleSelectBoardModal())} customClass='w-[264px] h-[300px]'>
+				<Modal
+					isFullScreen={false}
+					onClose={() => dispatch(toggleSelectBoardModal())}
+					customClass='w-[264px] h-[300px]'>
 					<SelectBoard />
 				</Modal>
 			)}

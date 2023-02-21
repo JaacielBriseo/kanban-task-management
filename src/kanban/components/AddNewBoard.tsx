@@ -48,7 +48,7 @@ export const AddNewBoard = () => {
 										return (
 											<div key={index} className='flex justify-between'>
 												<Field name={`boardColumns.${index}`} className='border' type='text' />
-												<button onClick={() => remove(index)}>
+												<button type='button' onClick={() => remove(index)}>
 													<img src='/assets/icon-cross.svg' alt='cross' className='object-contain' />
 												</button>
 											</div>
