@@ -4,8 +4,9 @@ interface Props {
 	className?: string;
 }
 export const Sidebar: React.FC<Props> = ({ className }) => {
-	const { boards } = useAppSelector(state => state.kanbanTask);
 	const dispatch = useAppDispatch();
+	const { boards } = useAppSelector(state => state.kanbanTask);
+
 	return (
 		<div className={`hidden md:block w-[240px] h-[calc(100vh-90px)] p-5 bg-White ${className}`}>
 			<div className='flex flex-col justify-between h-full'>

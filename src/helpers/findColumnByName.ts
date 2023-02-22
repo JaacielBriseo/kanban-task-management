@@ -1,5 +1,6 @@
-import { Board } from '../interfaces';
+import { Column } from '../interfaces/interfaces';
 
-export const findColumnByName = (board: Board, name: string) => {
-	return board.columns.findIndex(col => col.name === name);
+export const findColumnByName = (columns: Column[] | undefined, name: string) => {
+	if (!columns) return;
+	return columns.find(col => col.name === name);
 };

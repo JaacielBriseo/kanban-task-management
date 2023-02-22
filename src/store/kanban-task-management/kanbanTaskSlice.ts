@@ -1,7 +1,8 @@
 import data from '../../data/data.json';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { findBoardById, findColumnById, findTaskById } from '../../helpers';
+import { findBoardById, findColumnById, findColumnByName, findTaskById } from '../../helpers';
 import { Board, KanbanSliceInitialValues, ToggleIsSubtaskCompletedPayLoad } from '../../interfaces';
+import { Task } from '../../interfaces/interfaces';
 const initialState: KanbanSliceInitialValues = {
 	...data,
 	selectedBoardId: null,
@@ -24,6 +25,20 @@ export const kanbanTaskSlice = createSlice({
 		},
 		createNewBoard: (state, action: PayloadAction<Board>) => {
 			state.boards.push(action.payload);
+		},
+		createNewTask: (state, action: PayloadAction<Task>) => {
+			const { selectedBoardId } = state;
+			const board = findBoardById(state.boards, selectedBoardId);
+			if (!board) {
+				console.error('No board active');
+				return;
+			}
+			const column = findColumnByName(board?.columns, action.payload.status);
+			if (!column) {
+				console.error('No column to add the task');
+				return;
+			}
+			column.tasks.push(action.payload);
 		},
 		toggleSubtaskCompleted: (state, action: PayloadAction<ToggleIsSubtaskCompletedPayLoad>) => {
 			const { subtaskId } = action.payload;
@@ -80,11 +95,12 @@ export const kanbanTaskSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
 	changeTaskColumnAndStatus,
+	createNewBoard,
+	createNewTask,
 	deleteTask,
 	removeBoard,
-	createNewBoard,
 	setSelectedBoardId,
-	setSelectedTaskId,
 	setSelectedColumnId,
+	setSelectedTaskId,
 	toggleSubtaskCompleted,
 } = kanbanTaskSlice.actions;

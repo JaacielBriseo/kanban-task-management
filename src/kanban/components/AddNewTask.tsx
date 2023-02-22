@@ -1,7 +1,11 @@
 import { Field, FieldArray, Form, Formik } from 'formik';
 import { useKanbanStore } from '../../hooks';
+import { createNewTask, useAppDispatch } from '../../store';
+import { Task } from '../../interfaces';
+import { v4 as uuidv4 } from 'uuid';
 export const AddNewTask = () => {
 	const { activeBoard } = useKanbanStore();
+	const dispatch = useAppDispatch();
 	if (!activeBoard) return null;
 	const placeholders = ['e.g. Make Coffee', 'e.g. Drink coffee and smile'];
 	return (
@@ -12,7 +16,19 @@ export const AddNewTask = () => {
 				subtasks: ['', ''],
 				status: '',
 			}}
-			onSubmit={console.log}>
+			onSubmit={values => {
+				const newTask: Task = {
+					description: values.description,
+					status: values.status,
+					statusId: uuidv4(),
+					taskId: uuidv4(),
+					title: values.title,
+					subtasks: values.subtasks.map(subtask => {
+						return { isCompleted: false, subtaskId: uuidv4(), title: subtask };
+					}),
+				};
+				dispatch(createNewTask(newTask));
+			}}>
 			{({ values }) => (
 				<Form className='w-[343px] p-5 rounded-md flex flex-col justify-between space-y-5'>
 					<h1 className='headingL'>Add New Task</h1>
@@ -65,12 +81,15 @@ export const AddNewTask = () => {
 							</FieldArray>
 						</div>
 					</div>
-					<div className='w-full flex flex-col'>
-						<label htmlFor='status'>Status</label>
+					<div className='w-full flex flex-col space-y-2'>
+						<label htmlFor='status' className='headingS text-MediumGrey'>
+							Status
+						</label>
 
-						<Field component='select' name='status'>
+						<Field component='select' name='status' className='border'>
+							<option value=''>Select a status for your task</option>
 							{activeBoard.columns.map(column => (
-								<option key={column.columnId} value={column.columnId}>
+								<option key={column.columnId} value={column.name}>
 									{column.name}
 								</option>
 							))}

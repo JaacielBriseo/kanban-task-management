@@ -36,6 +36,9 @@ export const uiSlice = createSlice({
 			state.isAddNewTaskModalOpen = action.payload;
 			state.isSelectBoardModalOpen = false;
 		},
+		setIsSidebarOpen: (state, action: PayloadAction<boolean>) => {
+			state.isSidebarOpen = action.payload;
+		},
 	},
 });
 
@@ -48,5 +51,6 @@ export const {
 	toggleDeleteTaskModal,
 	toggleDeleteBoardModal,
 	setIsSelectBoardModalOpen,
-	setIsAddNewTaskModalOpen
+	setIsAddNewTaskModalOpen,
+	setIsSidebarOpen
 } = uiSlice.actions;

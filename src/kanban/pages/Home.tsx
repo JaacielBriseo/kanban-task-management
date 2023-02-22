@@ -40,7 +40,7 @@ export const Home = () => {
 		<>
 			<Navbar />
 			<div className='md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 3xl:grid-cols-8'>
-				{isSidebarOpen && <Sidebar className='md:col-span-1 lg:col-span-1 xl:col-span-1 3xl:col-span-1'/>}
+				{isSidebarOpen && <Sidebar className='md:col-span-1 lg:col-span-1 xl:col-span-1 3xl:col-span-1' />}
 				<div
 					className={`overflow-auto ${
 						isSidebarOpen ? 'md:col-span-2 lg:col-span-3 xl:col-span-5 3xl:col-span-7' : 'md:col-span-full'
