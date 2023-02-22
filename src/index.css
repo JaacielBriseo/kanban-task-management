@@ -5,7 +5,7 @@
 
 @layer base {
 	body {
-		@apply bg-LightGrey font-Jakarta dark:bg-VeryDarkGrey;
+		@apply bg-LightGrey font-Jakarta dark:bg-VeryDarkGrey overflow-hidden;
 	}
 }
 .headingS {

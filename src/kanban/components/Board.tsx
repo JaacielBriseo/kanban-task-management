@@ -8,7 +8,7 @@ export const Board: React.FC<Props> = ({ board }) => {
 	const dispatch = useAppDispatch();
 	const colors = ['bg-[#49C4E5]', 'bg-[#8471F2]', 'bg-[#67E2AE]'];
 	return (
-		<div className='flex p-5 space-x-5 min-h-screen min-w-max'>
+		<div className='flex p-5 space-x-5 max-h-screen min-w-max'>
 			{board.columns.map((column, index) => (
 				<div key={column.columnId} className='space-y-5'>
 					<div className='flex items-center space-x-2 w-[280px]'>
@@ -36,7 +36,7 @@ export const Board: React.FC<Props> = ({ board }) => {
 					</div>
 				</div>
 			))}
-			<div className='hidden xl:flex gradiente min-w-[280px] items-center justify-center'>
+			<div className='flex gradiente items-center justify-center min-w-[280px] w-full min-h-[calc(100vh-120px)]'>
 				<h1 className='headingXL text-MediumGrey'>+New Column</h1>
 			</div>
 		</div>
