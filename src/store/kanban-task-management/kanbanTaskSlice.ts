@@ -13,7 +13,7 @@ export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
 	reducers: {
-		setSelectedBoardId: (state, { payload }: { payload: string }) => {
+		setSelectedBoardId: (state, { payload }: { payload: string | null }) => {
 			state.selectedBoardId = payload;
 		},
 		setSelectedTaskId: (state, action: PayloadAction<string>) => {
@@ -71,6 +71,9 @@ export const kanbanTaskSlice = createSlice({
 			}
 			column.tasks = column.tasks.filter(t => t.taskId !== action.payload.taskIdToDelete);
 		},
+		removeBoard: (state, action: PayloadAction<{ boardIdToDelete: string }>) => {
+			state.boards = state.boards.filter(board => board.boardId !== action.payload.boardIdToDelete);
+		},
 	},
 });
 
@@ -78,6 +81,7 @@ export const kanbanTaskSlice = createSlice({
 export const {
 	changeTaskColumnAndStatus,
 	deleteTask,
+	removeBoard,
 	createNewBoard,
 	setSelectedBoardId,
 	setSelectedTaskId,

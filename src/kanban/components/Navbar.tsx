@@ -1,5 +1,6 @@
-import { useAppDispatch, useAppSelector, toggleSelectBoardModal } from '../../store';
+import { useAppDispatch, useAppSelector, toggleSelectBoardModal, toggleDeleteBoardModal } from '../../store';
 import { findBoardById } from '../../helpers';
+import { useState } from 'react';
 interface Props {
 	className?: string;
 }
@@ -8,6 +9,7 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 	const { boards, selectedBoardId } = kanbanTask;
 	const { isSelectBoardModalOpen, isSidebarOpen } = ui;
 	const dispatch = useAppDispatch();
+	const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
 	return (
 		<>
 			<nav className={`bg-white p-5 flex justify-between z-40 ${className}`}>
@@ -30,12 +32,27 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 						</div>
 					</div>
 				</div>
-				<div className='flex space-x-3'>
+				<div className='flex space-x-3 relative'>
 					<button className='bg-MainPurple w-12 h-8 flex justify-center items-center rounded-full md:w-40 md:h-12'>
 						<img src='/assets/icon-add-task-mobile.svg' alt='add' className='md:hidden' />
 						<p className='hidden md:block text-White headingM'>+ Add New Task</p>
 					</button>
-					<img src='/assets/icon-vertical-ellipsis.svg' alt='ellipsis' className='object-contain' />
+					<button onClick={() => setIsDropdownMenuOpen(current => !current)}>
+						<img src='/assets/icon-vertical-ellipsis.svg' alt='ellipsis' className='object-contain' />
+					</button>
+					<div
+						className={`${
+							isDropdownMenuOpen ? 'flex' : 'hidden'
+						} w-[60px] h-[60px] absolute right-3 -top-3 bg-White border shadow-lg z-50`}>
+						<button
+							className='p-1'
+							onClick={() => {
+								dispatch(toggleDeleteBoardModal());
+								dispatch(toggleSelectBoardModal());
+							}}>
+							<img src='/assets/icon-delete.svg' alt='delete' />
+						</button>
+					</div>
 				</div>
 			</nav>
 		</>
