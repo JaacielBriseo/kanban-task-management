@@ -14,45 +14,6 @@ export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
 	reducers: {
-		setSelectedBoardId: (state, { payload }: { payload: string | null }) => {
-			state.selectedBoardId = payload;
-		},
-		setSelectedTaskId: (state, action: PayloadAction<string>) => {
-			state.selectedTaskId = action.payload;
-		},
-		setSelectedColumnId: (state, action: PayloadAction<string>) => {
-			state.selectedColumnId = action.payload;
-		},
-		createNewBoard: (state, action: PayloadAction<Board>) => {
-			state.boards.push(action.payload);
-		},
-		createNewTask: (state, action: PayloadAction<Task>) => {
-			const { selectedBoardId } = state;
-			const board = findBoardById(state.boards, selectedBoardId);
-			if (!board) {
-				console.error('No board active');
-				return;
-			}
-			const column = findColumnByName(board?.columns, action.payload.status);
-			if (!column) {
-				console.error('No column to add the task');
-				return;
-			}
-			column.tasks.push(action.payload);
-		},
-		toggleSubtaskCompleted: (state, action: PayloadAction<ToggleIsSubtaskCompletedPayLoad>) => {
-			const { subtaskId } = action.payload;
-			const { selectedBoardId, selectedColumnId, selectedTaskId } = state;
-			const board = findBoardById(state.boards, selectedBoardId);
-			const column = findColumnById(board?.columns, selectedColumnId);
-			const task = findTaskById(column, selectedTaskId);
-			const subtask = task?.subtasks.find(subtask => subtask.subtaskId === subtaskId);
-			if (subtask) {
-				subtask.isCompleted = !subtask.isCompleted;
-			} else {
-				console.error('No subtask to toggle');
-			}
-		},
 		changeTaskColumnAndStatus: (state, action: PayloadAction<{ newStatus: string }>) => {
 			const { newStatus } = action.payload;
 			const { selectedBoardId, selectedColumnId, selectedTaskId } = state;
@@ -76,6 +37,23 @@ export const kanbanTaskSlice = createSlice({
 				console.error(`No task with : ${task}`);
 			}
 		},
+		createNewBoard: (state, action: PayloadAction<Board>) => {
+			state.boards.push(action.payload);
+		},
+		createNewTask: (state, action: PayloadAction<Task>) => {
+			const { selectedBoardId } = state;
+			const board = findBoardById(state.boards, selectedBoardId);
+			if (!board) {
+				console.error('No board active');
+				return;
+			}
+			const column = findColumnByName(board?.columns, action.payload.status);
+			if (!column) {
+				console.error('No column to add the task');
+				return;
+			}
+			column.tasks.push(action.payload);
+		},
 		deleteTask: (state, action: PayloadAction<{ taskIdToDelete: string }>) => {
 			const { selectedBoardId, selectedColumnId } = state;
 			const board = findBoardById(state.boards, selectedBoardId);
@@ -88,6 +66,28 @@ export const kanbanTaskSlice = createSlice({
 		},
 		removeBoard: (state, action: PayloadAction<{ boardIdToDelete: string }>) => {
 			state.boards = state.boards.filter(board => board.boardId !== action.payload.boardIdToDelete);
+		},
+		toggleSubtaskCompleted: (state, action: PayloadAction<ToggleIsSubtaskCompletedPayLoad>) => {
+			const { subtaskId } = action.payload;
+			const { selectedBoardId, selectedColumnId, selectedTaskId } = state;
+			const board = findBoardById(state.boards, selectedBoardId);
+			const column = findColumnById(board?.columns, selectedColumnId);
+			const task = findTaskById(column, selectedTaskId);
+			const subtask = task?.subtasks.find(subtask => subtask.subtaskId === subtaskId);
+			if (subtask) {
+				subtask.isCompleted = !subtask.isCompleted;
+			} else {
+				console.error('No subtask to toggle');
+			}
+		},
+		setSelectedBoardId: (state, { payload }: { payload: string | null }) => {
+			state.selectedBoardId = payload;
+		},
+		setSelectedTaskId: (state, action: PayloadAction<string>) => {
+			state.selectedTaskId = action.payload;
+		},
+		setSelectedColumnId: (state, action: PayloadAction<string>) => {
+			state.selectedColumnId = action.payload;
 		},
 	},
 });
