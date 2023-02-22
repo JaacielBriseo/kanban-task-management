@@ -1,5 +1,5 @@
 import { findBoardById, findColumnById, findTaskById } from '../../helpers';
-import { toggleSubtaskCompleted, useAppDispatch, useAppSelector } from '../../store';
+import { changeTaskColumnAndStatus, toggleSubtaskCompleted, useAppDispatch, useAppSelector } from '../../store';
 
 export const ViewTask = () => {
 	const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ export const ViewTask = () => {
 			</div>
 			<div className='space-y-3'>
 				<p className='headingS text-MediumGrey'>
-					Subtasks ({task?.subtasks.filter(subtask => subtask.isCompleted).length}of{task?.subtasks.length})
+					Subtasks ({task?.subtasks.filter(subtask => subtask.isCompleted).length} of {task?.subtasks.length})
 				</p>
 				<div className='space-y-5'>
 					{task?.subtasks.map(subtask => (
@@ -39,11 +39,12 @@ export const ViewTask = () => {
 			</div>
 			<div className='flex flex-col'>
 				<p className='text-MediumGrey headingS'>Current status({task?.status})</p>
-				<select name='status'>
-					<option value={task?.status}></option>
-					<option value='Todo'>Todo</option>
-					<option value='Doing'>Doing</option>
-					<option value='Done'>Done</option>
+				<select name='status' onChange={e => dispatch(changeTaskColumnAndStatus({ newStatus: e.target.value }))}>
+					{selectedBoard.columns.map(column => (
+						<option key={column.columnId} value={column.name}>
+							{column.name}
+						</option>
+					))}
 				</select>
 			</div>
 		</div>

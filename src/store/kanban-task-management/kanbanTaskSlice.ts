@@ -1,7 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Board, KanbanSliceInitialValues, ToggleIsSubtaskCompletedPayLoad } from '../../interfaces';
 import data from '../../data/data.json';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { findBoardById, findColumnById, findTaskById } from '../../helpers';
+import { Board, KanbanSliceInitialValues, ToggleIsSubtaskCompletedPayLoad } from '../../interfaces';
 const initialState: KanbanSliceInitialValues = {
 	...data,
 	selectedBoardId: null,
@@ -38,9 +38,38 @@ export const kanbanTaskSlice = createSlice({
 				console.error('No subtask to toggle');
 			}
 		},
+		changeTaskColumnAndStatus: (state, action: PayloadAction<{ newStatus: string }>) => {
+			const { newStatus } = action.payload;
+			const { selectedBoardId, selectedColumnId, selectedTaskId } = state;
+			const board = findBoardById(state.boards, selectedBoardId);
+			const column = findColumnById(board?.columns, selectedColumnId);
+			if (!board || !column) {
+				console.error(`No board:${board} or col:${column}`);
+				return;
+			}
+			const task = findTaskById(column, selectedTaskId);
+			if (task) {
+				task.status = newStatus;
+				column.tasks = column.tasks.filter(t => t.taskId !== task.taskId);
+				const newColumn = board.columns.find(column => column.name === newStatus);
+				if (newColumn) {
+					newColumn.tasks.push(task);
+					state.selectedColumnId = newColumn.columnId;
+					state.selectedTaskId = task.taskId;
+				}
+			} else {
+				console.error(`No task with : ${task}`);
+			}
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { createNewBoard, setSelectedBoardId, setSelectedTaskId, setSelectedColumnId, toggleSubtaskCompleted } =
-	kanbanTaskSlice.actions;
+export const {
+	changeTaskColumnAndStatus,
+	createNewBoard,
+	setSelectedBoardId,
+	setSelectedTaskId,
+	setSelectedColumnId,
+	toggleSubtaskCompleted,
+} = kanbanTaskSlice.actions;
