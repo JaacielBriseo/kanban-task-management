@@ -61,12 +61,23 @@ export const kanbanTaskSlice = createSlice({
 				console.error(`No task with : ${task}`);
 			}
 		},
+		deleteTask: (state, action: PayloadAction<{ taskIdToDelete: string }>) => {
+			const { selectedBoardId, selectedColumnId } = state;
+			const board = findBoardById(state.boards, selectedBoardId);
+			const column = findColumnById(board?.columns, selectedColumnId);
+			if (!column) {
+				console.error('No column finded');
+				return;
+			}
+			column.tasks = column.tasks.filter(t => t.taskId !== action.payload.taskIdToDelete);
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
 export const {
 	changeTaskColumnAndStatus,
+	deleteTask,
 	createNewBoard,
 	setSelectedBoardId,
 	setSelectedTaskId,

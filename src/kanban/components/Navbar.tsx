@@ -17,17 +17,17 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 						<h1 className='hidden md:block headingXL'>kanban</h1>
 					</div>
 					<div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' />
-					<div className='flex items-center space-x-2'>
+					<div className='flex items-center space-x-2' onClick={() => dispatch(toggleSelectBoardModal())}>
 						<h2 className='headingL'>
 							{selectedBoardId ? findBoardById(boards, selectedBoardId)?.name : 'Select a board'}
 						</h2>
-						<button className='md:hidden' onClick={() => dispatch(toggleSelectBoardModal())}>
+						<div className='md:hidden'>
 							{isSelectBoardModalOpen ? (
 								<img src='/assets/icon-chevron-up.svg' alt='Up' className='scale-110' />
 							) : (
 								<img src='/assets/icon-chevron-down.svg' alt='Down' className='scale-110' />
 							)}
-						</button>
+						</div>
 					</div>
 				</div>
 				<div className='flex space-x-3'>

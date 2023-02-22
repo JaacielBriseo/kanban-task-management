@@ -8,10 +8,10 @@ export const Board: React.FC<Props> = ({ board }) => {
 	const dispatch = useAppDispatch();
 	const colors = ['bg-[#49C4E5]', 'bg-[#8471F2]', 'bg-[#67E2AE]'];
 	return (
-		<div className='flex p-5 space-x-5'>
+		<div className='flex p-5 space-x-5 min-h-screen min-w-max'>
 			{board.columns.map((column, index) => (
 				<div key={column.columnId} className='space-y-5'>
-					<div className='flex items-center space-x-2'>
+					<div className='flex items-center space-x-2 w-[280px]'>
 						<div className={`h-[15px] w-[15px] rounded-full ${colors[index]}`} />
 						<p className='headingS text-MediumGrey uppercase'>
 							{column.name}({column.tasks.length})

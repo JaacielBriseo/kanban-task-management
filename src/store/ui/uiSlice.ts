@@ -6,6 +6,7 @@ export const uiSlice = createSlice({
 		isSidebarOpen: false,
 		isAddNewBoardModalOpen: false,
 		isViewTaskModalOpen: false,
+		isDeleteTaskModalOpen: false,
 	},
 	reducers: {
 		toggleSelectBoardModal: state => {
@@ -20,8 +21,17 @@ export const uiSlice = createSlice({
 		toggleViewTaskModal: state => {
 			state.isViewTaskModalOpen = !state.isViewTaskModalOpen;
 		},
+		toggleDeleteTaskModal: state => {
+			state.isDeleteTaskModalOpen = !state.isDeleteTaskModalOpen;
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleSelectBoardModal, toggleSidebar, toggleAddNewBoardModal, toggleViewTaskModal } = uiSlice.actions;
+export const {
+	toggleSelectBoardModal,
+	toggleSidebar,
+	toggleAddNewBoardModal,
+	toggleViewTaskModal,
+	toggleDeleteTaskModal,
+} = uiSlice.actions;
