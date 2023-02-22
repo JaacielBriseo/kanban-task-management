@@ -1,15 +1,21 @@
-import { useAppDispatch, useAppSelector, toggleSelectBoardModal, toggleDeleteBoardModal } from '../../store';
-import { findBoardById } from '../../helpers';
+import {
+	useAppDispatch,
+	useAppSelector,
+	toggleSelectBoardModal,
+	toggleDeleteBoardModal,
+	setIsSelectBoardModalOpen,
+	setIsAddNewTaskModalOpen,
+} from '../../store';
 import { useState } from 'react';
+import { useKanbanStore } from '../../hooks';
 interface Props {
 	className?: string;
 }
 export const Navbar: React.FC<Props> = ({ className }) => {
-	const { ui, kanbanTask } = useAppSelector(state => state);
-	const { boards, selectedBoardId } = kanbanTask;
-	const { isSelectBoardModalOpen, isSidebarOpen } = ui;
 	const dispatch = useAppDispatch();
 	const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
+	const { activeBoard } = useKanbanStore();
+	const { isSidebarOpen, isSelectBoardModalOpen } = useAppSelector(state => state.ui);
 	return (
 		<>
 			<nav className={`bg-white p-5 flex justify-between z-40 ${className}`}>
@@ -20,9 +26,7 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 					</div>
 					<div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' />
 					<div className='flex items-center space-x-2' onClick={() => dispatch(toggleSelectBoardModal())}>
-						<h2 className='headingL'>
-							{selectedBoardId ? findBoardById(boards, selectedBoardId)?.name : 'Select a board'}
-						</h2>
+						<h2 className='headingL'>{activeBoard ? activeBoard.name : 'Select a board'}</h2>
 						<div className='md:hidden'>
 							{isSelectBoardModalOpen ? (
 								<img src='/assets/icon-chevron-up.svg' alt='Up' className='scale-110' />
@@ -33,11 +37,17 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 					</div>
 				</div>
 				<div className='flex space-x-3 relative'>
-					<button className='bg-MainPurple w-12 h-8 flex justify-center items-center rounded-full md:w-40 md:h-12'>
+					<button
+						onClick={() => dispatch(setIsAddNewTaskModalOpen(true))}
+						disabled={!activeBoard}
+						className='bg-MainPurple w-12 h-8 flex justify-center items-center rounded-full md:w-40 md:h-12'>
 						<img src='/assets/icon-add-task-mobile.svg' alt='add' className='md:hidden' />
 						<p className='hidden md:block text-White headingM'>+ Add New Task</p>
 					</button>
-					<button onClick={() => setIsDropdownMenuOpen(current => !current)}>
+					<button
+						className='disabled:cursor-not-allowed'
+						disabled={!activeBoard}
+						onClick={() => setIsDropdownMenuOpen(current => !current)}>
 						<img src='/assets/icon-vertical-ellipsis.svg' alt='ellipsis' className='object-contain' />
 					</button>
 					<div
@@ -48,7 +58,8 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 							className='p-1'
 							onClick={() => {
 								dispatch(toggleDeleteBoardModal());
-								dispatch(toggleSelectBoardModal());
+								dispatch(setIsSelectBoardModalOpen(false));
+								setIsDropdownMenuOpen(false);
 							}}>
 							<img src='/assets/icon-delete.svg' alt='delete' />
 						</button>

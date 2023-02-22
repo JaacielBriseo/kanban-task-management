@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 export const uiSlice = createSlice({
 	name: 'ui',
 	initialState: {
@@ -8,6 +8,7 @@ export const uiSlice = createSlice({
 		isViewTaskModalOpen: false,
 		isDeleteTaskModalOpen: false,
 		isDeleteBoardModalOpen: false,
+		isAddNewTaskModalOpen: false,
 	},
 	reducers: {
 		toggleSelectBoardModal: state => {
@@ -28,6 +29,13 @@ export const uiSlice = createSlice({
 		toggleDeleteBoardModal: state => {
 			state.isDeleteBoardModalOpen = !state.isDeleteBoardModalOpen;
 		},
+		setIsSelectBoardModalOpen: (state, action: PayloadAction<boolean>) => {
+			state.isSelectBoardModalOpen = action.payload;
+		},
+		setIsAddNewTaskModalOpen: (state, action: PayloadAction<boolean>) => {
+			state.isAddNewTaskModalOpen = action.payload;
+			state.isSelectBoardModalOpen = false;
+		},
 	},
 });
 
@@ -39,4 +47,6 @@ export const {
 	toggleViewTaskModal,
 	toggleDeleteTaskModal,
 	toggleDeleteBoardModal,
+	setIsSelectBoardModalOpen,
+	setIsAddNewTaskModalOpen
 } = uiSlice.actions;

@@ -17,7 +17,7 @@ export const DeleteTask = () => {
 		dispatch(toggleDeleteTaskModal());
 	};
 	return (
-		<div className='w-[343px] h-72 p-6 flex flex-col justify-between'>
+		<div className='w-[343px] h-72 p-6 rounded-md flex flex-col justify-between'>
 			<h1 className='headingL text-SoftRed'>Delete this task?</h1>
 			<p className='bodyL text-MediumGrey'>
 				Are you sure you want to delete the {task.title} task and its subtasks? This action cannot be reversed.
