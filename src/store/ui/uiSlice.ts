@@ -9,6 +9,7 @@ export const uiSlice = createSlice({
 		isDeleteTaskModalOpen: false,
 		isDeleteBoardModalOpen: false,
 		isAddNewTaskModalOpen: false,
+		isEditTaskModalOpen: false,
 	},
 	reducers: {
 		toggleSelectBoardModal: state => {
@@ -28,6 +29,9 @@ export const uiSlice = createSlice({
 		},
 		toggleDeleteBoardModal: state => {
 			state.isDeleteBoardModalOpen = !state.isDeleteBoardModalOpen;
+		},
+		toggleEditTaskModal: state => {
+			state.isEditTaskModalOpen = !state.isEditTaskModalOpen;
 		},
 		setIsSelectBoardModalOpen: (state, action: PayloadAction<boolean>) => {
 			state.isSelectBoardModalOpen = action.payload;
@@ -50,7 +54,8 @@ export const {
 	toggleViewTaskModal,
 	toggleDeleteTaskModal,
 	toggleDeleteBoardModal,
+	toggleEditTaskModal,
 	setIsSelectBoardModalOpen,
 	setIsAddNewTaskModalOpen,
-	setIsSidebarOpen
+	setIsSidebarOpen,
 } = uiSlice.actions;

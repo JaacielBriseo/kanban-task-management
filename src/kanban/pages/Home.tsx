@@ -3,6 +3,7 @@ import {
 	toggleAddNewBoardModal,
 	toggleDeleteBoardModal,
 	toggleDeleteTaskModal,
+	toggleEditTaskModal,
 	toggleSelectBoardModal,
 	toggleViewTaskModal,
 	useAppDispatch,
@@ -21,6 +22,7 @@ import { ViewTask } from '../components/ViewTask';
 import { DeleteTask } from '../components/DeleteTask';
 import { DeleteBoard } from '../components/DeleteBoard';
 import { AddNewTask } from '../components/AddNewTask';
+import { EditTask } from '../components/EditTask';
 
 export const Home = () => {
 	const { boards, selectedBoardId } = useAppSelector(state => state.kanbanTask);
@@ -32,6 +34,7 @@ export const Home = () => {
 		isViewTaskModalOpen,
 		isDeleteTaskModalOpen,
 		isAddNewTaskModalOpen,
+		isEditTaskModalOpen,
 	} = useAppSelector(state => state.ui);
 	const dispatch = useAppDispatch();
 	const selectedBoard = findBoardById(boards, selectedBoardId);
@@ -88,6 +91,11 @@ export const Home = () => {
 			{isAddNewTaskModalOpen && (
 				<Modal onClose={() => dispatch(setIsAddNewTaskModalOpen(false))}>
 					<AddNewTask />
+				</Modal>
+			)}
+			{isEditTaskModalOpen && (
+				<Modal onClose={() => dispatch(toggleEditTaskModal())}>
+					<EditTask />
 				</Modal>
 			)}
 		</>

@@ -80,6 +80,36 @@ export const kanbanTaskSlice = createSlice({
 				console.error('No subtask to toggle');
 			}
 		},
+		updateTask: (state, action: PayloadAction<{ updatedTask: Task }>) => {
+			const { selectedBoardId, selectedColumnId, selectedTaskId } = state;
+			const { updatedTask } = action.payload;
+			const board = findBoardById(state.boards, selectedBoardId);
+			const column = findColumnById(board?.columns, selectedColumnId);
+			if (!column) {
+				console.error(`No column finded`);
+				return;
+			}
+			if (!board) {
+				console.error('No board');
+				return;
+			}
+			const taskIndex = column.tasks.findIndex(task => task.taskId === selectedTaskId);
+			if (taskIndex === -1) {
+				console.error(`No task to update`);
+				return;
+			}
+			if (column.name === updatedTask.status) {
+				column.tasks[taskIndex] = updatedTask;
+			} else {
+				column.tasks = column.tasks.filter(t => t.taskId !== updatedTask.taskId);
+				const newColumn = board.columns.find(column => column.name === updatedTask.status);
+				if (newColumn) {
+					newColumn.tasks.push(updatedTask);
+					state.selectedColumnId = newColumn.columnId;
+					state.selectedTaskId = updatedTask.taskId;
+				}
+			}
+		},
 		setSelectedBoardId: (state, { payload }: { payload: string | null }) => {
 			state.selectedBoardId = payload;
 		},
@@ -103,4 +133,5 @@ export const {
 	setSelectedColumnId,
 	setSelectedTaskId,
 	toggleSubtaskCompleted,
+	updateTask,
 } = kanbanTaskSlice.actions;

@@ -4,6 +4,7 @@ import {
 	toggleDeleteTaskModal,
 	toggleSubtaskCompleted,
 	toggleViewTaskModal,
+	toggleEditTaskModal,
 	useAppDispatch,
 } from '../../store';
 import { useKanbanStore } from '../../hooks';
@@ -16,6 +17,10 @@ export const ViewTask = () => {
 	const handleDeleteClick = () => {
 		dispatch(toggleViewTaskModal());
 		dispatch(toggleDeleteTaskModal());
+	};
+	const handleEditClick = () => {
+		dispatch(toggleViewTaskModal());
+		dispatch(toggleEditTaskModal());
 	};
 	return (
 		<div className='p-5 flex flex-col space-y-8 w-[343px] min-h-[380px] md:w-[480px] md:h-[429px] md:p-8'>
@@ -31,7 +36,7 @@ export const ViewTask = () => {
 					<button onClick={handleDeleteClick} className='p-1'>
 						<img src='/assets/icon-delete.svg' alt='delete' />
 					</button>
-					<button className='p-1'>
+					<button onClick={handleEditClick} className='p-1'>
 						<img src='/assets/icon-edit.svg' alt='edit' />
 					</button>
 				</div>
@@ -70,12 +75,14 @@ export const ViewTask = () => {
 						if (e.target.value === '') return;
 						dispatch(changeTaskColumnAndStatus({ newStatus: e.target.value }));
 					}}>
-					<option value=''>Change task status</option>
-					{activeBoard.columns.map(column => (
-						<option key={column.columnId} value={column.name}>
-							{column.name}
-						</option>
-					))}
+					<option value={activeTask.status}>{activeTask.status}</option>
+					{activeBoard.columns
+						.filter(column => column.name !== activeTask.status)
+						.map(column => (
+							<option key={column.columnId} value={column.name}>
+								{column.name}
+							</option>
+						))}
 				</select>
 			</div>
 		</div>
