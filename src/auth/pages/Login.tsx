@@ -1,12 +1,11 @@
 import { useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useAppDispatch, login, logout } from '../../store';
-import axios from 'axios';
+import { useAuthStore } from '../../hooks';
 
 export const Login = () => {
-	const dispatch = useAppDispatch();
 	const inputRef = useRef<HTMLInputElement | null>(null);
+	const { startLogin } = useAuthStore();
 	useEffect(() => {
 		if (!inputRef) return;
 		inputRef.current?.focus();
@@ -16,17 +15,8 @@ export const Login = () => {
 			email: '',
 			password: '',
 		},
-		onSubmit: async () => {
-			try {
-				const { data } = await axios.post('http://localhost:4000/api/auth', {
-					email: values.email,
-					password: values.password,
-				});
-				console.log(data);
-				dispatch(login({ displayName: data.name, email: values.email, photoURL: '', uid: data.uid }));
-			} catch (error) {
-				dispatch(logout({ errorMessage: `Ocurrio algun error : ${error}}` }));
-			}
+		onSubmit: () => {
+			startLogin({ email: values.email, password: values.password });
 		},
 	});
 

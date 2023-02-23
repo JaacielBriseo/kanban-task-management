@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
-import axios from 'axios';
+import { useAuthStore } from '../../hooks';
 
 export const Register = () => {
+	const { startRegister } = useAuthStore();
 	const { handleSubmit, values, handleChange } = useFormik({
 		initialValues: {
 			fullName: '',
@@ -11,17 +12,8 @@ export const Register = () => {
 			confirmPassword: '',
 			isReady: false,
 		},
-		onSubmit: async values => {
-			try {
-				const response = await axios.post('http://localhost:4000/api/auth/register', {
-					name: values.fullName,
-					email: values.email,
-					password: values.password,
-				});
-				console.log(response);
-			} catch (error) {
-				console.log(error);
-			}
+		onSubmit: () => {
+			startRegister({ email: values.email, name: values.fullName, password: values.password });
 		},
 	});
 

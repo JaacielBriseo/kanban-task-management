@@ -1,23 +1,23 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { KanbanRoutes } from '../kanban/routes';
-import { useAppSelector } from '../store';
 import { Loading } from '../auth/components/Loading';
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
+import { useAuthStore } from '../hooks';
 
 export const AppRoutes = () => {
-	const { status } = useAppSelector(state => state.auth);
+	const { status } = useAuthStore();
 	if (status === 'checking') {
-		<Loading />;
+		return <Loading />;
 	}
 	return (
 		<Routes>
-      {status === 'authenticated' ? (
-        <Route path="/*" element={<KanbanRoutes />} />
-      ) : (
-        <Route path="/auth/*" element={<AuthRoutes />} />
-      )}
+			{status === 'authenticated' ? (
+				<Route path='/*' element={<KanbanRoutes />} />
+			) : (
+				<Route path='/auth/*' element={<AuthRoutes />} />
+			)}
 
-      <Route path="/*" element={<Navigate to="/auth/login" />} />
-    </Routes>
+			<Route path='/*' element={<Navigate to='/auth/login' />} />
+		</Routes>
 	);
 };
