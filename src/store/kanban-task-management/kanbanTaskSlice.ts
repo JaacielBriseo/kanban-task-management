@@ -110,6 +110,15 @@ export const kanbanTaskSlice = createSlice({
 				}
 			}
 		},
+		updateBoard: (state, action: PayloadAction<Board>) => {
+			const { boards, selectedBoardId } = state;
+			const idx = boards.findIndex(board => board.boardId === selectedBoardId);
+			if (idx >= 0) {
+				state.boards[idx] = action.payload;
+			} else {
+				console.error(`No board active`);
+			}
+		},
 		setSelectedBoardId: (state, { payload }: { payload: string | null }) => {
 			state.selectedBoardId = payload;
 		},
@@ -133,5 +142,6 @@ export const {
 	setSelectedColumnId,
 	setSelectedTaskId,
 	toggleSubtaskCompleted,
+	updateBoard,
 	updateTask,
 } = kanbanTaskSlice.actions;

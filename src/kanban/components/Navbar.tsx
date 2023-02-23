@@ -3,6 +3,7 @@ import {
 	useAppSelector,
 	toggleSelectBoardModal,
 	toggleDeleteBoardModal,
+	toggleEditBoardModal,
 	setIsSelectBoardModalOpen,
 	setIsAddNewTaskModalOpen,
 } from '../../store';
@@ -53,7 +54,7 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 					<div
 						className={`${
 							isDropdownMenuOpen ? 'flex' : 'hidden'
-						} w-[60px] h-[60px] absolute right-3 -top-3 bg-White border shadow-lg z-50`}>
+						} md:w-[100px] md:h-[60px] xl:w-[190px] xl:h-[90px] absolute right-0 top-[3.1rem] md:top-16 bg-White border shadow-lg z-50`}>
 						<button
 							className='p-1'
 							onClick={() => {
@@ -62,6 +63,15 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 								setIsDropdownMenuOpen(false);
 							}}>
 							<img src='/assets/icon-delete.svg' alt='delete' />
+						</button>
+						<button
+							className='p-1'
+							onClick={() => {
+								dispatch(toggleEditBoardModal());
+								dispatch(setIsSelectBoardModalOpen(false));
+								setIsDropdownMenuOpen(false);
+							}}>
+							<img src='/assets/icon-edit.svg' alt='edit' />
 						</button>
 					</div>
 				</div>
