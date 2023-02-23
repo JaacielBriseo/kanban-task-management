@@ -1,10 +1,10 @@
-import data from '../../data/data.json';
+// import data from '../../data/data.json';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { findBoardById, findColumnById, findColumnByName, findTaskById } from '../../helpers';
 import { Board, KanbanSliceInitialValues, ToggleIsSubtaskCompletedPayLoad } from '../../interfaces';
 import { Task } from '../../interfaces/interfaces';
 const initialState: KanbanSliceInitialValues = {
-	...data,
+	boards: [],
 	selectedBoardId: null,
 	selectedColumnId: null,
 	selectedSubtaskId: null,
@@ -14,6 +14,9 @@ export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
 	reducers: {
+		setBoards: (state, action: PayloadAction<Board[]>) => {
+			state.boards = action.payload;
+		},
 		changeTaskColumnAndStatus: (state, action: PayloadAction<{ newStatus: string }>) => {
 			const { newStatus } = action.payload;
 			const { selectedBoardId, selectedColumnId, selectedTaskId } = state;
@@ -144,4 +147,5 @@ export const {
 	toggleSubtaskCompleted,
 	updateBoard,
 	updateTask,
+	setBoards,
 } = kanbanTaskSlice.actions;

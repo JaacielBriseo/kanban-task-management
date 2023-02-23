@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AuthSliceValues, LoginPayload } from '../../interfaces';
 
 const initialState: AuthSliceValues = {
-	status: 'authenticated',
+	status: 'not-authenticated',
 	uid: null,
 	email: null,
 	displayName: null,
