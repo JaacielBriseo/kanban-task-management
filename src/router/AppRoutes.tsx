@@ -7,8 +7,8 @@ import { useAppSelector } from '../store/rtk-hooks';
 
 export const AppRoutes = () => {
 	const { status } = useAuthStore();
-	const { isBoardsLoading } = useAppSelector(state => state.kanbanTask);
-	if (status === 'checking' || isBoardsLoading) {
+	const { isLoading } = useAppSelector(state => state.kanbanTask);
+	if (status === 'checking' || isLoading) {
 		return <Loading />;
 	}
 	return (

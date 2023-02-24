@@ -2,8 +2,10 @@ import { FieldArray, Field, Form, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createNewBoard, useAppDispatch } from '../../store';
 import { v4 as uuidv4 } from 'uuid';
+import { useKanbanStore } from '../../hooks';
 export const AddNewBoard = () => {
 	const dispatch = useAppDispatch();
+	const { startCreatingBoard } = useKanbanStore();
 	return (
 		<Formik
 			initialValues={{
@@ -17,15 +19,13 @@ export const AddNewBoard = () => {
 					.required('Board name is required.'),
 			})}
 			onSubmit={({ boardColumns, boardName }) => {
-				dispatch(
-					createNewBoard({
-						boardId: uuidv4(),
-						columns: boardColumns.map(boardColumn => {
-							return { columnId: uuidv4(), name: boardColumn, tasks: [] };
-						}),
-						name: boardName,
-					})
-				);
+				startCreatingBoard({
+					boardId: uuidv4(),
+					columns: boardColumns.map(boardColumn => {
+						return { columnId: uuidv4(), name: boardColumn, tasks: [] };
+					}),
+					name: boardName,
+				});
 			}}>
 			{({ values }) => (
 				<Form className='p-5 rounded-md flex flex-col space-y-8 w-[343px] min-h-[380px] md:w-[480px] md:h-[429px] md:p-8'>

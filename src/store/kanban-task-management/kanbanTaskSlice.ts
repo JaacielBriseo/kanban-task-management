@@ -8,7 +8,7 @@ const initialState: KanbanSliceInitialValues = {
 	selectedColumnId: null,
 	selectedSubtaskId: null,
 	selectedTaskId: null,
-	isBoardsLoading: false,
+	isLoading: false,
 	errorMessage: null,
 };
 export const kanbanTaskSlice = createSlice({
@@ -129,18 +129,21 @@ export const kanbanTaskSlice = createSlice({
 		setSelectedColumnId: (state, action: PayloadAction<string>) => {
 			state.selectedColumnId = action.payload;
 		},
+		setErrorMessage: (state, action: PayloadAction<string>) => {
+			state.errorMessage = action.payload;
+		},
 	},
 	extraReducers: builder => {
 		builder
 			.addCase(fetchBoards.pending, state => {
-				state.isBoardsLoading = true;
+				state.isLoading = true;
 			})
 			.addCase(fetchBoards.fulfilled, (state, action) => {
-				state.isBoardsLoading = false;
+				state.isLoading = false;
 				state.boards = action.payload;
 			})
 			.addCase(fetchBoards.rejected, (state, action) => {
-				state.isBoardsLoading = false;
+				state.isLoading = false;
 				state.errorMessage = action.error.message ?? 'Something went wrong';
 			});
 	},
@@ -159,4 +162,5 @@ export const {
 	toggleSubtaskCompleted,
 	updateBoard,
 	updateTask,
+	setErrorMessage
 } = kanbanTaskSlice.actions;

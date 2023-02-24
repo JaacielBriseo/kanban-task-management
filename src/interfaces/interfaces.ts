@@ -12,7 +12,7 @@ export interface KanbanSliceInitialValues {
 	selectedColumnId: string | null;
 	selectedTaskId: string | null;
 	selectedSubtaskId: string | null;
-	isBoardsLoading: boolean;
+	isLoading: boolean;
 	errorMessage: null | string;
 }
 
