@@ -3,10 +3,12 @@ import { KanbanRoutes } from '../kanban/routes';
 import { Loading } from '../auth/components/Loading';
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
 import { useAuthStore } from '../hooks';
+import { useAppSelector } from '../store/rtk-hooks';
 
 export const AppRoutes = () => {
 	const { status } = useAuthStore();
-	if (status === 'checking') {
+	const { isBoardsLoading } = useAppSelector(state => state.kanbanTask);
+	if (status === 'checking' || isBoardsLoading) {
 		return <Loading />;
 	}
 	return (

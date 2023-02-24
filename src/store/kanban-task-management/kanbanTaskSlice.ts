@@ -1,22 +1,20 @@
-// import data from '../../data/data.json';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { findBoardById, findColumnById, findColumnByName, findTaskById } from '../../helpers';
-import { Board, KanbanSliceInitialValues, ToggleIsSubtaskCompletedPayLoad } from '../../interfaces';
-import { Task } from '../../interfaces/interfaces';
+import { Board, KanbanSliceInitialValues, ToggleIsSubtaskCompletedPayLoad, Task } from '../../interfaces';
+import { fetchBoards } from '../thunks';
 const initialState: KanbanSliceInitialValues = {
 	boards: [],
 	selectedBoardId: null,
 	selectedColumnId: null,
 	selectedSubtaskId: null,
 	selectedTaskId: null,
+	isBoardsLoading: false,
+	errorMessage: null,
 };
 export const kanbanTaskSlice = createSlice({
 	name: 'kanbanTask',
 	initialState,
 	reducers: {
-		setBoards: (state, action: PayloadAction<Board[]>) => {
-			state.boards = action.payload;
-		},
 		changeTaskColumnAndStatus: (state, action: PayloadAction<{ newStatus: string }>) => {
 			const { newStatus } = action.payload;
 			const { selectedBoardId, selectedColumnId, selectedTaskId } = state;
@@ -132,6 +130,20 @@ export const kanbanTaskSlice = createSlice({
 			state.selectedColumnId = action.payload;
 		},
 	},
+	extraReducers: builder => {
+		builder
+			.addCase(fetchBoards.pending, state => {
+				state.isBoardsLoading = true;
+			})
+			.addCase(fetchBoards.fulfilled, (state, action) => {
+				state.isBoardsLoading = false;
+				state.boards = action.payload;
+			})
+			.addCase(fetchBoards.rejected, (state, action) => {
+				state.isBoardsLoading = false;
+				state.errorMessage = action.error.message ?? 'Something went wrong';
+			});
+	},
 });
 
 // Action creators are generated for each case reducer function
@@ -147,5 +159,4 @@ export const {
 	toggleSubtaskCompleted,
 	updateBoard,
 	updateTask,
-	setBoards,
 } = kanbanTaskSlice.actions;

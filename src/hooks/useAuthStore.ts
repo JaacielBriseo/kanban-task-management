@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { checkingCredentials, login, logout, useAppDispatch, useAppSelector } from '../store';
+import { fetchBoards } from '../store/thunks/fetchUserBoards';
 export const useAuthStore = () => {
 	const { displayName, email, errorMessage, photoURL, status, uid } = useAppSelector(state => state.auth);
 	const dispatch = useAppDispatch();
@@ -12,6 +13,7 @@ export const useAuthStore = () => {
 				password: password,
 			});
 			dispatch(login({ displayName: data.name, email: email, photoURL: '', uid: data.uid }));
+			dispatch(fetchBoards(data.uid));
 		} catch (error) {
 			dispatch(logout({ errorMessage: `Ocurrio algun error : ${error}}` }));
 		}

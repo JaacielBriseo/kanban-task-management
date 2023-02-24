@@ -12,6 +12,8 @@ export interface KanbanSliceInitialValues {
 	selectedColumnId: string | null;
 	selectedTaskId: string | null;
 	selectedSubtaskId: string | null;
+	isBoardsLoading: boolean;
+	errorMessage: null | string;
 }
 
 export interface Board {
@@ -49,7 +51,7 @@ export interface SetSelectedColumnAndTaskIdPayload {
 	payload: { columnId: string; taskId: string };
 }
 export interface ToggleIsSubtaskCompletedPayLoad {
-	 subtaskId:string 
+	subtaskId: string;
 }
 export interface ChangeTaskColumnAndStatusPayload {
 	payload: { newStatus: string; taskId: string; columnName: string; boardId: string; columnId: string };

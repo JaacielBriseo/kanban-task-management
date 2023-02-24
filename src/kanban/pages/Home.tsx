@@ -18,16 +18,16 @@ import { Navbar } from '../components/Navbar';
 import { SelectBoard } from '../components/SelectBoard';
 import { Sidebar } from '../components/Sidebar';
 import { ToggleSidebarButton } from '../components/ToggleSidebarButton';
-import { findBoardById } from '../../helpers/findBoardById';
 import { ViewTask } from '../components/ViewTask';
 import { DeleteTask } from '../components/DeleteTask';
 import { DeleteBoard } from '../components/DeleteBoard';
 import { AddNewTask } from '../components/AddNewTask';
 import { EditTask } from '../components/EditTask';
 import { EditBoard } from '../components/EditBoard';
-
+import { useKanbanStore } from '../../hooks';
 export const Home = () => {
-	const { boards, selectedBoardId } = useAppSelector(state => state.kanbanTask);
+	const dispatch = useAppDispatch();
+	const { activeBoard } = useKanbanStore();
 	const {
 		isDeleteBoardModalOpen,
 		isSidebarOpen,
@@ -39,9 +39,6 @@ export const Home = () => {
 		isEditTaskModalOpen,
 		isEditBoardModalOpen,
 	} = useAppSelector(state => state.ui);
-	const dispatch = useAppDispatch();
-	const selectedBoard = findBoardById(boards, selectedBoardId);
-
 	return (
 		<>
 			<Navbar />
@@ -51,12 +48,12 @@ export const Home = () => {
 					className={`overflow-auto ${
 						isSidebarOpen ? 'md:col-span-2 lg:col-span-3 xl:col-span-5 3xl:col-span-7' : 'md:col-span-full'
 					}`}>
-					{!selectedBoard ? (
+					{!activeBoard ? (
 						<h1 className='fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] headingL text-center text-MediumGrey'>
 							Select a board to display
 						</h1>
-					) : selectedBoard.columns.length ? (
-						<Board board={selectedBoard} />
+					) : activeBoard.columns.length ? (
+						<Board board={activeBoard} />
 					) : (
 						<EmptyBoard />
 					)}

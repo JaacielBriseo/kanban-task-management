@@ -11,7 +11,6 @@ const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
-	//TODO: REMOVE STRICT MODE WHEN USING DND
 	<React.StrictMode>
 		<ThemeContextProvider>
 			<Provider store={store}>
