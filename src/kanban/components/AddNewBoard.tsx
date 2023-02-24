@@ -1,10 +1,8 @@
-import { FieldArray, Field, Form, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { createNewBoard, useAppDispatch } from '../../store';
 import { v4 as uuidv4 } from 'uuid';
 import { useKanbanStore } from '../../hooks';
+import { FieldArray, Field, Form, Formik, ErrorMessage } from 'formik';
 export const AddNewBoard = () => {
-	const dispatch = useAppDispatch();
 	const { startCreatingBoard } = useKanbanStore();
 	return (
 		<Formik
@@ -44,7 +42,7 @@ export const AddNewBoard = () => {
 						<FieldArray name='boardColumns'>
 							{({ remove, push }) => (
 								<>
-									{values.boardColumns.map((boardColumn, index) => {
+									{values.boardColumns.map((_, index) => {
 										return (
 											<div key={index} className='flex justify-between'>
 												<Field name={`boardColumns.${index}`} className='border p-1 w-11/12' type='text' />
