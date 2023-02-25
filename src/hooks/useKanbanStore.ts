@@ -1,7 +1,18 @@
-import axios from 'axios';
-import { createNewBoard, createNewTask, setErrorMessage, useAppDispatch, useAppSelector } from '../store';
+import {
+	createNewBoard,
+	createNewTask,
+	deleteTask,
+	removeBoard,
+	setErrorMessage,
+	setSelectedBoardId,
+	toggleDeleteBoardModal,
+	toggleDeleteTaskModal,
+	useAppDispatch,
+	useAppSelector,
+} from '../store';
 import { findBoardById, findColumnById, findTaskById } from '../helpers';
 import { Board, Task } from '../interfaces';
+import { boardsApi } from '../api/boardsApi';
 
 export const useKanbanStore = () => {
 	const dispatch = useAppDispatch();
@@ -11,38 +22,67 @@ export const useKanbanStore = () => {
 	const activeColumn = findColumnById(activeBoard?.columns, kanbanState.selectedColumnId);
 	const activeTask = findTaskById(activeColumn, kanbanState.selectedTaskId);
 	const startCreatingBoard = async (board: Board) => {
-		await axios
-			.post('http://localhost:4000/api/boards/createBoard', {
+		try {
+			await boardsApi.post('/createBoard', {
 				userId: uid,
 				...board,
-			})
-			.then(() => {
-				dispatch(createNewBoard({ ...board }));
-			})
-			.catch(error => {
-				dispatch(setErrorMessage(`Some error :${error}`));
-				console.error(error);
 			});
+			dispatch(createNewBoard({ ...board }));
+		} catch (error) {
+			dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
 	};
 	const startCreatingTask = async (task: Task) => {
 		if (!activeBoard) {
 			console.error('No active board to create task');
 			return;
 		}
-		await axios
-			.post('http://localhost:4000/api/boards/createTask', {
+		try {
+			await boardsApi.post('/createTask', {
 				...task,
 				userId: uid,
 				columnId: activeBoard.columns.find(col => col.name === task.status)?.columnId,
 				boardId: activeBoard.boardId,
-			})
-			.then(() => {
-				dispatch(createNewTask({ ...task }));
-			})
-			.catch(error => {
-				dispatch(setErrorMessage(`Some error :${error}`));
-				console.error(error);
 			});
+			dispatch(createNewTask({ ...task }));
+		} catch (error) {
+			dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
+	};
+	const startDeletingBoard = async () => {
+		if (!activeBoard) {
+			console.error(`No active board to delete`);
+			return;
+		}
+		try {
+			await boardsApi.delete(`/${uid}/${activeBoard.boardId}`, {
+				params: {
+					boardId: activeBoard.boardId,
+				},
+			});
+			dispatch(removeBoard({ boardIdToDelete: activeBoard.boardId }));
+			dispatch(toggleDeleteBoardModal());
+			dispatch(setSelectedBoardId(null));
+		} catch (error) {
+			dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
+	};
+	const startDeletingTask = async () => {
+		if (!activeBoard || !activeColumn || !activeTask) {
+			console.error(`No task or col or board`);
+			return;
+		}
+		try {
+			await boardsApi.delete(`/${uid}/${activeBoard.boardId}/${activeColumn.columnId}/${activeTask.taskId}`);
+			dispatch(deleteTask({ taskIdToDelete: activeTask.taskId }));
+			dispatch(toggleDeleteTaskModal());
+		} catch (error) {
+			dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
 	};
 	return {
 		...kanbanState,
@@ -51,5 +91,7 @@ export const useKanbanStore = () => {
 		activeTask,
 		startCreatingBoard,
 		startCreatingTask,
+		startDeletingBoard,
+		startDeletingTask,
 	};
 };
