@@ -6,18 +6,20 @@ import { store } from './store';
 import { KanbanApp } from './KanbanApp';
 import './index.css';
 import { ThemeContextProvider } from './theme/ThemeContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
-
 root.render(
 	<React.StrictMode>
 		<ThemeContextProvider>
-			<Provider store={store}>
-				<BrowserRouter>
-					<KanbanApp />
-				</BrowserRouter>
-			</Provider>
+			{/* <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}> */}
+				<Provider store={store}>
+					<BrowserRouter>
+						<KanbanApp />
+					</BrowserRouter>
+				</Provider>
+			{/* </GoogleOAuthProvider> */}
 		</ThemeContextProvider>
 	</React.StrictMode>
 );

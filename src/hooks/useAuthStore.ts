@@ -13,19 +13,45 @@ export const useAuthStore = () => {
 				email: email,
 				password: password,
 			});
+			const { user } = data;
+			localStorage.setItem('token', data.token);
+			localStorage.setItem('token-init-date', new Date().getTime().toString());
 			dispatch(
 				login({
 					email,
-					google: data.user.google,
-					img: data.user.img,
-					isActive: data.user.isActive,
-					name: data.user.name,
-					role: data.user.role,
-					uid: data.user.uid,
+					google: user.google,
+					img: user.img,
+					isActive: user.isActive,
+					name: user.name,
+					role: user.role,
+					uid: user.uid,
 				})
 			);
 			// dispatch(fetchBoards(data.uid));
 		} catch (error) {
+			dispatch(logout({ errorMessage: `Ocurrio algun error : ${error}}` }));
+		}
+	};
+	const startGoogleSignIn = async (response: any) => {
+		try {
+			const { data } = await usersApi.post('/auth/google', {
+				id_token: response.credential,
+			});
+			const { user } = data;
+			dispatch(
+				login({
+					email: user.email,
+					google: user.google,
+					img: user.img,
+					isActive: user.isActive,
+					name: user.name,
+					role: user.role,
+					uid: user.uid,
+				})
+			);
+		} catch (error) {
+			console.error(error);
+
 			dispatch(logout({ errorMessage: `Ocurrio algun error : ${error}}` }));
 		}
 	};
@@ -40,15 +66,18 @@ export const useAuthStore = () => {
 				role: 'USER_ROLE',
 			});
 			if (data) {
+				localStorage.setItem('token', data.token);
+				localStorage.setItem('token-init-date', new Date().getTime().toString());
+				const { user } = data;
 				dispatch(
 					login({
 						email,
-						google: data.user.google,
-						img: data.user.img,
-						isActive: data.user.isActive,
+						google: user.google,
+						img: user.img,
+						isActive: user.isActive,
 						name,
-						role: data.user.role,
-						uid: data.user.uid,
+						role: user.role,
+						uid: user.uid,
 					})
 				);
 			}
@@ -56,6 +85,31 @@ export const useAuthStore = () => {
 			console.log(error);
 		}
 	};
+	const checkAuthToken = async () => {
+		dispatch(checkingCredentials());
+		const token = localStorage.getItem('token');
+		if (!token) return dispatch(logout({ errorMessage: `No token.` }));
+		try {
+			const { data } = await usersApi.get('/auth/renew');
+			localStorage.setItem('token', data.token);
+			localStorage.setItem('token-init-date', new Date().getTime().toString());
+			const { user } = data;
+			dispatch(
+				login({
+					email: user.email,
+					google: user.google,
+					img: user.img,
+					isActive: user.isActive,
+					name: user.name,
+					role: user.role,
+					uid: user._id,
+				})
+			);
+		} catch (error) {
+			dispatch(logout({ errorMessage: `Some error:${error}` }));
+		}
+	};
+
 	return {
 		//Properties
 		name,
@@ -69,7 +123,9 @@ export const useAuthStore = () => {
 		google,
 
 		//Methods
+		checkAuthToken,
 		startLogin,
 		startRegister,
+		startGoogleSignIn,
 	};
 };

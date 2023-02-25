@@ -1,9 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useAuthStore } from '../../hooks';
+import { useRef, useEffect } from 'react';
 
 export const Register = () => {
 	const { startRegister } = useAuthStore();
+	const inputRef = useRef<HTMLInputElement | null>(null);
 	const { handleSubmit, values, handleChange } = useFormik({
 		initialValues: {
 			name: '',
@@ -16,6 +18,10 @@ export const Register = () => {
 			startRegister({ email: values.email, name: values.name, password: values.password });
 		},
 	});
+	useEffect(() => {
+		if (!inputRef) return;
+		inputRef.current?.focus();
+	}, []);
 
 	return (
 		<div className='h-screen flex items-center justify-center bg-LightGrey p-5'>
@@ -32,6 +38,7 @@ export const Register = () => {
 						value={values.name}
 						onChange={handleChange}
 						required
+						ref={inputRef}
 					/>
 				</div>
 				<div className='mb-4'>

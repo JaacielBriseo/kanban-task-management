@@ -2,10 +2,10 @@ import { useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useAuthStore } from '../../hooks';
-
+// import { GoogleLogin } from '@react-oauth/google';
 export const Login = () => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
-	const { startLogin } = useAuthStore();
+	const { startLogin, startGoogleSignIn } = useAuthStore();
 	useEffect(() => {
 		if (!inputRef) return;
 		inputRef.current?.focus();
@@ -51,18 +51,18 @@ export const Login = () => {
 						required
 					/>
 				</div>
-				<button
-					type='submit'
-					className='bg-MainPurple hover:bg-PurpleHover text-white font-medium py-2 px-4 rounded-lg'>
-					Log in
-				</button>
-				<button
-					type='button'
-					className='bg-white hover:bg-LinesLight text-MainPurple font-medium py-2 px-4 rounded-lg mt-4'>
-					Sign in with Google
-				</button>
+				<div className='flex flex-col space-y-3'>
+					<button
+						type='submit'
+						className='bg-MainPurple hover:bg-PurpleHover text-white font-medium py-2 px-4 rounded-lg'>
+						Log in
+					</button>
+					<button type='button' className='mx-auto'>
+						{/* <GoogleLogin onSuccess={startGoogleSignIn} /> */}
+					</button>
+				</div>
 				<div className='text-MediumGrey text-center mt-4'>
-					Don't have an account yet?
+					Don't have an account yet? &nbsp;
 					<NavLink to='/auth/register' className='text-MainPurple hover:text-PurpleHover font-medium underline'>
 						Register
 					</NavLink>
