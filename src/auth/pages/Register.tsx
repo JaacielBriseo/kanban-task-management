@@ -6,14 +6,14 @@ export const Register = () => {
 	const { startRegister } = useAuthStore();
 	const { handleSubmit, values, handleChange } = useFormik({
 		initialValues: {
-			fullName: '',
+			name: '',
 			email: '',
 			password: '',
 			confirmPassword: '',
 			isReady: false,
 		},
 		onSubmit: () => {
-			startRegister({ email: values.email, name: values.fullName, password: values.password });
+			startRegister({ email: values.email, name: values.name, password: values.password });
 		},
 	});
 
@@ -28,8 +28,8 @@ export const Register = () => {
 					<input
 						className='w-full border border-LinesLight p-2 rounded-lg'
 						type='text'
-						name='fullName'
-						value={values.fullName}
+						name='name'
+						value={values.name}
 						onChange={handleChange}
 						required
 					/>
@@ -79,7 +79,9 @@ export const Register = () => {
 						Are you ready to get into the best app in the world?
 					</label>
 				</div>
-				<button className='bg-MainPurple hover:bg-PurpleHover text-white font-medium py-2 px-4 rounded-lg'>
+				<button
+					type='submit'
+					className='bg-MainPurple hover:bg-PurpleHover text-white font-medium py-2 px-4 rounded-lg'>
 					Register
 				</button>
 				<div className='text-MediumGrey text-center mt-4'>

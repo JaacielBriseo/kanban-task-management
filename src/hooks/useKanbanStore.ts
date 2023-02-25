@@ -16,7 +16,7 @@ import { boardsApi } from '../api/boardsApi';
 
 export const useKanbanStore = () => {
 	const dispatch = useAppDispatch();
-	const { uid } = useAppSelector(state => state.auth);
+	const { user } = useAppSelector(state => state.auth);
 	const kanbanState = useAppSelector(state => state.kanbanTask);
 	const activeBoard = findBoardById(kanbanState.boards, kanbanState.selectedBoardId);
 	const activeColumn = findColumnById(activeBoard?.columns, kanbanState.selectedColumnId);
@@ -24,7 +24,7 @@ export const useKanbanStore = () => {
 	const startCreatingBoard = async (board: Board) => {
 		try {
 			await boardsApi.post('/createBoard', {
-				userId: uid,
+				userId: user.uid,
 				...board,
 			});
 			dispatch(createNewBoard({ ...board }));
@@ -41,7 +41,7 @@ export const useKanbanStore = () => {
 		try {
 			await boardsApi.post('/createTask', {
 				...task,
-				userId: uid,
+				userId: user.uid,
 				columnId: activeBoard.columns.find(col => col.name === task.status)?.columnId,
 				boardId: activeBoard.boardId,
 			});
@@ -57,7 +57,7 @@ export const useKanbanStore = () => {
 			return;
 		}
 		try {
-			await boardsApi.delete(`/${uid}/${activeBoard.boardId}`, {
+			await boardsApi.delete(`/${user.uid}/${activeBoard.boardId}`, {
 				params: {
 					boardId: activeBoard.boardId,
 				},
@@ -76,7 +76,7 @@ export const useKanbanStore = () => {
 			return;
 		}
 		try {
-			await boardsApi.delete(`/${uid}/${activeBoard.boardId}/${activeColumn.columnId}/${activeTask.taskId}`);
+			await boardsApi.delete(`/${user.uid}/${activeBoard.boardId}/${activeColumn.columnId}/${activeTask.taskId}`);
 			dispatch(deleteTask({ taskIdToDelete: activeTask.taskId }));
 			dispatch(toggleDeleteTaskModal());
 		} catch (error) {

@@ -1,19 +1,30 @@
-import axios from 'axios';
 import { checkingCredentials, login, logout, useAppDispatch, useAppSelector } from '../store';
-import { fetchBoards } from '../store/thunks/fetchUserBoards';
+import { usersApi } from '../api/usersApi';
+// import { fetchBoards } from '../store/thunks/fetchUserBoards';
 export const useAuthStore = () => {
-	const { displayName, email, errorMessage, photoURL, status, uid } = useAppSelector(state => state.auth);
+	const { errorMessage, status, user } = useAppSelector(state => state.auth);
+	const { email, google, img, isActive, name, role, uid } = user;
 	const dispatch = useAppDispatch();
 
 	const startLogin = async ({ email, password }: { email: string; password: string }) => {
 		dispatch(checkingCredentials());
 		try {
-			const { data } = await axios.post('http://localhost:4000/api/auth', {
+			const { data } = await usersApi.post('/auth/login', {
 				email: email,
 				password: password,
 			});
-			dispatch(login({ displayName: data.name, email: email, photoURL: '', uid: data.uid }));
-			dispatch(fetchBoards(data.uid));
+			dispatch(
+				login({
+					email,
+					google: data.user.google,
+					img: data.user.img,
+					isActive: data.user.isActive,
+					name: data.user.name,
+					role: data.user.role,
+					uid: data.user.uid,
+				})
+			);
+			// dispatch(fetchBoards(data.uid));
 		} catch (error) {
 			dispatch(logout({ errorMessage: `Ocurrio algun error : ${error}}` }));
 		}
@@ -21,13 +32,25 @@ export const useAuthStore = () => {
 	const startRegister = async ({ name, email, password }: { name: string; email: string; password: string }) => {
 		dispatch(checkingCredentials());
 		try {
-			const response = await axios.post('http://localhost:4000/api/auth/register', {
+			const { data } = await usersApi.post('/users/register', {
 				name,
 				email,
 				password,
+				img: '',
+				role: 'USER_ROLE',
 			});
-			if (response) {
-				dispatch(login({ displayName: response.data.name, email, photoURL: '', uid: response.data.uid }));
+			if (data) {
+				dispatch(
+					login({
+						email,
+						google: data.user.google,
+						img: data.user.img,
+						isActive: data.user.isActive,
+						name,
+						role: data.user.role,
+						uid: data.user.uid,
+					})
+				);
 			}
 		} catch (error) {
 			console.log(error);
@@ -35,12 +58,16 @@ export const useAuthStore = () => {
 	};
 	return {
 		//Properties
-		displayName,
+		name,
 		email,
 		errorMessage,
-		photoURL,
+		img,
 		status,
 		uid,
+		role,
+		isActive,
+		google,
+
 		//Methods
 		startLogin,
 		startRegister,

@@ -1,11 +1,18 @@
+export interface User {
+	name: string | null;
+	email: string | null;
+	img: string | null;
+	role: 'SUPER_ROLE' | 'USER_ROLE' | 'ADMIN_ROLE' | null;
+	isActive: boolean | null;
+	google: boolean | null;
+	uid: string | null;
+}
 export interface AuthSliceValues {
 	status: 'checking' | 'authenticated' | 'not-authenticated';
-	uid: null | string;
-	email: null | string;
-	displayName: null | string;
-	photoURL: null | string;
+	user: User;
 	errorMessage: string | undefined | null;
 }
+
 export interface KanbanSliceInitialValues {
 	boards: Board[];
 	selectedBoardId: string | null;
@@ -63,9 +70,3 @@ export interface DeleteTaskPayload {
 	payload: { taskId: string; boardId: string; columnId: string };
 }
 
-/*
-AuthSlice Payloads
-*/
-export interface LoginPayload {
-	payload: { uid: string; email: string; displayName: string; photoURL: string };
-}
