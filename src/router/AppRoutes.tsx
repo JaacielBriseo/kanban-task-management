@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 
 export const AppRoutes = () => {
 	const { status, checkAuthToken } = useAuthStore();
-	const { isLoading } = useAppSelector(state => state.kanbanTask);
+	const { isLoading } = useAppSelector(state => state.ui);
 	useEffect(() => {
 		checkAuthToken();
 	}, []);

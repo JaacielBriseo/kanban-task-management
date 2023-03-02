@@ -1,11 +1,11 @@
-import { setSelectedBoardId, toggleAddNewBoardModal, toggleSidebar, useAppDispatch, useAppSelector } from '../../store';
+import { useKanbanStore, useUiStore } from '../../hooks';
 import { ThemeToggler } from './ThemeToggler';
 interface Props {
 	className?: string;
 }
 export const Sidebar: React.FC<Props> = ({ className }) => {
-	const dispatch = useAppDispatch();
-	const { boards } = useAppSelector(state => state.kanbanTask);
+	const { boards } = useKanbanStore();
+	const { toggleSidebar, setActiveModal, onSelectBoardId } = useUiStore();
 
 	return (
 		<div className={`hidden md:block w-[240px] h-[calc(100vh-90px)] p-5 bg-White ${className}`}>
@@ -15,9 +15,7 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 					{boards.length
 						? boards.map(board => (
 								<div key={board.boardId}>
-									<div
-										onClick={() => dispatch(setSelectedBoardId(board.boardId))}
-										className='flex space-x-3 cursor-pointer'>
+									<div onClick={() => onSelectBoardId(board.boardId)} className='flex space-x-3 cursor-pointer'>
 										<img src='/assets/icon-board-purple.svg' alt='board' />
 										<p className='text-MediumGrey headingM'>{board.boardName}</p>
 									</div>
@@ -26,7 +24,7 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 						: null}
 					<div className='flex space-x-2'>
 						<img src='/assets/icon-board-purple.svg' alt='board' />
-						<button onClick={() => dispatch(toggleAddNewBoardModal())} className='text-MainPurple'>
+						<button onClick={() => setActiveModal('AddNewBoard')} className='text-MainPurple'>
 							+Create New Board
 						</button>
 					</div>
@@ -37,7 +35,7 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 						<ThemeToggler />
 						<img src='/assets/icon-dark-theme.svg' alt='dark-theme' className='w-[18px] h-[18px]' />
 					</div>
-					<button onClick={() => dispatch(toggleSidebar())} className='flex items-center space-x-3'>
+					<button onClick={toggleSidebar} className='flex items-center space-x-3'>
 						<img src='/assets/icon-hide-sidebar.svg' alt='hide' />
 						<span className='headingM text-MediumGrey'>Hide sidebar</span>
 					</button>

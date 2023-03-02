@@ -1,9 +1,8 @@
-import { useKanbanStore } from '../../hooks';
-import { toggleDeleteTaskModal, useAppDispatch } from '../../store';
+import { useKanbanStore, useUiStore } from '../../hooks';
 
 export const DeleteTask = () => {
-	const dispatch = useAppDispatch();
-	const { activeTask, startDeletingTask } = useKanbanStore();
+	const { startDeletingTask } = useKanbanStore();
+	const { activeTask, closeModal } = useUiStore();
 	if (!activeTask) {
 		return <h1>No task selected</h1>;
 	}
@@ -21,7 +20,7 @@ export const DeleteTask = () => {
 					Delete
 				</button>
 				<button
-					onClick={() => dispatch(toggleDeleteTaskModal())}
+					onClick={closeModal}
 					className='font-bold text-[13px] bg-MainPurple bg-opacity-10 text-MainPurple w-full py-2 rounded-[20px]'>
 					Cancel
 				</button>

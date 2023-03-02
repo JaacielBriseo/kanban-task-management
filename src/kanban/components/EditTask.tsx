@@ -1,9 +1,9 @@
 import { Field, FieldArray, Form, Formik } from 'formik';
-import { useKanbanStore } from '../../hooks';
+import { useUiStore } from '../../hooks';
 import { updateTask, useAppDispatch } from '../../store';
 import { Task } from '../../interfaces';
 export const EditTask = () => {
-	const { activeTask, activeBoard } = useKanbanStore();
+	const { activeTask, activeBoard } = useUiStore();
 	const dispatch = useAppDispatch();
 	if (!activeTask || !activeBoard) return null;
 	return (

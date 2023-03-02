@@ -1,12 +1,12 @@
+import { useUiStore } from '../../hooks';
 import { Board as BoardType } from '../../interfaces';
-import { setSelectedColumnId, setSelectedTaskId, toggleViewTaskModal, useAppDispatch } from '../../store';
-
 interface Props {
 	board: BoardType;
 }
 export const Board: React.FC<Props> = ({ board }) => {
-	const dispatch = useAppDispatch();
 	const colors = ['bg-[#49C4E5]', 'bg-[#8471F2]', 'bg-[#67E2AE]'];
+	const { onSelectColumnId, onSelectTaskId, setActiveModal } = useUiStore();
+
 	return (
 		<div className='flex p-5 space-x-5 max-h-screen min-w-max'>
 			{board.columns.map((column, index) => (
@@ -22,9 +22,9 @@ export const Board: React.FC<Props> = ({ board }) => {
 							<div
 								key={task.taskId}
 								onClick={() => {
-									dispatch(setSelectedColumnId(column.columnId));
-									dispatch(setSelectedTaskId(task.taskId));
-									dispatch(toggleViewTaskModal());
+									setActiveModal('ViewTaskModal');
+									onSelectColumnId(column.columnId);
+									onSelectTaskId(task.taskId);
 								}}
 								className='p-5 shadow-md rounded-lg bg-White w-[280px] min-h-[88px]'>
 								<h1 className='headingL'>{task.title}</h1>

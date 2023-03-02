@@ -1,27 +1,12 @@
 import { useState } from 'react';
-import {
-	changeTaskColumnAndStatus,
-	toggleDeleteTaskModal,
-	toggleSubtaskCompleted,
-	toggleViewTaskModal,
-	toggleEditTaskModal,
-	useAppDispatch,
-} from '../../store';
-import { useKanbanStore } from '../../hooks';
+import { changeTaskColumnAndStatus, toggleSubtaskCompleted, useAppDispatch } from '../../store';
+import { useUiStore } from '../../hooks';
 
 export const ViewTask = () => {
 	const dispatch = useAppDispatch();
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-	const { activeBoard, activeColumn, activeTask } = useKanbanStore();
+	const { activeBoard, activeColumn, activeTask, setActiveModal } = useUiStore();
 	if (!activeBoard || !activeColumn || !activeTask) return null;
-	const handleDeleteClick = () => {
-		dispatch(toggleViewTaskModal());
-		dispatch(toggleDeleteTaskModal());
-	};
-	const handleEditClick = () => {
-		dispatch(toggleViewTaskModal());
-		dispatch(toggleEditTaskModal());
-	};
 	return (
 		<div className='p-5 flex flex-col space-y-8 w-[343px] min-h-[380px] md:w-[480px] md:h-[429px] md:p-8'>
 			<div className='flex justify-between items-center relative'>
@@ -33,10 +18,10 @@ export const ViewTask = () => {
 					className={`bg-White shadow-lg p-1 z-50 w-[80px] h-[80px] absolute -right-2 -bottom-20 ${
 						isDropdownOpen ? 'flex items-center justify-evenly' : 'hidden'
 					}`}>
-					<button onClick={handleDeleteClick} className='p-1'>
+					<button onClick={() => setActiveModal('DeleteTask')} className='p-1'>
 						<img src='/assets/icon-delete.svg' alt='delete' />
 					</button>
-					<button onClick={handleEditClick} className='p-1'>
+					<button onClick={() => setActiveModal('EditTask')} className='p-1'>
 						<img src='/assets/icon-edit.svg' alt='edit' />
 					</button>
 				</div>

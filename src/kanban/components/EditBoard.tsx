@@ -1,10 +1,11 @@
 import { FieldArray, Field, Form, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { updateBoard, useAppDispatch } from '../../store';
-import { useKanbanStore } from '../../hooks';
+import {  useUiStore } from '../../hooks';
 export const EditBoard = () => {
 	const dispatch = useAppDispatch();
-	const { activeBoard } = useKanbanStore();
+	const { activeBoard } = useUiStore();
+
 	if (!activeBoard) return null;
 	return (
 		<Formik

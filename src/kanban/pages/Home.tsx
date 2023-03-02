@@ -1,44 +1,7 @@
-import {
-	setIsAddNewTaskModalOpen,
-	toggleAddNewBoardModal,
-	toggleDeleteBoardModal,
-	toggleDeleteTaskModal,
-	toggleEditBoardModal,
-	toggleEditTaskModal,
-	toggleSelectBoardModal,
-	toggleViewTaskModal,
-	useAppDispatch,
-	useAppSelector,
-} from '../../store';
-import { AddNewBoard } from '../components/AddNewBoard';
-import { Board } from '../components/Board';
-import { EmptyBoard } from '../components/EmptyBoard';
-import { Modal } from '../components/Modal';
-import { Navbar } from '../components/Navbar';
-import { SelectBoard } from '../components/SelectBoard';
-import { Sidebar } from '../components/Sidebar';
-import { ToggleSidebarButton } from '../components/ToggleSidebarButton';
-import { ViewTask } from '../components/ViewTask';
-import { DeleteTask } from '../components/DeleteTask';
-import { DeleteBoard } from '../components/DeleteBoard';
-import { AddNewTask } from '../components/AddNewTask';
-import { EditTask } from '../components/EditTask';
-import { EditBoard } from '../components/EditBoard';
-import { useKanbanStore } from '../../hooks';
+import { useUiStore } from '../../hooks';
+import { Board, EmptyBoard, Modal, Navbar, Sidebar, ToggleSidebarButton } from '../components';
 export const Home = () => {
-	const dispatch = useAppDispatch();
-	const { activeBoard } = useKanbanStore();
-	const {
-		isDeleteBoardModalOpen,
-		isSidebarOpen,
-		isSelectBoardModalOpen,
-		isAddNewBoardModalOpen,
-		isViewTaskModalOpen,
-		isDeleteTaskModalOpen,
-		isAddNewTaskModalOpen,
-		isEditTaskModalOpen,
-		isEditBoardModalOpen,
-	} = useAppSelector(state => state.ui);
+	const { activeBoard, activeModalName, activeModalContent, isSidebarOpen, closeModal } = useUiStore();
 	return (
 		<>
 			<Navbar />
@@ -60,48 +23,8 @@ export const Home = () => {
 				</div>
 			</div>
 			<ToggleSidebarButton />
-			{isSelectBoardModalOpen && (
-				<Modal
-					isFullScreen={false}
-					onClose={() => dispatch(toggleSelectBoardModal())}
-					customClass='w-[264px] h-[300px]'>
-					<SelectBoard />
-				</Modal>
-			)}
-			{isAddNewBoardModalOpen && (
-				<Modal onClose={() => dispatch(toggleAddNewBoardModal())}>
-					<AddNewBoard />
-				</Modal>
-			)}
-			{isViewTaskModalOpen && (
-				<Modal onClose={() => dispatch(toggleViewTaskModal())}>
-					<ViewTask />
-				</Modal>
-			)}
-			{isDeleteTaskModalOpen && (
-				<Modal onClose={() => dispatch(toggleDeleteTaskModal())}>
-					<DeleteTask />
-				</Modal>
-			)}
-			{isDeleteBoardModalOpen && (
-				<Modal onClose={() => dispatch(toggleDeleteBoardModal())}>
-					<DeleteBoard />
-				</Modal>
-			)}
-			{isAddNewTaskModalOpen && (
-				<Modal onClose={() => dispatch(setIsAddNewTaskModalOpen(false))}>
-					<AddNewTask />
-				</Modal>
-			)}
-			{isEditTaskModalOpen && (
-				<Modal onClose={() => dispatch(toggleEditTaskModal())}>
-					<EditTask />
-				</Modal>
-			)}
-			{isEditBoardModalOpen && (
-				<Modal onClose={() => dispatch(toggleEditBoardModal())}>
-					<EditBoard />
-				</Modal>
+			{activeModalName && (
+				<Modal onClose={closeModal}>{!activeModalContent ? <h1>No active board</h1> : activeModalContent}</Modal>
 			)}
 		</>
 	);

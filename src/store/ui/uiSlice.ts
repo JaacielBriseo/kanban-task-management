@@ -1,66 +1,55 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+interface UiStoreValues {
+	activeModalName: string | null;
+	isSidebarOpen: boolean;
+	selectedBoardId: string | null;
+	selectedColumnId: string | null;
+	selectedSubtaskId: string | null;
+	selectedTaskId: string | null;
+	isLoading: boolean;
+	errorMessage: string | null;
+}
+const initialState: UiStoreValues = {
+	activeModalName: null,
+	isSidebarOpen: false,
+	selectedBoardId: null,
+	selectedColumnId: null,
+	selectedSubtaskId: null,
+	selectedTaskId: null,
+	isLoading: false,
+	errorMessage: null,
+};
 export const uiSlice = createSlice({
 	name: 'ui',
-	initialState: {
-		isSelectBoardModalOpen: false,
-		isSidebarOpen: false,
-		isAddNewBoardModalOpen: false,
-		isViewTaskModalOpen: false,
-		isDeleteTaskModalOpen: false,
-		isDeleteBoardModalOpen: false,
-		isAddNewTaskModalOpen: false,
-		isEditTaskModalOpen: false,
-		isEditBoardModalOpen: false,
-	},
+	initialState,
 	reducers: {
-		toggleSelectBoardModal: state => {
-			state.isSelectBoardModalOpen = !state.isSelectBoardModalOpen;
-		},
-		toggleSidebar: state => {
-			state.isSidebarOpen = !state.isSidebarOpen;
-		},
-		toggleAddNewBoardModal: state => {
-			state.isAddNewBoardModalOpen = !state.isAddNewBoardModalOpen;
-		},
-		toggleViewTaskModal: state => {
-			state.isViewTaskModalOpen = !state.isViewTaskModalOpen;
-		},
-		toggleDeleteTaskModal: state => {
-			state.isDeleteTaskModalOpen = !state.isDeleteTaskModalOpen;
-		},
-		toggleDeleteBoardModal: state => {
-			state.isDeleteBoardModalOpen = !state.isDeleteBoardModalOpen;
-		},
-		toggleEditTaskModal: state => {
-			state.isEditTaskModalOpen = !state.isEditTaskModalOpen;
-		},
-		toggleEditBoardModal: state => {
-			state.isEditBoardModalOpen = !state.isEditBoardModalOpen;
-		},
-		setIsSelectBoardModalOpen: (state, action: PayloadAction<boolean>) => {
-			state.isSelectBoardModalOpen = action.payload;
-		},
-		setIsAddNewTaskModalOpen: (state, action: PayloadAction<boolean>) => {
-			state.isAddNewTaskModalOpen = action.payload;
-			state.isSelectBoardModalOpen = false;
+		setActiveModalName: (state, action: PayloadAction<string | null>) => {
+			state.activeModalName = action.payload;
 		},
 		setIsSidebarOpen: (state, action: PayloadAction<boolean>) => {
 			state.isSidebarOpen = action.payload;
+		},
+		setSelectedBoardId: (state, action: PayloadAction<string | null>) => {
+			state.selectedBoardId = action.payload;
+		},
+		setSelectedColumnId: (state, action: PayloadAction<string | null>) => {
+			state.selectedColumnId = action.payload;
+		},
+		setSelectedTaskId: (state, action: PayloadAction<string | null>) => {
+			state.selectedTaskId = action.payload;
+		},
+		setSelectedSubtaskId: (state, action: PayloadAction<string | null>) => {
+			state.selectedSubtaskId = action.payload;
 		},
 	},
 });
 
 // Action creators are generated for each case reducer function
 export const {
-	toggleSelectBoardModal,
-	toggleSidebar,
-	toggleAddNewBoardModal,
-	toggleViewTaskModal,
-	toggleDeleteTaskModal,
-	toggleDeleteBoardModal,
-	toggleEditTaskModal,
-	toggleEditBoardModal,
-	setIsSelectBoardModalOpen,
-	setIsAddNewTaskModalOpen,
+	setActiveModalName,
 	setIsSidebarOpen,
+	setSelectedBoardId,
+	setSelectedColumnId,
+	setSelectedSubtaskId,
+	setSelectedTaskId,
 } = uiSlice.actions;

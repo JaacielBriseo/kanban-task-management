@@ -1,22 +1,14 @@
-import {
-	useAppDispatch,
-	useAppSelector,
-	toggleSelectBoardModal,
-	toggleDeleteBoardModal,
-	toggleEditBoardModal,
-	setIsSelectBoardModalOpen,
-	setIsAddNewTaskModalOpen,
-} from '../../store';
 import { useState } from 'react';
-import { useKanbanStore } from '../../hooks';
+import { useUiStore } from '../../hooks';
 interface Props {
 	className?: string;
 }
 export const Navbar: React.FC<Props> = ({ className }) => {
-	const dispatch = useAppDispatch();
 	const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
-	const { activeBoard } = useKanbanStore();
-	const { isSidebarOpen, isSelectBoardModalOpen } = useAppSelector(state => state.ui);
+	const { activeBoard, activeModalName, isSidebarOpen, setActiveModal, closeModal } = useUiStore();
+	const toggleSelectBoardModal = () => {
+		!activeModalName ? setActiveModal('SelectBoard') : closeModal();
+	};
 	return (
 		<>
 			<nav className={`bg-white p-5 flex justify-between z-40 ${className}`}>
@@ -26,10 +18,10 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 						<h1 className='hidden md:block headingXL'>kanban</h1>
 					</div>
 					<div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' />
-					<div className='flex items-center space-x-2' onClick={() => dispatch(toggleSelectBoardModal())}>
+					<div className='flex items-center space-x-2' onClick={toggleSelectBoardModal}>
 						<h2 className='headingL'>{activeBoard ? activeBoard.boardName : 'Select a board'}</h2>
 						<div className='md:hidden'>
-							{isSelectBoardModalOpen ? (
+							{activeModalName === 'SelectBoard' ? (
 								<img src='/assets/icon-chevron-up.svg' alt='Up' className='scale-110' />
 							) : (
 								<img src='/assets/icon-chevron-down.svg' alt='Down' className='scale-110' />
@@ -39,7 +31,7 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 				</div>
 				<div className='flex space-x-3 relative'>
 					<button
-						onClick={() => dispatch(setIsAddNewTaskModalOpen(true))}
+						onClick={() => setActiveModal('AddNewTask')}
 						disabled={!activeBoard}
 						className='bg-MainPurple w-12 h-8 flex justify-center items-center rounded-full md:w-40 md:h-12'>
 						<img src='/assets/icon-add-task-mobile.svg' alt='add' className='md:hidden' />
@@ -58,8 +50,7 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 						<button
 							className='p-1'
 							onClick={() => {
-								dispatch(toggleDeleteBoardModal());
-								dispatch(setIsSelectBoardModalOpen(false));
+								setActiveModal('DeleteBoard');
 								setIsDropdownMenuOpen(false);
 							}}>
 							<img src='/assets/icon-delete.svg' alt='delete' />
@@ -67,8 +58,7 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 						<button
 							className='p-1'
 							onClick={() => {
-								dispatch(toggleEditBoardModal());
-								dispatch(setIsSelectBoardModalOpen(false));
+								setActiveModal('EditBoard');
 								setIsDropdownMenuOpen(false);
 							}}>
 							<img src='/assets/icon-edit.svg' alt='edit' />
