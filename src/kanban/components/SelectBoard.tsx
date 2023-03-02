@@ -17,7 +17,7 @@ export const SelectBoard = () => {
 						className='text-MediumGrey'
 						key={board.boardId}
 						onClick={() => dispatch(setSelectedBoardId(board.boardId))}>
-						{board.name}
+						{board.boardName}
 					</button>
 				))}
 			<button onClick={handleCreateNewBoardClick} className='text-MainPurple'>

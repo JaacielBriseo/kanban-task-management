@@ -27,7 +27,7 @@ export const Navbar: React.FC<Props> = ({ className }) => {
 					</div>
 					<div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' />
 					<div className='flex items-center space-x-2' onClick={() => dispatch(toggleSelectBoardModal())}>
-						<h2 className='headingL'>{activeBoard ? activeBoard.name : 'Select a board'}</h2>
+						<h2 className='headingL'>{activeBoard ? activeBoard.boardName : 'Select a board'}</h2>
 						<div className='md:hidden'>
 							{isSelectBoardModalOpen ? (
 								<img src='/assets/icon-chevron-up.svg' alt='Up' className='scale-110' />

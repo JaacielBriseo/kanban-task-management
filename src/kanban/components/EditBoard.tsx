@@ -9,8 +9,8 @@ export const EditBoard = () => {
 	return (
 		<Formik
 			initialValues={{
-				boardName: activeBoard.name,
-				boardColumns: activeBoard.columns.map(column => column.name),
+				boardName: activeBoard.boardName,
+				boardColumns: activeBoard.columns.map(column => column.columnName),
 			}}
 			validationSchema={Yup.object({
 				boardName: Yup.string()
@@ -22,7 +22,7 @@ export const EditBoard = () => {
 				dispatch(
 					updateBoard({
 						...activeBoard,
-						name: boardName,
+						boardName,
 						columns:
 							boardColumns.length === 0
 								? []

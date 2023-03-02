@@ -77,10 +77,10 @@ export const ViewTask = () => {
 					}}>
 					<option value={activeTask.status}>{activeTask.status}</option>
 					{activeBoard.columns
-						.filter(column => column.name !== activeTask.status)
+						.filter(column => column.columnName !== activeTask.status)
 						.map(column => (
-							<option key={column.columnId} value={column.name}>
-								{column.name}
+							<option key={column.columnId} value={column.columnName}>
+								{column.columnName}
 							</option>
 						))}
 				</select>

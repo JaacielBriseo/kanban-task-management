@@ -1,13 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { Board } from '../../interfaces';
+import { boardsApi } from '../../api/boardsApi';
 
-export const fetchBoards = createAsyncThunk('boards/fetch', async (uid: string) => {
+export const fetchUserBoards = createAsyncThunk('boards/fetch', async () => {
 	try {
-		const response = await axios.get<Board[]>('http://localhost:4000/api/boards', {
-			headers: { userId: uid },
-		});
-		return response.data;
+		const response = await boardsApi.get('/');
+		console.log(response);
+		return response.data.userBoards;
 	} catch (err) {
 		console.log(err);
 		return [];

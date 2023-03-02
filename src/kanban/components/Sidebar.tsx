@@ -19,7 +19,7 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 										onClick={() => dispatch(setSelectedBoardId(board.boardId))}
 										className='flex space-x-3 cursor-pointer'>
 										<img src='/assets/icon-board-purple.svg' alt='board' />
-										<p className='text-MediumGrey headingM'>{board.name}</p>
+										<p className='text-MediumGrey headingM'>{board.boardName}</p>
 									</div>
 								</div>
 						  ))

@@ -18,7 +18,6 @@ export const AddNewTask = () => {
 				const newTask: Task = {
 					description: values.description,
 					status: values.status,
-					statusId: uuidv4(),
 					taskId: uuidv4(),
 					title: values.title,
 					subtasks: values.subtasks.map(subtask => {
@@ -87,8 +86,8 @@ export const AddNewTask = () => {
 						<Field component='select' name='status' className='border'>
 							<option value=''>Select a status for your task</option>
 							{activeBoard.columns.map(column => (
-								<option key={column.columnId} value={column.name}>
-									{column.name}
+								<option key={column.columnId} value={column.columnName}>
+									{column.columnName}
 								</option>
 							))}
 						</Field>

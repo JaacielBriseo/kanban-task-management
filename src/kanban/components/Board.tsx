@@ -14,7 +14,7 @@ export const Board: React.FC<Props> = ({ board }) => {
 					<div className='flex items-center space-x-2 w-[280px]'>
 						<div className={`h-[15px] w-[15px] rounded-full ${colors[index]}`} />
 						<p className='headingS text-MediumGrey uppercase'>
-							{column.name}({column.tasks.length})
+							{column.columnName}({column.tasks.length})
 						</p>
 					</div>
 					<div className='space-y-5'>

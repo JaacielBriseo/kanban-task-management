@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { findBoardById, findColumnById, findColumnByName, findTaskById } from '../../helpers';
 import { Board, KanbanSliceInitialValues, ToggleIsSubtaskCompletedPayLoad, Task } from '../../interfaces';
-import { fetchBoards } from '../thunks';
+import { fetchUserBoards } from '../thunks';
 const initialState: KanbanSliceInitialValues = {
 	boards: [],
 	selectedBoardId: null,
@@ -28,7 +28,7 @@ export const kanbanTaskSlice = createSlice({
 			if (task) {
 				task.status = newStatus;
 				column.tasks = column.tasks.filter(t => t.taskId !== task.taskId);
-				const newColumn = board.columns.find(column => column.name === newStatus);
+				const newColumn = board.columns.find(column => column.columnName === newStatus);
 				if (newColumn) {
 					newColumn.tasks.push(task);
 					state.selectedColumnId = newColumn.columnId;
@@ -99,11 +99,11 @@ export const kanbanTaskSlice = createSlice({
 				console.error(`No task to update`);
 				return;
 			}
-			if (column.name === updatedTask.status) {
+			if (column.columnName === updatedTask.status) {
 				column.tasks[taskIndex] = updatedTask;
 			} else {
 				column.tasks = column.tasks.filter(t => t.taskId !== updatedTask.taskId);
-				const newColumn = board.columns.find(column => column.name === updatedTask.status);
+				const newColumn = board.columns.find(column => column.columnName === updatedTask.status);
 				if (newColumn) {
 					newColumn.tasks.push(updatedTask);
 					state.selectedColumnId = newColumn.columnId;
@@ -135,14 +135,14 @@ export const kanbanTaskSlice = createSlice({
 	},
 	extraReducers: builder => {
 		builder
-			.addCase(fetchBoards.pending, state => {
+			.addCase(fetchUserBoards.pending, state => {
 				state.isLoading = true;
 			})
-			.addCase(fetchBoards.fulfilled, (state, action) => {
+			.addCase(fetchUserBoards.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.boards = action.payload;
 			})
-			.addCase(fetchBoards.rejected, (state, action) => {
+			.addCase(fetchUserBoards.rejected, (state, action) => {
 				state.isLoading = false;
 				state.errorMessage = action.error.message ?? 'Something went wrong';
 			});

@@ -20,9 +20,9 @@ export const AddNewBoard = () => {
 				startCreatingBoard({
 					boardId: uuidv4(),
 					columns: boardColumns.map(boardColumn => {
-						return { columnId: uuidv4(), name: boardColumn, tasks: [] };
+						return { columnId: uuidv4(), columnName: boardColumn, tasks: [] };
 					}),
-					name: boardName,
+					boardName: boardName,
 				});
 			}}>
 			{({ values }) => (

@@ -1,6 +1,5 @@
-import { checkingCredentials, login, logout, useAppDispatch, useAppSelector } from '../store';
+import { checkingCredentials, login, logout, useAppDispatch, useAppSelector,fetchUserBoards } from '../store';
 import { usersApi } from '../api/usersApi';
-// import { fetchBoards } from '../store/thunks/fetchUserBoards';
 export const useAuthStore = () => {
 	const { errorMessage, status, user } = useAppSelector(state => state.auth);
 	const { email, google, img, isActive, name, role, uid } = user;
@@ -27,7 +26,7 @@ export const useAuthStore = () => {
 					uid: user.uid,
 				})
 			);
-			// dispatch(fetchBoards(data.uid));
+			dispatch(fetchUserBoards());
 		} catch (error) {
 			dispatch(logout({ errorMessage: `Ocurrio algun error : ${error}}` }));
 		}
@@ -105,6 +104,7 @@ export const useAuthStore = () => {
 					uid: user._id,
 				})
 			);
+			dispatch(fetchUserBoards());
 		} catch (error) {
 			dispatch(logout({ errorMessage: `Some error:${error}` }));
 		}

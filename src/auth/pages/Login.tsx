@@ -2,10 +2,9 @@ import { useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useAuthStore } from '../../hooks';
-// import { GoogleLogin } from '@react-oauth/google';
 export const Login = () => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
-	const { startLogin, startGoogleSignIn } = useAuthStore();
+	const { startLogin } = useAuthStore();
 	useEffect(() => {
 		if (!inputRef) return;
 		inputRef.current?.focus();
@@ -56,9 +55,6 @@ export const Login = () => {
 						type='submit'
 						className='bg-MainPurple hover:bg-PurpleHover text-white font-medium py-2 px-4 rounded-lg'>
 						Log in
-					</button>
-					<button type='button' className='mx-auto'>
-						{/* <GoogleLogin onSuccess={startGoogleSignIn} /> */}
 					</button>
 				</div>
 				<div className='text-MediumGrey text-center mt-4'>

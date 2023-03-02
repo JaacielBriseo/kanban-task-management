@@ -21,13 +21,13 @@ export const useKanbanStore = () => {
 	const activeBoard = findBoardById(kanbanState.boards, kanbanState.selectedBoardId);
 	const activeColumn = findColumnById(activeBoard?.columns, kanbanState.selectedColumnId);
 	const activeTask = findTaskById(activeColumn, kanbanState.selectedTaskId);
+
 	const startCreatingBoard = async (board: Board) => {
 		try {
-			await boardsApi.post('/createBoard', {
-				userId: user.uid,
+			const { data } = await boardsApi.post('/', {
 				...board,
 			});
-			dispatch(createNewBoard({ ...board }));
+			dispatch(createNewBoard(data.board));
 		} catch (error) {
 			dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
@@ -42,7 +42,7 @@ export const useKanbanStore = () => {
 			await boardsApi.post('/createTask', {
 				...task,
 				userId: user.uid,
-				columnId: activeBoard.columns.find(col => col.name === task.status)?.columnId,
+				columnId: activeBoard.columns.find(col => col.columnName === task.status)?.columnId,
 				boardId: activeBoard.boardId,
 			});
 			dispatch(createNewTask({ ...task }));

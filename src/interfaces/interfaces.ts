@@ -25,13 +25,13 @@ export interface KanbanSliceInitialValues {
 
 export interface Board {
 	boardId: string;
-	name: string;
+	boardName: string;
 	columns: Column[];
 }
 
 export interface Column {
 	columnId: string;
-	name: string;
+	columnName: string;
 	tasks: Task[];
 }
 
@@ -40,7 +40,6 @@ export interface Task {
 	title: string;
 	description: string;
 	status: string;
-	statusId: string;
 	subtasks: Subtask[];
 }
 
