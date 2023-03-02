@@ -1,14 +1,3 @@
-import { findBoardById, findColumnById, findTaskById } from '../helpers';
-import {
-	AddNewBoard,
-	AddNewTask,
-	DeleteBoard,
-	DeleteTask,
-	EditBoard,
-	EditTask,
-	SelectBoard,
-	ViewTask,
-} from '../kanban/components';
 import {
 	setActiveModalName,
 	setIsSidebarOpen,
@@ -19,7 +8,7 @@ import {
 	useAppDispatch,
 	useAppSelector,
 } from '../store';
-import { useState, useEffect } from 'react';
+import { findBoardById, findColumnById, findTaskById } from '../helpers';
 
 export const useUiStore = () => {
 	const dispatch = useAppDispatch();
@@ -33,56 +22,22 @@ export const useUiStore = () => {
 		selectedSubtaskId,
 		selectedTaskId,
 	} = useAppSelector(state => state.ui);
-	const { boards } = useAppSelector(state => state.kanbanTask);
-	const [activeModalContent, setActiveModalContent] = useState<null | JSX.Element>(null);
-	const setActiveModal = (modalName: string) => dispatch(setActiveModalName(modalName));
-	const closeModal = () => dispatch(setActiveModalName(null));
-	const toggleSidebar = () => dispatch(setIsSidebarOpen(!isSidebarOpen));
-	const onSelectBoardId = (id: string | null) => dispatch(setSelectedBoardId(id));
-	const onSelectColumnId = (id: string | null) => dispatch(setSelectedColumnId(id));
-	const onSelectTaskId = (id: string | null) => dispatch(setSelectedTaskId(id));
-	const onSelectSubtaskId = (id: string | null) => dispatch(setSelectedSubtaskId(id));
 
-	const activeBoard = findBoardById(boards, selectedBoardId);
+	const { boards }   = useAppSelector(state => state.kanbanTask);
+	const activeBoard  = findBoardById(boards, selectedBoardId);
 	const activeColumn = findColumnById(activeBoard?.columns, selectedColumnId);
-	const activeTask = findTaskById(activeColumn, selectedTaskId);
+	const activeTask   = findTaskById(activeColumn, selectedTaskId);
 
-	useEffect(() => {
-		switch (activeModalName) {
-			case 'AddNewBoard':
-				setActiveModalContent(AddNewBoard);
-				break;
-			case 'AddNewTask':
-				setActiveModalContent(AddNewTask);
-				break;
-			case 'DeleteBoard':
-				setActiveModalContent(DeleteBoard);
-				break;
-			case 'DeleteTask':
-				setActiveModalContent(DeleteTask);
-				break;
-			case 'EditBoard':
-				setActiveModalContent(EditBoard);
-				break;
-			case 'EditTask':
-				setActiveModalContent(EditTask);
-				break;
-			case 'SelectBoard':
-				setActiveModalContent(SelectBoard);
-				break;
-			case 'ViewTask':
-				setActiveModalContent(ViewTask);
-				break;
-
-			default:
-				setActiveModalContent(null);
-				break;
-		}
-	}, [activeModalName]);
+	const closeModal        = () => dispatch(setActiveModalName(null));
+	const toggleSidebar     = () => dispatch(setIsSidebarOpen(!isSidebarOpen));
+	const onSelectBoardId   = (id: string | null) => dispatch(setSelectedBoardId(id));
+	const onSelectColumnId  = (id: string | null) => dispatch(setSelectedColumnId(id));
+	const onSelectTaskId    = (id: string | null) => dispatch(setSelectedTaskId(id));
+	const onSelectSubtaskId = (id: string | null) => dispatch(setSelectedSubtaskId(id));
+	const setActiveModal    = (modalName: string) => dispatch(setActiveModalName(modalName));
 
 	return {
 		//* Properties
-		activeModalContent,
 		activeModalName,
 		activeBoard,
 		activeColumn,

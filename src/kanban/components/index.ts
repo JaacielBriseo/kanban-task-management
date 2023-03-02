@@ -1,3 +1,4 @@
+export { ActiveModalContent } from './ActiveModalContent';
 export { AddNewBoard } from './AddNewBoard';
 export { AddNewTask } from './AddNewTask';
 export { Board } from './Board';

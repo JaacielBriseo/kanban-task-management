@@ -1,7 +1,7 @@
 import { ReactElement, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 interface Props {
-	children: ReactElement | ReactElement[] | string | number;
+	children: ReactElement | ReactElement[] | string | number | JSX.Element | null;
 	actionBar?: JSX.Element;
 	customClass?: string;
 	onClose: () => void;

@@ -1,7 +1,7 @@
 import { useUiStore } from '../../hooks';
-import { Board, EmptyBoard, Modal, Navbar, Sidebar, ToggleSidebarButton } from '../components';
+import { Board, EmptyBoard, Modal, Navbar, Sidebar, ToggleSidebarButton , ActiveModalContent} from '../components';
 export const Home = () => {
-	const { activeBoard, activeModalName, activeModalContent, isSidebarOpen, closeModal } = useUiStore();
+	const { activeBoard, activeModalName, isSidebarOpen, closeModal } = useUiStore();
 	return (
 		<>
 			<Navbar />
@@ -24,7 +24,12 @@ export const Home = () => {
 			</div>
 			<ToggleSidebarButton />
 			{activeModalName && (
-				<Modal onClose={closeModal}>{!activeModalContent ? <h1>No active board</h1> : activeModalContent}</Modal>
+				<Modal
+					onClose={closeModal}
+					isFullScreen={activeModalName !== 'SelectBoard'}
+					customClass={activeModalName === 'SelectBoard' ? 'w-[264px] h-[300px]' : ''}>
+					{<ActiveModalContent />}
+				</Modal>
 			)}
 		</>
 	);
