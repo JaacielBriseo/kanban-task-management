@@ -1,16 +1,17 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useAppSelector } from '../store';
 import { KanbanRoutes } from '../kanban/routes';
+import { useAuthStore } from '../hooks';
 import { Loading } from '../auth/components/Loading';
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
-import { useAuthStore } from '../hooks';
-import { useAppSelector } from '../store/rtk-hooks';
-import { useEffect } from 'react';
 
 export const AppRoutes = () => {
 	const { status, checkAuthToken } = useAuthStore();
 	const { isLoading } = useAppSelector(state => state.ui);
 	useEffect(() => {
 		checkAuthToken();
+		// eslint-disable-next-line
 	}, []);
 	if (status === 'checking' || isLoading) {
 		return <Loading />;

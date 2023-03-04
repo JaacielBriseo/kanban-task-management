@@ -1,7 +1,7 @@
-import { useUiStore } from '../../hooks';
+import { useKanbanTaskUI } from '../../hooks';
 import { AddNewBoard, AddNewTask, DeleteBoard, DeleteTask, EditBoard, EditTask, SelectBoard, ViewTask } from '.';
 export const ActiveModalContent = () => {
-	const { activeModalName } = useUiStore();
+	const { activeModalName } = useKanbanTaskUI();
 	let content;
 	switch (activeModalName) {
 		case 'AddNewBoard':

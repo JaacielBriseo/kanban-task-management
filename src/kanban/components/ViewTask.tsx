@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { changeTaskColumnAndStatus, toggleSubtaskCompleted, useAppDispatch } from '../../store';
-import { useUiStore } from '../../hooks';
+import { useKanbanTaskUI } from '../../hooks';
 
 export const ViewTask = () => {
 	const dispatch = useAppDispatch();
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-	const { activeBoard, activeColumn, activeTask, setActiveModal } = useUiStore();
+	const { activeBoard, activeColumn, activeTask, setActiveModal } = useKanbanTaskUI();
 	if (!activeBoard || !activeColumn || !activeTask) return null;
 	return (
 		<div className='p-5 flex flex-col space-y-8 w-[343px] min-h-[380px] md:w-[480px] md:h-[429px] md:p-8'>

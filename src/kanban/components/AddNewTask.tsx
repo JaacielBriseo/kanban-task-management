@@ -1,10 +1,10 @@
 import { Field, FieldArray, Form, Formik } from 'formik';
-import { useKanbanStore, useUiStore } from '../../hooks';
+import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { Task } from '../../interfaces';
 import { v4 as uuidv4 } from 'uuid';
 export const AddNewTask = () => {
 	const { startCreatingTask } = useKanbanStore();
-	const {activeBoard}  = useUiStore()
+	const {activeBoard}  = useKanbanTaskUI()
 	if (!activeBoard) return null;
 	const placeholders = ['e.g. Make Coffee', 'e.g. Drink coffee and smile'];
 	return (

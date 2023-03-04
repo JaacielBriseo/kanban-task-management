@@ -1,8 +1,8 @@
-import { useKanbanStore, useUiStore } from '../../hooks';
+import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 
 export const DeleteTask = () => {
 	const { startDeletingTask } = useKanbanStore();
-	const { activeTask, closeModal } = useUiStore();
+	const { activeTask, closeModal } = useKanbanTaskUI();
 	if (!activeTask) {
 		return <h1>No task selected</h1>;
 	}

@@ -1,7 +1,7 @@
-import { useUiStore } from '../../hooks/useUiStore';
+import { useKanbanTaskUI } from '../../hooks/useKanbanTaskUI ';
 
 export const ToggleSidebarButton = () => {
-	const { isSidebarOpen, toggleSidebar } = useUiStore();
+	const { isSidebarOpen, toggleSidebar } = useKanbanTaskUI();
 
 	return (
 		<button

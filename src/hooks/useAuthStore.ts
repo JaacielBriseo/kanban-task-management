@@ -1,4 +1,4 @@
-import { checkingCredentials, login, logout, useAppDispatch, useAppSelector,fetchUserBoards } from '../store';
+import { checkingCredentials, login, logout, useAppDispatch, useAppSelector, fetchUserBoards } from '../store';
 import { usersApi } from '../api/usersApi';
 export const useAuthStore = () => {
 	const { errorMessage, status, user } = useAppSelector(state => state.auth);
@@ -12,18 +12,18 @@ export const useAuthStore = () => {
 				email: email,
 				password: password,
 			});
-			const { user } = data;
+			const { google, img, isActive, name, role, uid } = data.user;
 			localStorage.setItem('token', data.token);
 			localStorage.setItem('token-init-date', new Date().getTime().toString());
 			dispatch(
 				login({
 					email,
-					google: user.google,
-					img: user.img,
-					isActive: user.isActive,
-					name: user.name,
-					role: user.role,
-					uid: user.uid,
+					google,
+					img,
+					isActive,
+					name,
+					role,
+					uid,
 				})
 			);
 			dispatch(fetchUserBoards());
@@ -36,16 +36,16 @@ export const useAuthStore = () => {
 			const { data } = await usersApi.post('/auth/google', {
 				id_token: response.credential,
 			});
-			const { user } = data;
+			const { email, google, img, isActive, name, role, uid } = data.user;
 			dispatch(
 				login({
-					email: user.email,
-					google: user.google,
-					img: user.img,
-					isActive: user.isActive,
-					name: user.name,
-					role: user.role,
-					uid: user.uid,
+					email,
+					google,
+					img,
+					isActive,
+					name,
+					role,
+					uid,
 				})
 			);
 		} catch (error) {
@@ -92,16 +92,16 @@ export const useAuthStore = () => {
 			const { data } = await usersApi.get('/auth/renew');
 			localStorage.setItem('token', data.token);
 			localStorage.setItem('token-init-date', new Date().getTime().toString());
-			const { user } = data;
+			const { email, google, img, isActive, name, role, uid } = data.user;
 			dispatch(
 				login({
-					email: user.email,
-					google: user.google,
-					img: user.img,
-					isActive: user.isActive,
-					name: user.name,
-					role: user.role,
-					uid: user._id,
+					email,
+					google,
+					img,
+					isActive,
+					name,
+					role,
+					uid,
 				})
 			);
 			dispatch(fetchUserBoards());

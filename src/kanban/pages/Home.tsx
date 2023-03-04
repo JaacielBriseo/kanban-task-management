@@ -1,7 +1,7 @@
-import { useUiStore } from '../../hooks';
+import { useKanbanTaskUI } from '../../hooks';
 import { Board, EmptyBoard, Modal, Navbar, Sidebar, ToggleSidebarButton , ActiveModalContent} from '../components';
 export const Home = () => {
-	const { activeBoard, activeModalName, isSidebarOpen, closeModal } = useUiStore();
+	const { activeBoard, activeModalName, isSidebarOpen, closeModal } = useKanbanTaskUI();
 	return (
 		<>
 			<Navbar />

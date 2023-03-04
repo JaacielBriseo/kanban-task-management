@@ -15,6 +15,11 @@ export interface AuthSliceValues {
 
 export interface KanbanSliceInitialValues {
 	boards: Board[];
+	selectedBoardId: string | null;
+	selectedColumnId: string | null;
+	selectedTaskId: string | null;
+	selectedSubtaskId: string | null;
+	fetchingBoards:boolean
 }
 
 export interface Board {

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useUiStore } from '../../hooks';
+import { useKanbanTaskUI } from '../../hooks';
 interface Props {
 	className?: string;
 }
 export const Navbar: React.FC<Props> = ({ className }) => {
 	const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
-	const { activeBoard, activeModalName, isSidebarOpen, setActiveModal, closeModal } = useUiStore();
+	const { activeBoard, activeModalName, isSidebarOpen, setActiveModal, closeModal } = useKanbanTaskUI();
 	const toggleSelectBoardModal = () => {
 		!activeModalName ? setActiveModal('SelectBoard') : closeModal();
 	};

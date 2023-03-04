@@ -1,11 +1,11 @@
-import { useUiStore } from '../../hooks';
+import { useKanbanTaskUI } from '../../hooks';
 import { Board as BoardType } from '../../interfaces';
 interface Props {
 	board: BoardType;
 }
 export const Board: React.FC<Props> = ({ board }) => {
 	const colors = ['bg-[#49C4E5]', 'bg-[#8471F2]', 'bg-[#67E2AE]'];
-	const { onSelectColumnId, onSelectTaskId, setActiveModal } = useUiStore();
+	const { onSelectColumnId, onSelectTaskId, setActiveModal } = useKanbanTaskUI();
 
 	return (
 		<div className='flex p-5 space-x-5 max-h-screen min-w-max'>
@@ -22,7 +22,7 @@ export const Board: React.FC<Props> = ({ board }) => {
 							<div
 								key={task.taskId}
 								onClick={() => {
-									setActiveModal('ViewTaskModal');
+									setActiveModal('ViewTask');
 									onSelectColumnId(column.columnId);
 									onSelectTaskId(task.taskId);
 								}}

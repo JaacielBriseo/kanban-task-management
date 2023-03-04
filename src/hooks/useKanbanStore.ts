@@ -3,26 +3,27 @@ import {
 	createNewTask,
 	deleteTask,
 	removeBoard,
+	setActiveModalName,
 	setSelectedBoardId,
 	useAppDispatch,
 	useAppSelector,
 } from '../store';
 import { Board, Task } from '../interfaces';
 import { boardsApi } from '../api/boardsApi';
-import { useUiStore } from '.';
+import { useKanbanTaskUI } from '.';
 
 export const useKanbanStore = () => {
 	const dispatch = useAppDispatch();
-	const { user } = useAppSelector(state => state.auth);
 	const kanbanState = useAppSelector(state => state.kanbanTask);
-	const { activeBoard, activeColumn, activeTask } = useUiStore();
+	const { activeBoard, activeColumn, activeTask } = useKanbanTaskUI();
 
 	const startCreatingBoard = async (board: Board) => {
 		try {
-			const { data } = await boardsApi.post('/', {
+			const { data } = await boardsApi.post('/boards', {
 				...board,
 			});
 			dispatch(createNewBoard(data.board));
+			dispatch(setActiveModalName(null));
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
@@ -33,12 +34,11 @@ export const useKanbanStore = () => {
 			console.error('No active board to create task');
 			return;
 		}
+		console.log(activeBoard.columns.find(col => col.columnName === task.status)?.columnId);
 		try {
-			await boardsApi.post('/createTask', {
+			await boardsApi.post('/tasks', {
 				...task,
-				userId: user.uid,
-				columnId: activeBoard.columns.find(col => col.columnName === task.status)?.columnId,
-				boardId: activeBoard.boardId,
+				parentColumnId: activeBoard.columns.find(col => col.columnName === task.status)?.columnId,
 			});
 			dispatch(createNewTask({ ...task }));
 		} catch (error) {
@@ -52,14 +52,10 @@ export const useKanbanStore = () => {
 			return;
 		}
 		try {
-			await boardsApi.delete(`/${user.uid}/${activeBoard.boardId}`, {
-				params: {
-					boardId: activeBoard.boardId,
-				},
-			});
+			await boardsApi.delete(`/boards/${activeBoard.boardId}`);
 			dispatch(removeBoard({ boardIdToDelete: activeBoard.boardId }));
-			// dispatch(toggleDeleteBoardModal());
 			dispatch(setSelectedBoardId(null));
+			dispatch(setActiveModalName(null));
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
@@ -71,9 +67,9 @@ export const useKanbanStore = () => {
 			return;
 		}
 		try {
-			await boardsApi.delete(`/${user.uid}/${activeBoard.boardId}/${activeColumn.columnId}/${activeTask.taskId}`);
+			await boardsApi.delete(`/${activeBoard.boardId}/${activeColumn.columnId}/${activeTask.taskId}`);
 			dispatch(deleteTask({ taskIdToDelete: activeTask.taskId }));
-			// dispatch(toggleDeleteTaskModal());
+			dispatch(setActiveModalName(null));
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);

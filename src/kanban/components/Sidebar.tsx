@@ -1,11 +1,11 @@
-import { useKanbanStore, useUiStore } from '../../hooks';
+import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { ThemeToggler } from './ThemeToggler';
 interface Props {
 	className?: string;
 }
 export const Sidebar: React.FC<Props> = ({ className }) => {
 	const { boards } = useKanbanStore();
-	const { toggleSidebar, setActiveModal, onSelectBoardId } = useUiStore();
+	const { toggleSidebar, setActiveModal, onSelectBoardId } = useKanbanTaskUI();
 
 	return (
 		<div className={`hidden md:block w-[240px] h-[calc(100vh-90px)] p-5 bg-White ${className}`}>

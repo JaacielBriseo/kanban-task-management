@@ -10,20 +10,23 @@ import {
 } from '../store';
 import { findBoardById, findColumnById, findTaskById } from '../helpers';
 
-export const useUiStore = () => {
+export const useKanbanTaskUI  = () => {
 	const dispatch = useAppDispatch();
 	const {
 		activeModalName,
 		isSidebarOpen,
 		errorMessage,
 		isLoading,
+	} = useAppSelector(state => state.ui);
+
+	const { 
+		boards,
 		selectedBoardId,
 		selectedColumnId,
 		selectedSubtaskId,
-		selectedTaskId,
-	} = useAppSelector(state => state.ui);
+		selectedTaskId 
+	}   = useAppSelector(state => state.kanbanTask);
 
-	const { boards }   = useAppSelector(state => state.kanbanTask);
 	const activeBoard  = findBoardById(boards, selectedBoardId);
 	const activeColumn = findColumnById(activeBoard?.columns, selectedColumnId);
 	const activeTask   = findTaskById(activeColumn, selectedTaskId);

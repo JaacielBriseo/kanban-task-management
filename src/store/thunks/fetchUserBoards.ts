@@ -3,9 +3,8 @@ import { boardsApi } from '../../api/boardsApi';
 
 export const fetchUserBoards = createAsyncThunk('boards/fetch', async () => {
 	try {
-		const response = await boardsApi.get('/');
-		console.log(response);
-		return response.data.userBoards;
+		const response = await boardsApi.get('/boards');
+		return response.data.boards;
 	} catch (err) {
 		console.log(err);
 		return [];

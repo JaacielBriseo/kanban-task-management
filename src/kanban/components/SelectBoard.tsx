@@ -1,8 +1,8 @@
-import { useKanbanStore, useUiStore } from '../../hooks';
+import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { ThemeToggler } from '.';
 export const SelectBoard = () => {
 	const { boards } = useKanbanStore();
-	const { setActiveModal, onSelectBoardId } = useUiStore();
+	const { setActiveModal, onSelectBoardId } = useKanbanTaskUI();
 	return (
 		<div className='headingM flex flex-col items-start justify-around h-full p-5'>
 			<h1 className='headingS text-MediumGrey'>All boards({boards.length || 0})</h1>
