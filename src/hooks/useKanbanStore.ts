@@ -1,21 +1,61 @@
 import {
+	changeTaskColumnAndStatus,
 	createNewBoard,
 	createNewTask,
 	deleteTask,
 	removeBoard,
 	setActiveModalName,
 	setSelectedBoardId,
+	toggleSubtaskCompleted,
+	updateBoard,
+	updateTask,
 	useAppDispatch,
 	useAppSelector,
 } from '../store';
-import { Board, Task } from '../interfaces';
+import { Board, Subtask, Task } from '../interfaces';
 import { boardsApi } from '../api/boardsApi';
 import { useKanbanTaskUI } from '.';
+import { useRef } from 'react';
+import { findParentColumnId } from '../helpers/findParentColumnId';
 
 export const useKanbanStore = () => {
 	const dispatch = useAppDispatch();
+	const debounceRef = useRef<NodeJS.Timeout>();
 	const kanbanState = useAppSelector(state => state.kanbanTask);
 	const { activeBoard, activeColumn, activeTask } = useKanbanTaskUI();
+
+	const handleChangeTaskColumnAndStatus = (status: string) => {
+		if (!activeTask || !activeBoard) return;
+		const updatedTask: Task = {
+			...activeTask,
+			parentColumnId: findParentColumnId(activeBoard.columns, status)!,
+			status,
+		};
+		dispatch(changeTaskColumnAndStatus({ newStatus: status }));
+		if (debounceRef.current) clearTimeout(debounceRef.current);
+		debounceRef.current = setTimeout(() => {
+			startEditingTask({
+				closeModal: false,
+				updatedTaskData: updatedTask,
+			});
+		}, 1800);
+	};
+	const handleToggleSubtask = (subtask: Subtask) => {
+		if (!activeTask) return;
+		const updatedTask: Task = {
+			...activeTask,
+			subtasks: activeTask.subtasks.map(activeSubtask => {
+				return activeSubtask.subtaskId === subtask.subtaskId
+					? { ...activeSubtask, isCompleted: !activeSubtask.isCompleted }
+					: activeSubtask;
+			}),
+		};
+		dispatch(toggleSubtaskCompleted({ subtaskId: subtask.subtaskId }));
+		if (debounceRef.current) clearTimeout(debounceRef.current);
+		debounceRef.current = setTimeout(() => {
+			startEditingTask({ updatedTaskData: updatedTask, closeModal: false });
+		}, 1000);
+	};
 
 	const startCreatingBoard = async (board: Board) => {
 		try {
@@ -34,13 +74,12 @@ export const useKanbanStore = () => {
 			console.error('No active board to create task');
 			return;
 		}
-		console.log(activeBoard.columns.find(col => col.columnName === task.status)?.columnId);
 		try {
 			await boardsApi.post('/tasks', {
 				...task,
-				parentColumnId: activeBoard.columns.find(col => col.columnName === task.status)?.columnId,
 			});
 			dispatch(createNewTask({ ...task }));
+			dispatch(setActiveModalName(null));
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
@@ -67,9 +106,43 @@ export const useKanbanStore = () => {
 			return;
 		}
 		try {
-			await boardsApi.delete(`/${activeBoard.boardId}/${activeColumn.columnId}/${activeTask.taskId}`);
+			await boardsApi.delete(`/tasks/${activeTask.taskId}`);
 			dispatch(deleteTask({ taskIdToDelete: activeTask.taskId }));
 			dispatch(setActiveModalName(null));
+		} catch (error) {
+			// dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
+	};
+	const startEditingBoard = async (updatedBoardData: Board) => {
+		if (!activeBoard) {
+			console.error('No active board to edit.');
+			return;
+		}
+		try {
+			await boardsApi.put(`/boards/${activeBoard.boardId}`, { updatedBoardData });
+			dispatch(updateBoard(updatedBoardData));
+			dispatch(setActiveModalName(null));
+		} catch (error) {
+			// dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
+	};
+	const startEditingTask = async ({
+		updatedTaskData,
+		closeModal = true,
+	}: {
+		updatedTaskData: Task;
+		closeModal?: boolean;
+	}) => {
+		if (!activeBoard || !activeTask) {
+			console.error('No active board and/or task to edit.');
+			return;
+		}
+		try {
+			await boardsApi.put(`/tasks/${activeTask.taskId}`, { updatedTaskData });
+			dispatch(updateTask(updatedTaskData));
+			closeModal && dispatch(setActiveModalName(null));
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
@@ -84,5 +157,10 @@ export const useKanbanStore = () => {
 		startCreatingTask,
 		startDeletingBoard,
 		startDeletingTask,
+		startEditingBoard,
+		startEditingTask,
+
+		handleToggleSubtask,
+		handleChangeTaskColumnAndStatus,
 	};
 };

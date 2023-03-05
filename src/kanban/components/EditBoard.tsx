@@ -1,10 +1,9 @@
 import { FieldArray, Field, Form, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { updateBoard, useAppDispatch } from '../../store';
-import {  useKanbanTaskUI } from '../../hooks';
+import { useKanbanTaskUI, useKanbanStore } from '../../hooks';
 export const EditBoard = () => {
-	const dispatch = useAppDispatch();
 	const { activeBoard } = useKanbanTaskUI();
+	const { startEditingBoard } = useKanbanStore();
 
 	if (!activeBoard) return null;
 	return (
@@ -20,18 +19,17 @@ export const EditBoard = () => {
 					.required('Board name is required.'),
 			})}
 			onSubmit={({ boardColumns, boardName }) => {
-				dispatch(
-					updateBoard({
-						...activeBoard,
-						boardName,
-						columns:
-							boardColumns.length === 0
-								? []
-								: activeBoard.columns.map((column, index) => {
-										return { ...column, name: boardColumns[index] };
-								  }),
-					})
-				);
+				const updatedBoardData = {
+					...activeBoard,
+					boardName,
+					columns:
+						boardColumns.length === 0
+							? []
+							: activeBoard.columns.map((column, index) => {
+									return { ...column, columnName: boardColumns[index] };
+							  }),
+				};
+				startEditingBoard(updatedBoardData);
 			}}>
 			{({ values }) => (
 				<Form className='p-5 rounded-md flex flex-col space-y-8 w-[343px] min-h-[380px]   md:p-8'>

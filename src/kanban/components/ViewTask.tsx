@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { changeTaskColumnAndStatus, toggleSubtaskCompleted, useAppDispatch } from '../../store';
-import { useKanbanTaskUI } from '../../hooks';
+import { useKanbanTaskUI, useKanbanStore } from '../../hooks';
 
 export const ViewTask = () => {
-	const dispatch = useAppDispatch();
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const { activeBoard, activeColumn, activeTask, setActiveModal } = useKanbanTaskUI();
+	const { handleToggleSubtask, handleChangeTaskColumnAndStatus } = useKanbanStore();
 	if (!activeBoard || !activeColumn || !activeTask) return null;
+
 	return (
 		<div className='p-5 flex flex-col space-y-8 w-[343px] min-h-[380px] md:w-[480px] md:h-[429px] md:p-8'>
 			<div className='flex justify-between items-center relative'>
@@ -35,17 +35,15 @@ export const ViewTask = () => {
 				</p>
 				<div className='space-y-5'>
 					{activeTask.subtasks.map(subtask => (
-						<label key={subtask.title} className='bg-LightGrey flex justify-between p-2'>
+						<label key={subtask.subtaskTitle} className='bg-LightGrey flex justify-between p-2'>
 							<input
 								type='checkbox'
 								checked={subtask.isCompleted}
-								onChange={() => {
-									dispatch(toggleSubtaskCompleted({ subtaskId: subtask.subtaskId }));
-								}}
+								onChange={() => handleToggleSubtask(subtask)}
 								className='accent-MainPurple'
 							/>
 							<p className={`headingS w-10/12 ${subtask.isCompleted ? 'line-through text-MediumGrey' : 'text-Dark'}`}>
-								{subtask.title}
+								{subtask.subtaskTitle}
 							</p>
 						</label>
 					))}
@@ -56,9 +54,9 @@ export const ViewTask = () => {
 				<select
 					name='status'
 					className='border py-2'
-					onChange={e => {
-						if (e.target.value === '') return;
-						dispatch(changeTaskColumnAndStatus({ newStatus: e.target.value }));
+					onChange={event => {
+						if (event.target.value === '') return;
+						handleChangeTaskColumnAndStatus(event.target.value);
 					}}>
 					<option value={activeTask.status}>{activeTask.status}</option>
 					{activeBoard.columns

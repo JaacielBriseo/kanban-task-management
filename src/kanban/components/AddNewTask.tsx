@@ -2,9 +2,10 @@ import { Field, FieldArray, Form, Formik } from 'formik';
 import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { Task } from '../../interfaces';
 import { v4 as uuidv4 } from 'uuid';
+import { findParentColumnId } from '../../helpers/findParentColumnId';
 export const AddNewTask = () => {
 	const { startCreatingTask } = useKanbanStore();
-	const {activeBoard}  = useKanbanTaskUI()
+	const { activeBoard } = useKanbanTaskUI();
 	if (!activeBoard) return null;
 	const placeholders = ['e.g. Make Coffee', 'e.g. Drink coffee and smile'];
 	return (
@@ -22,8 +23,9 @@ export const AddNewTask = () => {
 					taskId: uuidv4(),
 					title: values.title,
 					subtasks: values.subtasks.map(subtask => {
-						return { isCompleted: false, subtaskId: uuidv4(), title: subtask };
+						return { isCompleted: false, subtaskId: uuidv4(), subtaskTitle: subtask };
 					}),
+					parentColumnId: findParentColumnId(activeBoard.columns, values.status)!,
 				};
 				startCreatingTask(newTask);
 			}}>

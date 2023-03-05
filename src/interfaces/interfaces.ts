@@ -19,7 +19,7 @@ export interface KanbanSliceInitialValues {
 	selectedColumnId: string | null;
 	selectedTaskId: string | null;
 	selectedSubtaskId: string | null;
-	fetchingBoards:boolean
+	fetchingBoards: boolean;
 }
 
 export interface Board {
@@ -40,10 +40,11 @@ export interface Task {
 	description: string;
 	status: string;
 	subtasks: Subtask[];
+	parentColumnId: string;
 }
 
 export interface Subtask {
-	title: string;
+	subtaskTitle: string;
 	isCompleted: boolean;
 	subtaskId: string;
 }

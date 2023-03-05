@@ -1,17 +1,16 @@
 import { Field, FieldArray, Form, Formik } from 'formik';
-import { useKanbanTaskUI } from '../../hooks';
-import { updateTask, useAppDispatch } from '../../store';
+import { useKanbanTaskUI, useKanbanStore } from '../../hooks';
 import { Task } from '../../interfaces';
 export const EditTask = () => {
 	const { activeTask, activeBoard } = useKanbanTaskUI();
-	const dispatch = useAppDispatch();
+	const { startEditingTask, handleChangeTaskColumnAndStatus } = useKanbanStore();
 	if (!activeTask || !activeBoard) return null;
 	return (
 		<Formik
 			initialValues={{
 				title: activeTask.title,
 				description: activeTask.description,
-				subtasks: activeTask.subtasks.map(subtask => subtask.title),
+				subtasks: activeTask.subtasks.map(subtask => subtask.subtaskTitle),
 				status: activeTask.status,
 			}}
 			onSubmit={values => {
@@ -23,13 +22,16 @@ export const EditTask = () => {
 					subtasks:
 						values.subtasks.length === 0
 							? []
-							: activeTask.subtasks.map(subtask => subtask.title) === values.subtasks
+							: activeTask.subtasks.map(subtask => subtask.subtaskTitle) === values.subtasks
 							? activeTask.subtasks
 							: activeTask.subtasks.map((subtask, index) => {
 									return { ...subtask, title: values.subtasks[index] };
 							  }),
 				};
-				dispatch(updateTask({ updatedTask }));
+				startEditingTask({ updatedTaskData: updatedTask });
+				if (values.status !== activeTask.status) {
+					handleChangeTaskColumnAndStatus(values.status);
+				}
 			}}>
 			{({ values }) => (
 				<Form className='w-[343px] p-5 rounded-md flex flex-col justify-between space-y-5'>

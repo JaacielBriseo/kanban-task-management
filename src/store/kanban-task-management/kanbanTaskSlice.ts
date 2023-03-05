@@ -77,9 +77,7 @@ export const kanbanTaskSlice = createSlice({
 				console.error('No subtask to toggle');
 			}
 		},
-		updateTask: (state, action: PayloadAction<{ updatedTask: Task }>) => {
-			const { updatedTask } = action.payload;
-
+		updateTask: (state, action: PayloadAction<Task>) => {
 			const board = findBoardById(state.boards, state.selectedBoardId);
 			const column = findColumnById(board?.columns, state.selectedColumnId);
 			if (!column) {
@@ -95,15 +93,15 @@ export const kanbanTaskSlice = createSlice({
 				console.error(`No task to update`);
 				return;
 			}
-			if (column.columnName === updatedTask.status) {
-				column.tasks[taskIndex] = updatedTask;
+			if (column.columnName === action.payload.status) {
+				column.tasks[taskIndex] = action.payload;
 			} else {
-				column.tasks = column.tasks.filter(t => t.taskId !== updatedTask.taskId);
-				const newColumn = board.columns.find(column => column.columnName === updatedTask.status);
+				column.tasks = column.tasks.filter(t => t.taskId !== action.payload.taskId);
+				const newColumn = board.columns.find(column => column.columnName === action.payload.status);
 				if (newColumn) {
-					newColumn.tasks.push(updatedTask);
+					newColumn.tasks.push(action.payload);
 					state.selectedColumnId = newColumn.columnId;
-					state.selectedTaskId = updatedTask.taskId;
+					state.selectedTaskId = action.payload.taskId;
 				}
 			}
 		},
@@ -135,6 +133,7 @@ export const kanbanTaskSlice = createSlice({
 		});
 		builder.addCase(fetchUserBoards.fulfilled, (state, action) => {
 			state.boards = action.payload;
+			state.fetchingBoards = false;
 		});
 		builder.addCase(fetchUserBoards.rejected, (state, action) => {
 			state.fetchingBoards = false;
