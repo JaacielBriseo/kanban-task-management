@@ -1,12 +1,10 @@
 import {
-	changeTaskColumnAndStatus,
 	createNewBoard,
 	createNewTask,
 	deleteTask,
 	removeBoard,
 	setActiveModalName,
 	setSelectedBoardId,
-	toggleSubtaskCompleted,
 	updateBoard,
 	updateTask,
 	useAppDispatch,
@@ -15,34 +13,32 @@ import {
 import { Board, Subtask, Task } from '../interfaces';
 import { boardsApi } from '../api/boardsApi';
 import { useKanbanTaskUI } from '.';
-import { useRef } from 'react';
 import { findParentColumnId } from '../helpers/findParentColumnId';
 
 export const useKanbanStore = () => {
 	const dispatch = useAppDispatch();
-	const debounceRef = useRef<NodeJS.Timeout>();
 	const kanbanState = useAppSelector(state => state.kanbanTask);
 	const { activeBoard, activeColumn, activeTask } = useKanbanTaskUI();
 
-	const handleChangeTaskColumnAndStatus = (status: string) => {
+	const handleChangeTaskColumnAndStatus = async (status: string) => {
 		if (!activeTask || !activeBoard) return;
-		const updatedTask: Task = {
+		const updatedTaskData: Task = {
 			...activeTask,
 			parentColumnId: findParentColumnId(activeBoard.columns, status)!,
 			status,
 		};
-		dispatch(changeTaskColumnAndStatus({ newStatus: status }));
-		if (debounceRef.current) clearTimeout(debounceRef.current);
-		debounceRef.current = setTimeout(() => {
-			startEditingTask({
+		try {
+			await startEditingTask({
 				closeModal: false,
-				updatedTaskData: updatedTask,
+				updatedTaskData,
 			});
-		}, 1800);
+		} catch (error) {
+			console.log(error);
+		}
 	};
-	const handleToggleSubtask = (subtask: Subtask) => {
+	const handleToggleSubtask = async (subtask: Subtask) => {
 		if (!activeTask) return;
-		const updatedTask: Task = {
+		const updatedTaskData: Task = {
 			...activeTask,
 			subtasks: activeTask.subtasks.map(activeSubtask => {
 				return activeSubtask.subtaskId === subtask.subtaskId
@@ -50,11 +46,11 @@ export const useKanbanStore = () => {
 					: activeSubtask;
 			}),
 		};
-		dispatch(toggleSubtaskCompleted({ subtaskId: subtask.subtaskId }));
-		if (debounceRef.current) clearTimeout(debounceRef.current);
-		debounceRef.current = setTimeout(() => {
-			startEditingTask({ updatedTaskData: updatedTask, closeModal: false });
-		}, 1000);
+		try {
+			await startEditingTask({ updatedTaskData, closeModal: false });
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const startCreatingBoard = async (board: Board) => {
@@ -75,10 +71,10 @@ export const useKanbanStore = () => {
 			return;
 		}
 		try {
-			await boardsApi.post('/tasks', {
+			const { data } = await boardsApi.post('/tasks', {
 				...task,
 			});
-			dispatch(createNewTask({ ...task }));
+			dispatch(createNewTask({ ...data.task }));
 			dispatch(setActiveModalName(null));
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
@@ -140,8 +136,8 @@ export const useKanbanStore = () => {
 			return;
 		}
 		try {
-			await boardsApi.put(`/tasks/${activeTask.taskId}`, { updatedTaskData });
-			dispatch(updateTask(updatedTaskData));
+			const { data } = await boardsApi.put(`/tasks/${activeTask.taskId}`, { updatedTaskData });
+			dispatch(updateTask(data.updatedTask));
 			closeModal && dispatch(setActiveModalName(null));
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));

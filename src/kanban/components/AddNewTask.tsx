@@ -1,7 +1,6 @@
 import { Field, FieldArray, Form, Formik } from 'formik';
 import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { Task } from '../../interfaces';
-import { v4 as uuidv4 } from 'uuid';
 import { findParentColumnId } from '../../helpers/findParentColumnId';
 export const AddNewTask = () => {
 	const { startCreatingTask } = useKanbanStore();
@@ -20,10 +19,10 @@ export const AddNewTask = () => {
 				const newTask: Task = {
 					description: values.description,
 					status: values.status,
-					taskId: uuidv4(),
+					taskId: '',
 					title: values.title,
 					subtasks: values.subtasks.map(subtask => {
-						return { isCompleted: false, subtaskId: uuidv4(), subtaskTitle: subtask };
+						return { isCompleted: false, subtaskId: '', subtaskTitle: subtask };
 					}),
 					parentColumnId: findParentColumnId(activeBoard.columns, values.status)!,
 				};
