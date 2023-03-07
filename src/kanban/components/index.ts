@@ -1,4 +1,5 @@
 export { ActiveModalContent } from './ActiveModalContent';
+export { AddMemberToBoard } from './AddMemberToBoard';
 export { AddNewBoard } from './AddNewBoard';
 export { AddNewTask } from './AddNewTask';
 export { Board } from './Board';

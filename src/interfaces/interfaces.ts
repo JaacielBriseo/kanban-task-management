@@ -26,6 +26,8 @@ export interface Board {
 	boardId: string;
 	boardName: string;
 	columns: Column[];
+	members?: User[] | null;
+	manager?: User;
 }
 
 export interface Column {
@@ -41,6 +43,8 @@ export interface Task {
 	status: string;
 	subtasks: Subtask[];
 	parentColumnId: string;
+	manager?: User;
+	assignedTo?: User | null;
 }
 
 export interface Subtask {
@@ -49,22 +53,14 @@ export interface Subtask {
 	subtaskId: string;
 }
 
-/**
- * Kanban Slice Payloads
- */
-
-export interface SetSelectedColumnAndTaskIdPayload {
-	payload: { columnId: string; taskId: string };
-}
-export interface ToggleIsSubtaskCompletedPayLoad {
-	subtaskId: string;
-}
-export interface ChangeTaskColumnAndStatusPayload {
-	payload: { newStatus: string; taskId: string; columnName: string; boardId: string; columnId: string };
-}
-export interface AddNewTaskPayload {
-	payload: { newTask: Task; boardId: string; columnName: string };
-}
-export interface DeleteTaskPayload {
-	payload: { taskId: string; boardId: string; columnId: string };
-}
+export type ModalName =
+	| null
+	| 'AddNewBoard'
+	| 'AddNewTask'
+	| 'DeleteBoard'
+	| 'DeleteTask'
+	| 'EditBoard'
+	| 'EditTask'
+	| 'SelectBoard'
+	| 'ViewTask'
+	| 'AddMemberToBoard';

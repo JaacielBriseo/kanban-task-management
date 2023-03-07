@@ -1,11 +1,15 @@
 import { useKanbanTaskUI } from '../../hooks';
-import { AddNewBoard, AddNewTask, DeleteBoard, DeleteTask, EditBoard, EditTask, SelectBoard, ViewTask } from '.';
+import { AddMemberToBoard, AddNewBoard, AddNewTask, DeleteBoard, DeleteTask, EditBoard, EditTask, SelectBoard, ViewTask } from '.';
+
 export const ActiveModalContent = () => {
 	const { activeModalName } = useKanbanTaskUI();
 	let content;
 	switch (activeModalName) {
 		case 'AddNewBoard':
 			content = <AddNewBoard />;
+			break;
+		case 'AddMemberToBoard':
+			content = <AddMemberToBoard />;
 			break;
 		case 'AddNewTask':
 			content = <AddNewTask />;

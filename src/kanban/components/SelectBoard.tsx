@@ -1,5 +1,6 @@
 import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { ThemeToggler } from '.';
+import { NavLink } from 'react-router-dom';
 export const SelectBoard = () => {
 	const { boards } = useKanbanStore();
 	const { setActiveModal, onSelectBoardId } = useKanbanTaskUI();
@@ -15,6 +16,12 @@ export const SelectBoard = () => {
 			<button onClick={() => setActiveModal('AddNewBoard')} className='text-MainPurple'>
 				+Create New Board
 			</button>
+			<button type='button' onClick={() => setActiveModal('AddMemberToBoard')} className='text-MainPurple'>
+				+Add New Member to Board
+			</button>
+			<div className='bg-LinesLight w-full'>
+				<NavLink to='/profile'>Profile</NavLink>
+			</div>
 			<div className='bg-LightGrey self-center flex space-x-3 px-5 py-2 rounded-lg'>
 				<img src='/assets/icon-light-theme.svg' alt='Sun' className='object-contain' />
 				<ThemeToggler />

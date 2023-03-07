@@ -10,7 +10,7 @@ import {
 	useAppDispatch,
 	useAppSelector,
 } from '../store';
-import { Board, Subtask, Task } from '../interfaces';
+import { Board, Subtask, Task, User } from '../interfaces';
 import { boardsApi } from '../api/boardsApi';
 import { useKanbanTaskUI } from '.';
 import { findParentColumnId } from '../helpers/findParentColumnId';
@@ -161,19 +161,41 @@ export const useKanbanStore = () => {
 		}
 	};
 
+	//! Add a new member to a specific board.
+	const startAddingNewMember = async (newMemberData: Pick<User, 'email' | 'name'>) => {
+		const { email, name } = newMemberData;
+		if (!activeBoard) {
+			console.log('A board must be active in order to add new member.');
+			return;
+		}
+		try {
+			const { data } = await boardsApi.post<{ board: Board }>(`/boards/${activeBoard?.boardId}/members`, {
+				email,
+				name,
+			});
+			dispatch(updateBoard(data.board));
+			dispatch(setActiveModalName(null));
+		} catch (error) {
+			// dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
+	};
+
 	return {
 		//* Properties
 		...kanbanState,
 
-		//* Methods
+		//* Methods for boards.
 		startCreatingBoard,
 		startCreatingTask,
 		startDeletingBoard,
 		startDeletingTask,
 		startEditingBoard,
 		startEditingTask,
-
 		handleToggleSubtask,
 		handleChangeTaskColumnAndStatus,
+
+		//* Methods to handle members of board.
+		startAddingNewMember,
 	};
 };

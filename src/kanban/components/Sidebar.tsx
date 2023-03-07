@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { ThemeToggler } from './ThemeToggler';
 interface Props {
@@ -24,12 +25,18 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 						: null}
 					<div className='flex space-x-2'>
 						<img src='/assets/icon-board-purple.svg' alt='board' />
-						<button onClick={() => setActiveModal('AddNewBoard')} className='text-MainPurple'>
+						<button type='button' onClick={() => setActiveModal('AddNewBoard')} className='text-MainPurple'>
 							+Create New Board
+						</button>
+						<button type='button' className='text-MainPurple'>
+							+Add New Member to Board
 						</button>
 					</div>
 				</div>
 				<div className='space-y-5'>
+					<div className='bg-LinesLight w-full'>
+						<NavLink to='/profile'>Profile</NavLink>
+					</div>
 					<div className='flex items-center justify-center px-2 py-3 space-x-3 rounded-md bg-LightGrey'>
 						<img src='/assets/icon-light-theme.svg' alt='light' className='w-[18px] h-[18px]' />
 						<ThemeToggler />

@@ -9,6 +9,7 @@ import {
 	useAppSelector,
 } from '../store';
 import { findBoardById, findColumnById, findTaskById } from '../helpers';
+import { ModalName } from '../interfaces';
 
 export const useKanbanTaskUI  = () => {
 	const dispatch = useAppDispatch();
@@ -37,7 +38,7 @@ export const useKanbanTaskUI  = () => {
 	const onSelectColumnId  = (id: string | null) => dispatch(setSelectedColumnId(id));
 	const onSelectTaskId    = (id: string | null) => dispatch(setSelectedTaskId(id));
 	const onSelectSubtaskId = (id: string | null) => dispatch(setSelectedSubtaskId(id));
-	const setActiveModal    = (modalName: string) => dispatch(setActiveModalName(modalName));
+	const setActiveModal    = (modalName: ModalName) => dispatch(setActiveModalName(modalName));
 
 	return {
 		//* Properties
