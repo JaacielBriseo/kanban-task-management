@@ -1,3 +1,4 @@
+export { AccessToThirdPartyBoard } from './AccessToThirdPartyBoard';
 export { ActiveModalContent } from './ActiveModalContent';
 export { AddMemberToBoard } from './AddMemberToBoard';
 export { AddNewBoard } from './AddNewBoard';

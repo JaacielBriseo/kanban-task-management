@@ -19,6 +19,9 @@ export const SelectBoard = () => {
 			<button type='button' onClick={() => setActiveModal('AddMemberToBoard')} className='text-MainPurple'>
 				+Add New Member to Board
 			</button>
+			<button type='button' onClick={() => setActiveModal('AccessToThirdPartyBoard')} className='text-MainPurple'>
+				Access to a third party board
+			</button>
 			<div className='bg-LinesLight w-full'>
 				<NavLink to='/profile'>Profile</NavLink>
 			</div>

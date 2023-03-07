@@ -180,6 +180,15 @@ export const useKanbanStore = () => {
 			console.error(error);
 		}
 	};
+	const startNavigateToThirdPartyBoard = async (thirdPartyBoardId: string) => {
+		try {
+			const response = await boardsApi.get(`/boards/${thirdPartyBoardId}`);
+			console.log(response);
+		} catch (error) {
+			// dispatch(setErrorMessage(`Some error :${error}`));
+			console.error(error);
+		}
+	};
 
 	return {
 		//* Properties
@@ -197,5 +206,6 @@ export const useKanbanStore = () => {
 
 		//* Methods to handle members of board.
 		startAddingNewMember,
+		startNavigateToThirdPartyBoard,
 	};
 };
