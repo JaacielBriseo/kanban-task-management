@@ -14,12 +14,14 @@ import { Board, Subtask, Task, User } from '../interfaces';
 import { boardsApi } from '../api/boardsApi';
 import { useKanbanTaskUI } from '.';
 import { findParentColumnId } from '../helpers/findParentColumnId';
+import { setThirdPartyBoard } from '../store/third-party-board/thirdPartyBoardSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const useKanbanStore = () => {
 	const dispatch = useAppDispatch();
 	const kanbanState = useAppSelector(state => state.kanbanTask);
-	const { activeBoard, activeColumn, activeTask } = useKanbanTaskUI();
-
+	const { activeBoard, activeColumn, activeTask, onSavingChanges } = useKanbanTaskUI();
+	const navigate = useNavigate();
 	//! Handle if task should be moved to another column.
 	const handleChangeTaskColumnAndStatus = async (status: string) => {
 		if (!activeTask || !activeBoard) return;
@@ -58,16 +60,19 @@ export const useKanbanStore = () => {
 
 	//! Create a new board and retrieve the response from the backend to update the state.
 	const startCreatingBoard = async (board: Board) => {
+		dispatch(setActiveModalName('SavingChanges'));
+		onSavingChanges('loading');
 		try {
 			const response = await boardsApi.post<{ board: Board }>('/boards', {
 				...board,
 			});
 			console.log(response);
 			dispatch(createNewBoard(response.data.board));
-			dispatch(setActiveModalName(null));
+			onSavingChanges('successful');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
+			onSavingChanges('error');
 		}
 	};
 
@@ -77,15 +82,18 @@ export const useKanbanStore = () => {
 			console.error('No active board to create task');
 			return;
 		}
+		dispatch(setActiveModalName('SavingChanges'));
+		onSavingChanges('loading');
 		try {
 			const { data } = await boardsApi.post<{ task: Task }>('/tasks', {
 				...task,
 			});
 			dispatch(createNewTask({ ...data.task }));
-			dispatch(setActiveModalName(null));
+			onSavingChanges('successful');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
+			onSavingChanges('error');
 		}
 	};
 	//! Remove a Board.
@@ -94,14 +102,17 @@ export const useKanbanStore = () => {
 			console.error(`No active board to delete`);
 			return;
 		}
+		dispatch(setActiveModalName('SavingChanges'));
+		onSavingChanges('loading');
 		try {
 			await boardsApi.delete(`/boards/${activeBoard.boardId}`);
 			dispatch(removeBoard({ boardIdToDelete: activeBoard.boardId }));
 			dispatch(setSelectedBoardId(null));
-			dispatch(setActiveModalName(null));
+			onSavingChanges('successful');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
+			onSavingChanges('error');
 		}
 	};
 
@@ -111,13 +122,16 @@ export const useKanbanStore = () => {
 			console.error(`No task or col or board`);
 			return;
 		}
+		dispatch(setActiveModalName('SavingChanges'));
+		onSavingChanges('loading');
 		try {
 			await boardsApi.delete(`/tasks/${activeTask.taskId}`);
 			dispatch(deleteTask({ taskIdToDelete: activeTask.taskId }));
-			dispatch(setActiveModalName(null));
+			onSavingChanges('successful');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
+			onSavingChanges('error');
 		}
 	};
 
@@ -127,15 +141,18 @@ export const useKanbanStore = () => {
 			console.error('No active board to edit.');
 			return;
 		}
+		dispatch(setActiveModalName('SavingChanges'));
+		onSavingChanges('loading');
 		try {
 			const { data } = await boardsApi.put<{ updatedBoard: Board }>(`/boards/${activeBoard.boardId}`, {
 				updatedBoardData,
 			});
 			dispatch(updateBoard(data.updatedBoard));
-			dispatch(setActiveModalName(null));
+			onSavingChanges('successful');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
+			onSavingChanges('error');
 		}
 	};
 
@@ -168,22 +185,26 @@ export const useKanbanStore = () => {
 			console.log('A board must be active in order to add new member.');
 			return;
 		}
+		dispatch(setActiveModalName('SavingChanges'));
+		onSavingChanges('loading');
 		try {
 			const { data } = await boardsApi.post<{ board: Board }>(`/boards/${activeBoard?.boardId}/members`, {
 				email,
 				name,
 			});
 			dispatch(updateBoard(data.board));
-			dispatch(setActiveModalName(null));
+			onSavingChanges('successful');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
+			onSavingChanges('error');
 		}
 	};
 	const startNavigateToThirdPartyBoard = async (thirdPartyBoardId: string) => {
 		try {
-			const response = await boardsApi.get(`/boards/${thirdPartyBoardId}`);
-			console.log(response);
+			const response = await boardsApi.get<{ board: Board }>(`/boards/${thirdPartyBoardId}`);
+			dispatch(setThirdPartyBoard(response.data.board));
+			navigate('/thirdPartyBoard');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);

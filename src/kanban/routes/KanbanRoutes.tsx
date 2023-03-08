@@ -1,11 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Home, Profile } from '../pages';
+import { Home, Profile, ThirdPartyBoard } from '../pages';
 export const KanbanRoutes = () => {
 	return (
 		<Routes>
-			<Route path='/home' element={<Home />} />
+			<Route path='/' element={<Home />} />
 			<Route path='/profile' element={<Profile />} />
-			<Route path='/*' element={<Navigate to='/home' />} />
+			<Route path='/thirdPartyBoard' element={<ThirdPartyBoard />} />
+			<Route path='/*' element={<Navigate to='/' />} />
 		</Routes>
 	);
 };

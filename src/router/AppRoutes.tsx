@@ -8,12 +8,11 @@ import { AuthRoutes } from '../auth/routes/AuthRoutes';
 
 export const AppRoutes = () => {
 	const { status, checkAuthToken } = useAuthStore();
-	const { isLoading } = useAppSelector(state => state.ui);
 	useEffect(() => {
 		checkAuthToken();
 		// eslint-disable-next-line
 	}, []);
-	if (status === 'checking' || isLoading) {
+	if (status === 'checking') {
 		return <Loading />;
 	}
 	return (
@@ -23,7 +22,6 @@ export const AppRoutes = () => {
 			) : (
 				<Route path='/auth/*' element={<AuthRoutes />} />
 			)}
-
 			<Route path='/*' element={<Navigate to='/auth/login' />} />
 		</Routes>
 	);

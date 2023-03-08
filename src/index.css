@@ -24,6 +24,10 @@
 	background: linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%);
 	border-radius: 6px;
 }
-.bodyL{
-	@apply font-medium text-[13px] leading-6
+.bodyL {
+	@apply font-medium text-[13px] leading-6;
+}
+
+.modalLayout {
+	@apply w-[343px] p-5 rounded-md flex flex-col justify-between space-y-5;
 }

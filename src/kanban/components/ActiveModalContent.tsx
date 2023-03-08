@@ -1,5 +1,6 @@
 import { useKanbanTaskUI } from '../../hooks';
 import { AccessToThirdPartyBoard, AddMemberToBoard, AddNewBoard, AddNewTask, DeleteBoard, DeleteTask, EditBoard, EditTask, SelectBoard, ViewTask } from '.';
+import { SavingChanges } from './ui/SavingChanges';
 
 export const ActiveModalContent = () => {
 	const { activeModalName } = useKanbanTaskUI();
@@ -28,6 +29,9 @@ export const ActiveModalContent = () => {
 			break;
 		case 'EditTask':
 			content = <EditTask />;
+			break;
+		case 'SavingChanges':
+			content = <SavingChanges />;
 			break;
 		case 'SelectBoard':
 			content = <SelectBoard />;

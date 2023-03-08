@@ -64,4 +64,5 @@ export type ModalName =
 	| 'SelectBoard'
 	| 'ViewTask'
 	| 'AddMemberToBoard'
-	| 'AccessToThirdPartyBoard';
+	| 'AccessToThirdPartyBoard'
+	| 'SavingChanges';

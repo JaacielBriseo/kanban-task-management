@@ -3,13 +3,13 @@ import { ModalName } from '../../interfaces';
 interface UiStoreValues {
 	activeModalName: ModalName;
 	isSidebarOpen: boolean;
-	isLoading: boolean;
+	isSavingChanges: 'loading' | 'successful' | 'error' | null;
 	errorMessage: string | null;
 }
 const initialState: UiStoreValues = {
 	activeModalName: null,
 	isSidebarOpen: false,
-	isLoading: false,
+	isSavingChanges: null,
 	errorMessage: null,
 };
 export const uiSlice = createSlice({
@@ -22,8 +22,11 @@ export const uiSlice = createSlice({
 		setIsSidebarOpen: (state, action: PayloadAction<boolean>) => {
 			state.isSidebarOpen = action.payload;
 		},
+		setIsSavingChanges: (state, action: PayloadAction<'loading' | 'successful' | 'error' | null>) => {
+			state.isSavingChanges = action.payload;
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { setActiveModalName, setIsSidebarOpen } = uiSlice.actions;
+export const { setActiveModalName, setIsSidebarOpen,setIsSavingChanges } = uiSlice.actions;

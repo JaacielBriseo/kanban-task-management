@@ -1,5 +1,6 @@
 import {
 	setActiveModalName,
+	setIsSavingChanges,
 	setIsSidebarOpen,
 	setSelectedBoardId,
 	setSelectedColumnId,
@@ -17,7 +18,7 @@ export const useKanbanTaskUI  = () => {
 		activeModalName,
 		isSidebarOpen,
 		errorMessage,
-		isLoading,
+		isSavingChanges,
 	} = useAppSelector(state => state.ui);
 
 	const { 
@@ -39,6 +40,7 @@ export const useKanbanTaskUI  = () => {
 	const onSelectTaskId    = (id: string | null) => dispatch(setSelectedTaskId(id));
 	const onSelectSubtaskId = (id: string | null) => dispatch(setSelectedSubtaskId(id));
 	const setActiveModal    = (modalName: ModalName) => dispatch(setActiveModalName(modalName));
+	const onSavingChanges  =  (status:'loading' |'successful' | 'error'|null)=> dispatch(setIsSavingChanges(status))
 
 	return {
 		//* Properties
@@ -47,7 +49,7 @@ export const useKanbanTaskUI  = () => {
 		activeColumn,
 		activeTask,
 		errorMessage,
-		isLoading,
+		isSavingChanges,
 		isSidebarOpen,
 		selectedBoardId,
 		selectedColumnId,
@@ -62,5 +64,6 @@ export const useKanbanTaskUI  = () => {
 		onSelectColumnId,
 		onSelectTaskId,
 		onSelectSubtaskId,
+		onSavingChanges
 	};
 };
