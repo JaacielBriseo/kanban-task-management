@@ -1,5 +1,6 @@
 export interface User {
 	name: string | null;
+	nickname?: string;
 	email: string | null;
 	img: string | null;
 	role: 'SUPER_ROLE' | 'USER_ROLE' | 'ADMIN_ROLE' | null;
@@ -7,6 +8,7 @@ export interface User {
 	google: boolean | null;
 	uid: string | null;
 }
+
 export interface AuthSliceValues {
 	status: 'checking' | 'authenticated' | 'not-authenticated';
 	user: User;
