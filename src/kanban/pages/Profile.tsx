@@ -4,8 +4,8 @@ import { useAuthStore } from '../../hooks';
 export const Profile = () => {
 	const { email, img, name, status } = useAuthStore();
 	return (
-		<section className='flex h-screen items-center justify-center '>
-			<NavLink to={'/'} className='fixed top-4 left-2'>Go back to my boards</NavLink>
+		<section className='flex items-center justify-center '>
+			{/* <NavLink to={'/'} className='fixed top-20 left-2'>Go back to my boards</NavLink> */}
 			<div className='bg-white h-3/4 w-10/12 shadow-lg rounded-lg flex flex-col justify-between items-center border-MainPurple border-2'>
 				<div className='ring-2 ring-MainPurple rounded-full h-20 w-20 mt-4'>
 					<img src={img || ''} alt='User' />
@@ -19,3 +19,5 @@ export const Profile = () => {
 		</section>
 	);
 };
+
+export default Profile

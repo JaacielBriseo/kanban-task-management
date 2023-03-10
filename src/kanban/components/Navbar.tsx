@@ -5,19 +5,19 @@ interface Props {
 }
 export const Navbar: React.FC<Props> = ({ className }) => {
 	const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
-	const { activeBoard, activeModalName, isSidebarOpen, setActiveModal, closeModal } = useKanbanTaskUI();
+	const { activeBoard, activeModalName, setActiveModal, closeModal } = useKanbanTaskUI();
 	const toggleSelectBoardModal = () => {
 		!activeModalName ? setActiveModal('SelectBoard') : closeModal();
 	};
 	return (
 		<>
-			<nav className={`bg-white p-5 flex justify-between z-40 ${className}`}>
+			<nav className='bg-white p-5 flex justify-between z-40'>
 				<div className='flex items-center space-x-5 '>
-					<div className={`flex items-center md:space-x-2 ${isSidebarOpen && 'mr-20'}`}>
+					<div className='flex items-center md:space-x-2'>
 						<img src='/assets/logo-mobile.svg' alt='Mobile' />
 						<h1 className='hidden md:block headingXL'>kanban</h1>
 					</div>
-					<div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' />
+					{/* <div className='hidden md:block w-[1px] h-full bg-LinesLight dark:bg-LinesDark' /> */}
 					<div className='flex items-center space-x-2' onClick={toggleSelectBoardModal}>
 						<h2 className='headingL'>{activeBoard ? activeBoard.boardName : 'Select a board'}</h2>
 						<div className='md:hidden'>

@@ -1,15 +1,16 @@
+import { useParams } from 'react-router-dom';
 import { useKanbanTaskUI } from '../../hooks';
-import { Board as BoardType } from '../../interfaces';
-interface Props {
-	board: BoardType;
-}
-export const Board: React.FC<Props> = ({ board }) => {
-	const colors = ['bg-[#49C4E5]', 'bg-[#8471F2]', 'bg-[#67E2AE]'];
-	const { onSelectColumnId, onSelectTaskId, setActiveModal } = useKanbanTaskUI();
 
+export const Board: React.FC = () => {
+	const { boardId } = useParams();
+	const colors = ['bg-[#49C4E5]', 'bg-[#8471F2]', 'bg-[#67E2AE]'];
+	const { onSelectColumnId, onSelectTaskId, setActiveModal, activeBoard } = useKanbanTaskUI();
+	if (!activeBoard) {
+		return <h1>Board with ID:{boardId} not found</h1>;
+	}
 	return (
-		<div className='flex p-5 space-x-5 max-h-screen min-w-max'>
-			{board.columns.map((column, index) => (
+		<div className='flex space-x-5 w-max'>
+			{activeBoard.columns.map((column, index) => (
 				<div key={column.columnId} className='space-y-5'>
 					<div className='flex items-center space-x-2 w-[280px]'>
 						<div className={`h-[15px] w-[15px] rounded-full ${colors[index]}`} />
@@ -42,3 +43,5 @@ export const Board: React.FC<Props> = ({ board }) => {
 		</div>
 	);
 };
+
+export default Board;

@@ -18,10 +18,10 @@ export const Modal = ({ onClose, actionBar, children, customClass, isFullScreen 
 		<div>
 			<div
 				onClick={onClose}
-				className={`fixed inset-0 bg-gray-300 opacity-80 z-10 ${isFullScreen ? '' : 'mt-[4.5rem]'} `}
+				className={`fixed inset-0 bg-gray-300 opacity-80 z-40 `}
 			/>
 			<div
-				className={`z-20 fixed ${
+				className={`z-50 fixed ${
 					isFullScreen ? 'top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]' : 'inset-0 mt-24 mx-auto'
 				} flex items-center justify-center bg-white rounded-lg ${customClass}`}>
 				<div className='flex flex-col justify-between h-full w-full'>

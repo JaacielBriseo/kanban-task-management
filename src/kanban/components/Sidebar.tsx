@@ -1,30 +1,31 @@
 import { NavLink } from 'react-router-dom';
 import { useKanbanStore, useKanbanTaskUI } from '../../hooks';
 import { ThemeToggler } from './ThemeToggler';
-interface Props {
-	className?: string;
-}
-export const Sidebar: React.FC<Props> = ({ className }) => {
+
+export const Sidebar: React.FC = () => {
 	const { boards } = useKanbanStore();
-	const { toggleSidebar, setActiveModal, onSelectBoardId } = useKanbanTaskUI();
+	const { toggleSidebar, setActiveModal, onSelectBoardId, isSidebarOpen } = useKanbanTaskUI();
 
 	return (
-		<div className={`hidden md:block w-[240px] h-[calc(100vh-90px)] p-5 bg-White ${className}`}>
-			<div className='flex flex-col justify-between h-full'>
+		<aside className={`${isSidebarOpen ? 'md:flex' : 'hidden'} w-44 p-5 bg-White`}>
+			<div className={`flex flex-col justify-between h-full`}>
 				<div className='space-y-3'>
 					<h1 className='text-MediumGrey headingS'>All boards({boards.length || 0})</h1>
 					{boards.length
 						? boards.map(board => (
 								<div key={board.boardId}>
-									<div onClick={() => onSelectBoardId(board.boardId)} className='flex space-x-3 cursor-pointer'>
+									<NavLink
+										to={`/boards/${board.boardId}`}
+										onClick={() => onSelectBoardId(board.boardId)}
+										className='flex space-x-3 cursor-pointer'>
 										<img src='/assets/icon-board-purple.svg' alt='board' />
 										<p className='text-MediumGrey headingM'>{board.boardName}</p>
-									</div>
+									</NavLink>
 								</div>
 						  ))
 						: null}
-					<div className='flex space-x-2'>
-						<img src='/assets/icon-board-purple.svg' alt='board' />
+					<div className='flex flex-col space-x-2'>
+						{/* <img src='/assets/icon-board-purple.svg' alt='board' className='object-cover'/> */}
 						<button type='button' onClick={() => setActiveModal('AddNewBoard')} className='text-MainPurple'>
 							+Create New Board
 						</button>
@@ -48,6 +49,6 @@ export const Sidebar: React.FC<Props> = ({ className }) => {
 					</button>
 				</div>
 			</div>
-		</div>
+		</aside>
 	);
 };

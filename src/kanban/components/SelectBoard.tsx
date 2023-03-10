@@ -9,9 +9,13 @@ export const SelectBoard = () => {
 			<h1 className='headingS text-MediumGrey'>All boards({boards.length || 0})</h1>
 			{boards &&
 				boards.map(board => (
-					<button className='text-MediumGrey' key={board.boardId} onClick={() => onSelectBoardId(board.boardId)}>
+					<NavLink
+						to={`/boards/${board.boardId}`}
+						className='text-MediumGrey'
+						key={board.boardId}
+						onClick={() => onSelectBoardId(board.boardId)}>
 						{board.boardName}
-					</button>
+					</NavLink>
 				))}
 			<button onClick={() => setActiveModal('AddNewBoard')} className='text-MainPurple'>
 				+Create New Board
