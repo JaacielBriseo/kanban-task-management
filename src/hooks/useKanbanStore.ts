@@ -1,4 +1,5 @@
 import {
+	addThirdPartyBoard,
 	createNewBoard,
 	createNewTask,
 	deleteTask,
@@ -14,14 +15,14 @@ import { Board, Subtask, Task, User } from '../interfaces';
 import { boardsApi } from '../api/boardsApi';
 import { useKanbanTaskUI } from '.';
 import { findParentColumnId } from '../helpers/findParentColumnId';
-import { setThirdPartyBoard } from '../store/third-party-board/thirdPartyBoardSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const useKanbanStore = () => {
 	const dispatch = useAppDispatch();
 	const kanbanState = useAppSelector(state => state.kanbanTask);
-	const { activeBoard, activeColumn, activeTask, onSavingChanges } = useKanbanTaskUI();
+	const { activeBoard, activeColumn, activeTask, onSavingChanges, onSelectBoardId } = useKanbanTaskUI();
 	const navigate = useNavigate();
+	
 	//! Handle if task should be moved to another column.
 	const handleChangeTaskColumnAndStatus = async (status: string) => {
 		if (!activeTask || !activeBoard) return;
@@ -69,6 +70,8 @@ export const useKanbanStore = () => {
 			console.log(response);
 			dispatch(createNewBoard(response.data.board));
 			onSavingChanges('successful');
+			onSelectBoardId(response.data.board.boardId);
+			navigate(`/boards/${response.data.board.boardId}`);
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
@@ -109,6 +112,7 @@ export const useKanbanStore = () => {
 			dispatch(removeBoard({ boardIdToDelete: activeBoard.boardId }));
 			dispatch(setSelectedBoardId(null));
 			onSavingChanges('successful');
+			navigate('/');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
@@ -200,14 +204,20 @@ export const useKanbanStore = () => {
 			onSavingChanges('error');
 		}
 	};
+
+	//! Navigate to a board by ID
 	const startNavigateToThirdPartyBoard = async (thirdPartyBoardId: string) => {
+		onSavingChanges('loading');
 		try {
 			const response = await boardsApi.get<{ board: Board }>(`/boards/${thirdPartyBoardId}`);
-			dispatch(setThirdPartyBoard(response.data.board));
-			navigate('/thirdPartyBoard');
+			dispatch(addThirdPartyBoard(response.data.board));
+			navigate(`/boards/${response.data.board.boardId}`);
+			dispatch(setSelectedBoardId(response.data.board.boardId));
+			onSavingChanges('successful');
 		} catch (error) {
 			// dispatch(setErrorMessage(`Some error :${error}`));
 			console.error(error);
+			onSavingChanges('error');
 		}
 	};
 

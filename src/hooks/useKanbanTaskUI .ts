@@ -40,7 +40,7 @@ export const useKanbanTaskUI  = () => {
 	const onSelectTaskId    = (id: string | null) => dispatch(setSelectedTaskId(id));
 	const onSelectSubtaskId = (id: string | null) => dispatch(setSelectedSubtaskId(id));
 	const setActiveModal    = (modalName: ModalName) => dispatch(setActiveModalName(modalName));
-	const onSavingChanges  =  (status:'loading' |'successful' | 'error'|null)=> dispatch(setIsSavingChanges(status))
+	const onSavingChanges   = (status:'loading' |'successful' | 'error'|null)=> dispatch(setIsSavingChanges(status))
 
 	return {
 		//* Properties

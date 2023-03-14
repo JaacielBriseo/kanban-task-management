@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { findBoardById, findColumnById, findColumnByName } from '../../helpers';
 import { Board, KanbanSliceInitialValues, Task } from '../../interfaces';
 import { fetchUserBoards } from '../thunks';
+import { logout } from '../auth';
 const initialState: KanbanSliceInitialValues = {
 	boards: [],
 	selectedBoardId: null,
@@ -90,6 +91,9 @@ export const kanbanTaskSlice = createSlice({
 		setSelectedSubtaskId: (state, action: PayloadAction<string | null>) => {
 			state.selectedSubtaskId = action.payload;
 		},
+		addThirdPartyBoard: (state, action: PayloadAction<Board>) => {
+			state.boards.push(action.payload);
+		},
 	},
 
 	extraReducers: builder => {
@@ -104,6 +108,9 @@ export const kanbanTaskSlice = createSlice({
 			state.fetchingBoards = false;
 			state.boards = [];
 		});
+		builder.addCase(logout, state => {
+			state = initialState;
+		});
 	},
 });
 
@@ -116,6 +123,7 @@ export const {
 	updateBoard,
 	updateTask,
 
+	addThirdPartyBoard,
 	setSelectedBoardId,
 	setSelectedColumnId,
 	setSelectedTaskId,

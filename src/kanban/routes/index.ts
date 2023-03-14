@@ -1,1 +1,1 @@
-export { KanbanRoutes } from './KanbanRoutes';
+export { KanbanRoutes as default } from './KanbanRoutes';

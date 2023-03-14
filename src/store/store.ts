@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from './auth';
 import { kanbanTaskSlice } from './kanban-task-management';
 import { uiSlice } from './ui';
-import { thirdPartyBoardSlice } from './third-party-board/thirdPartyBoardSlice';
 // ...
 
 export const store = configureStore({
@@ -10,7 +9,6 @@ export const store = configureStore({
 		kanbanTask: kanbanTaskSlice.reducer,
 		auth: authSlice.reducer,
 		ui:uiSlice.reducer,
-		thirdPartyBoard:thirdPartyBoardSlice.reducer,
 	},
 });
 

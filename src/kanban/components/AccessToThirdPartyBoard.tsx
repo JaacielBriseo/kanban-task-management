@@ -5,7 +5,7 @@ export const AccessToThirdPartyBoard = () => {
 	const { startNavigateToThirdPartyBoard } = useKanbanStore();
 	const onSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
-
+		if (thirdPartyBoardId.length < 20) return;
 		startNavigateToThirdPartyBoard(thirdPartyBoardId);
 	};
 	return (
@@ -16,7 +16,7 @@ export const AccessToThirdPartyBoard = () => {
 					type='text'
 					name='thirdPartyBoardId'
 					className='border'
-          placeholder='18746-74237...'
+					placeholder='18746-74237...'
 					value={thirdPartyBoardId}
 					onChange={e => {
 						setThirdPartyBoardId(e.target.value);

@@ -108,7 +108,6 @@ export const useAuthStore = () => {
 		}
 	};
 	const checkAuthToken = async () => {
-		dispatch(checkingCredentials());
 		const token = localStorage.getItem('token');
 		if (!token) return dispatch(logout({ errorMessage: null }));
 		try {
@@ -133,6 +132,12 @@ export const useAuthStore = () => {
 		}
 	};
 
+	const startLogout = () => {
+		dispatch(logout({ errorMessage: null }));
+		localStorage.clear();
+		window.location.reload()
+	};
+
 	return {
 		//Properties
 		name,
@@ -150,6 +155,7 @@ export const useAuthStore = () => {
 		startLogin,
 		startRegister,
 		startGoogleSignIn,
+		startLogout,
 
 		clearErrorMessage,
 	};

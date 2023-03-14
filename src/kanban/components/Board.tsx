@@ -1,16 +1,12 @@
-import { useParams } from 'react-router-dom';
 import { useKanbanTaskUI } from '../../hooks';
 
 export const Board: React.FC = () => {
-	const { boardId } = useParams();
 	const colors = ['bg-[#49C4E5]', 'bg-[#8471F2]', 'bg-[#67E2AE]'];
 	const { onSelectColumnId, onSelectTaskId, setActiveModal, activeBoard } = useKanbanTaskUI();
-	if (!activeBoard) {
-		return <h1>Board with ID:{boardId} not found</h1>;
-	}
+
 	return (
 		<div className='flex space-x-5 w-max'>
-			{activeBoard.columns.map((column, index) => (
+			{activeBoard?.columns.map((column, index) => (
 				<div key={column.columnId} className='space-y-5'>
 					<div className='flex items-center space-x-2 w-[280px]'>
 						<div className={`h-[15px] w-[15px] rounded-full ${colors[index]}`} />

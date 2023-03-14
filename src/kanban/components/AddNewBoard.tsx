@@ -26,7 +26,7 @@ export const AddNewBoard = () => {
 				});
 			}}>
 			{({ values }) => (
-				<Form className='p-5 rounded-md flex flex-col space-y-8 w-[343px] min-h-[380px] md:w-[480px] md:h-[429px] md:p-8'>
+				<Form className='p-5 rounded-md flex flex-col space-y-8 w-[343px] md:w-[480px] md:p-8'>
 					<h1 className='headingL'>Add New Board</h1>
 					<div className='space-y-1 flex flex-col'>
 						<label htmlFor='boardName' className='headingS text-MediumGrey'>

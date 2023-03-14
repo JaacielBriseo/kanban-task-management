@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ModalName } from '../../interfaces';
+import { logout } from '../auth';
 interface UiStoreValues {
 	activeModalName: ModalName;
 	isSidebarOpen: boolean;
@@ -26,7 +27,12 @@ export const uiSlice = createSlice({
 			state.isSavingChanges = action.payload;
 		},
 	},
+	extraReducers(builder) {
+		builder.addCase(logout, state => {
+			state = initialState;
+		});
+	},
 });
 
 // Action creators are generated for each case reducer function
-export const { setActiveModalName, setIsSidebarOpen,setIsSavingChanges } = uiSlice.actions;
+export const { setActiveModalName, setIsSidebarOpen, setIsSavingChanges } = uiSlice.actions;
